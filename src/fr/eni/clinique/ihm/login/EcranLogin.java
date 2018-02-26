@@ -1,24 +1,133 @@
 package fr.eni.clinique.ihm.login;
 
-import javax.swing.JFrame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 
 public class EcranLogin extends JFrame {
-	
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private JPanel panelConnexion;
+
+	private JLabel lblLogin;
+	private JTextField txtLogin;
+
+	private JLabel lblMotPasse;
+	private JTextField txtMotPasse;
+
+	private JButton valider;
+
 	public EcranLogin() {
-		setSize(600, 400);
+		setSize(300, 300);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		
+		setLocation(600, 250);
+
+		setContentPane(getLoginForm());
+
+
 	}
-	
-	
-	final Logger logger = LoggerFactory.getLogger(EcranLogin.class);
-	
-	
-	
-	
+
+
+	private JPanel getLoginForm() {
+
+		if (panelConnexion == null) {
+			panelConnexion = new JPanel(new GridBagLayout());
+
+			addComponentTo(getLblLogin(), panelConnexion, 0, 0, 1, 1, 0.2);
+			addComponentTo(getTxtLogin(), panelConnexion, 1, 0, 1, 1, 0.8);
+			addComponentTo(getLblMotPasse(), panelConnexion, 0, 1, 1, 1, 0.2);
+			addComponentTo(getTxtMotPasse(), panelConnexion, 1, 1, 1, 1, 0.8);
+
+			addComponentTo(getValider(), panelConnexion, 0, 5, 2, 2, 1);
+		}
+
+		return panelConnexion;
+
+	}
+
+
+
+
+	private void addComponentTo(JComponent component, JPanel panel,
+			int x, int y, int width, int height,
+			double weightX) {
+		addComponentTo(component, panel, x, y, width, height, weightX, true);
+	}
+
+	private void addComponentTo(JComponent component, JPanel panel,
+			int x, int y, int width, int height,
+			double weightX, boolean fillHorizontal) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.gridwidth = width;
+		gbc.gridheight = height;
+		gbc.weightx = weightX;
+		if(fillHorizontal) {
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+		}
+		gbc.insets = new Insets(7, 10, 5, 10);
+		panel.add(component, gbc);
+	}
+
+
+	public JLabel getLblLogin() {
+		if(lblLogin == null) {
+			lblLogin = new JLabel("Login");
+			lblLogin.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
+
+		return lblLogin;
+	}
+
+
+	public JTextField getTxtLogin() {
+		if(txtLogin == null) {
+			txtLogin = new JTextField();
+		}
+		return txtLogin;
+	}
+
+
+	public JLabel getLblMotPasse() {
+		if(lblMotPasse == null) {
+			lblMotPasse = new JLabel("Mot de passe:");
+			lblMotPasse.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
+
+		return lblMotPasse;
+	}
+
+
+	public JTextField getTxtMotPasse() {
+		if(txtMotPasse == null) {
+			txtMotPasse = new JTextField();
+		}
+		return txtMotPasse;
+	}
+
+	public JButton getValider() {
+		if(valider == null) {
+			valider = new JButton();
+		}
+		return valider;
+	}
+
+
+
+
 }
