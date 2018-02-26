@@ -3,7 +3,7 @@ package fr.eni.clinique.bo;
 public class Personnel {
 	
 	private int codePers;
-	private String login;
+	private String nom;
 	private String motPasse;
 	private String role;
 	private boolean archive;
@@ -15,11 +15,11 @@ public class Personnel {
 	public void setCodePers(int codePers) {
 		this.codePers = codePers;
 	}
-	public String getLogin() {
-		return login;
+	public String getNom() {
+		return nom;
 	}
-	public void setLogin(String login) {
-		this.login = login;
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 	public String getMotPasse() {
 		return motPasse;
@@ -46,7 +46,7 @@ public class Personnel {
 	public Personnel() {
 		super();
 		this.setCodePers(0);
-		this.setLogin("");
+		this.setNom("");
 		this.setMotPasse("");
 		this.setRole("");
 		this.setArchive(false);
@@ -55,7 +55,7 @@ public class Personnel {
 	
 	public Personnel(String login, String motPasse, String role, boolean archive) {
 		this();
-		this.setLogin(login);
+		this.setNom(login);
 		this.setMotPasse(motPasse);
 		this.setRole(role);
 		this.setArchive(archive);
@@ -76,8 +76,8 @@ public class Personnel {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Personnel [codePers=");
 		builder.append(codePers);
-		builder.append(", login=");
-		builder.append(login);
+		builder.append(", nom=");
+		builder.append(nom);
 		builder.append(", motPasse=");
 		builder.append(motPasse);
 		builder.append(", role=");

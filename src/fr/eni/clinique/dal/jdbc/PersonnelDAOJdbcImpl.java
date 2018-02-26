@@ -22,7 +22,7 @@ import fr.eni.clinique.dal.DALException;
  */
 public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	
-	private static final String INSERT = "INSERT INTO Articles(reference, marque, "
+	private static final String INSERT = "INSERT INTO Personnels(reference, marque, "
 										+ "designation, prixUnitaire, qteStock, grammage, couleur, type)"
 										+ " VALUES(?,?,?,?,?,?,?,?)";
 	
@@ -37,32 +37,32 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	private final static String DELETE = "DELETE FROM Personnel WHERE CodePers=?";
 	
 	/* (non-Javadoc)
-	 * @see fr.eni.papeterie.dal.jdbc.ArticleDAO#insert(fr.eni.papeterie.bo.Article)
+	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#insert(fr.eni.papeterie.bo.Personnel)
 	 */
 	@Override
-	public void insert(Client c) throws DALException {
+	public void insert(Personnel personnel) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
 			//Préparation de la requête
 			PreparedStatement pStmt = cnx.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-			objectToStatement(pStmt, c);
+			objectToStatement(pStmt, personnel);
 			
 			//Execution
 			pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
 			if(rs.next()) {
-				c.setIdArticle(rs.getInt(1));
+				personnel.setCodePers(rs.getInt(1));
 			}
 		} catch (SQLException e) {
-			throw new DALException("Articles", e);
+			throw new DALException("Personnels", e);
 		}
 	}
 
 	/* (non-Javadoc)
-	 * @see fr.eni.papeterie.dal.jdbc.ArticleDAO#selectById(int)
+	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#selectById(int)
 	 */
 	@Override
-	public Article selectById(int id) throws DALException {
-		Article article = null;
+	public Personnel selectById(int id) throws DALException {
+		Personnel personnel = null;
 		try (Connection cnx = DBConnection.getConnexion()){
 			//Préparation de la requête
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ID);
@@ -71,20 +71,20 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 			//Execution
 			ResultSet rs = pStmt.executeQuery();
 			if(rs.next()) {
-				article = map(rs);
+                personnel = map(rs);
 			}
 		} catch (SQLException e) {
-			throw new DALException("Articles", e);
+			throw new DALException("Personnels", e);
 		}
-		return article;
+		return personnel;
 	}
 
 	/* (non-Javadoc)
-	 * @see fr.eni.papeterie.dal.jdbc.ArticleDAO#selectAll()
+	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#selectAll()
 	 */
 	@Override
-	public List<Article> selectAll() throws DALException {
-		List<Article> articles = new ArrayList<>();
+	public List<Personnel> selectAll() throws DALException {
+		List<Personnel> articles = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()){
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
 			ResultSet rs = pStmt.executeQuery();
@@ -92,96 +92,63 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 				articles.add(map(rs));
 			}
 		} catch (SQLException e) {
-			throw new DALException("Articles", e);
+			throw new DALException("Personnels", e);
 		}
 		return articles;
 	}
 
 	/* (non-Javadoc)
-	 * @see fr.eni.papeterie.dal.jdbc.ArticleDAO#update(fr.eni.papeterie.bo.Article)
+	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#update(fr.eni.papeterie.bo.Personnel)
 	 */
 	@Override
-	public void update(Article a) throws DALException {
+	public void update(Personnel personnel) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
 			//Préparation de la requête
 			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
-			objectToStatement(pStmt, a);			
-			pStmt.setInt(9, a.getIdArticle());
+			objectToStatement(pStmt, personnel);
+			pStmt.setInt(9, personnel.getCodePers());
 			
 			//Execution
 			pStmt.executeUpdate();			
 			
 		} catch (SQLException e) {
-			throw new DALException("Articles", e);
+			throw new DALException("Personnels", e);
 		}
 	}
 
 	/* (non-Javadoc)
-	 * @see fr.eni.papeterie.dal.jdbc.ArticleDAO#delete(int)
+	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#delete(int)
 	 */
 	@Override
-	public void delete(Article article) throws DALException {
+	public void delete(Personnel personnel) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
 			PreparedStatement pStmt = cnx.prepareStatement(DELETE);
-			pStmt.setInt(1, article.getIdArticle());
+			pStmt.setInt(1, personnel.getCodePers());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("Articles", e);
+			throw new DALException("Personnels", e);
 		}
 	}
 
-	private Article map(ResultSet rs) throws SQLException {
-		Article article = null;
+	private Personnel map(ResultSet rs) throws SQLException {
+		Personnel personnel = null;
 		
-		String type = rs.getString("Type").trim();
-		String reference = rs.getString("Reference");
-		String marque = rs.getString("Marque");
-		String designation = rs.getString("Designation");
-		float prixUnitaire= rs.getFloat("prixUnitaire");
-		int qteStock = rs.getInt("QteStock");
-		int id = rs.getInt("idArticle");
-		String couleur = rs.getString("couleur");
-		int grammage = rs.getInt("grammage");			
-		
-		switch(type) {
-		case TYPE_STYLO:
-			article = new Stylo(id, reference, marque, designation, prixUnitaire, qteStock, couleur);
-			break;
-		case TYPE_RAMETTE:
-			article = new Ramette(id, reference, marque, designation, prixUnitaire, qteStock, grammage);
-			break;
-		}
-		
-		return article;
+		int codePers = rs.getInt("CodePers");
+		String nom = rs.getString("Nom");
+		String motPasse = rs.getString("MotPasse");
+		String role = rs.getString("Role");
+		Boolean archive = rs.getBoolean("Archive");
+
+		personnel = new Personnel(codePers, nom, motPasse, role, archive);
+
+		return personnel;
 	}
 	
-	private void objectToStatement(PreparedStatement pStmt, Article a) throws SQLException {
-		pStmt.setString(1, a.getReference());
-		pStmt.setString(2, a.getMarque());
-		pStmt.setString(3, a.getDesignation());
-		pStmt.setFloat(4, a.getPrixUnitaire());
-		pStmt.setInt(5, a.getQteStock());
-		
-		if(a instanceof Stylo) {
-			pStmt.setNull(6, Types.INTEGER);
-			pStmt.setString(7, ((Stylo)a).getCouleur());
-			pStmt.setString(8, TYPE_STYLO);
-		} else {
-			pStmt.setInt(6, ((Ramette)a).getGrammage());
-			pStmt.setNull(7, Types.NVARCHAR);
-			pStmt.setString(8, TYPE_RAMETTE);
-		}
-	}
-
-	@Override
-	public List<Article> selectByMarque() throws DALException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Article> selectByMotCle() throws DALException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private void objectToStatement(PreparedStatement pStmt, Personnel personnel) throws SQLException {
+        pStmt.setInt(1, personnel.getCodePers());
+        pStmt.setString(2, personnel.getNom());
+        pStmt.setString(3, personnel.getMotPasse());
+        pStmt.setString(4, personnel.getRole());
+        pStmt.setBoolean(5, personnel.isArchive());
+    }
 }
