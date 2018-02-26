@@ -39,18 +39,33 @@ public class Personnel {
 	}
 
 	
+	
+	
 	public Personnel() {
-		
-	}
-		
-	public Personnel(int codePers, String login, String motPasse, String role, boolean archive) {
 		super();
-		this.codePers = codePers;
-		this.login = login;
-		this.motPasse = motPasse;
-		this.role = role;
-		this.archive = archive;
+		this.setCodePers(0);
+		this.setLogin("");
+		this.setMotPasse("");
+		this.setRole("");
+		this.setArchive(false);
 	}
+		
+	
+	public Personnel(String login, String motPasse, String role, boolean archive) {
+		this();
+		this.setLogin(login);
+		this.setMotPasse(motPasse);
+		this.setRole(role);
+		this.setArchive(archive);
+	}
+	
+	
+	public Personnel(int codePers, String login, String motPasse, String role, boolean archive) {
+		this(login, motPasse, role, archive);
+		this.setCodePers(codePers);
+	}
+	
+	
 	
 	
 	
