@@ -7,6 +7,8 @@ public class Personnel {
 	private String motPasse;
 	private String role;
 	private boolean archive;
+	
+	
 	public int getCodePers() {
 		return codePers;
 	}
