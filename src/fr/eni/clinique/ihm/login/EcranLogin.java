@@ -3,7 +3,10 @@ package fr.eni.clinique.ihm.login;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -11,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+
 
 
 public class EcranLogin extends JFrame {
@@ -30,6 +35,9 @@ public class EcranLogin extends JFrame {
 	private JTextField txtMotPasse;
 
 	private JButton valider;
+	
+	URL iconURL = getClass().getResource("ico_veto.png");
+	ImageIcon icon = new ImageIcon(iconURL);
 
 	public EcranLogin() {
 		setSize(280, 150);
@@ -37,9 +45,10 @@ public class EcranLogin extends JFrame {
 		setLocation(600, 250);
 
 		setContentPane(getLoginForm());
-
-
-	}
+		setIconImage(icon.getImage());
+		setResizable(false);
+		}
+	
 
 
 	private JPanel getLoginForm() {
