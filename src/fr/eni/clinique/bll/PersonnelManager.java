@@ -16,8 +16,11 @@ public class PersonnelManager {
     }
 
     public Personnel getPersonnel(int codePers) throws BLLException {
+    	Personnel personnel = new Personnel();
+    	personnel.setCodePers(codePers);
+    	
         try{
-             return this.personnelDAO.selectById(codePers);
+             return this.personnelDAO.selectById(personnel);
         } catch (DALException e) {
             e.printStackTrace();
             throw new BLLException("Récupération du Personnel impossible");
@@ -25,8 +28,10 @@ public class PersonnelManager {
     }
 
     public Personnel getPersonnel(String name) throws BLLException {
+    	Personnel personnel = new Personnel();
+    	personnel.setNom(name);
         try {
-            return ((PersonnelDAOJdbcImpl)this.personnelDAO).selectByName(name);
+            return ((PersonnelDAOJdbcImpl)this.personnelDAO).selectByName(personnel);
         } catch (DALException e) {
         	e.printStackTrace();
             throw new BLLException("Récupération du Personnel impossible");
