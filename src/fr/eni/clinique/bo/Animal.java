@@ -6,12 +6,14 @@ public class Animal {
 	private String nomAnimal;
 	private String sexe;
 	private String couleur;
-	private String antecedent;
+	private Race race_espece;
+	private Client client;
 	private String tatouage;
+	private String antecedent;
 	private boolean archive;
 	
-	private Client client;
-	private Race race_espece;
+
+
 	
 	
 	public int getCodeAnimal() {
@@ -85,8 +87,7 @@ public class Animal {
 	}
 	
 	
-	public Animal(String nomAnimal, String sexe, String couleur, String antecedent, String tatouage, boolean archive,
-			Client client, Race race_espece) {
+	public Animal(String nomAnimal, String sexe, String couleur, Race race_espece, Client client, String tatouage, String antecedent, boolean archive) {
 		this();
 		this.setNomAnimal(nomAnimal);
 		this.setSexe(sexe);
@@ -99,9 +100,8 @@ public class Animal {
 	}
 	
 	
-	public Animal(int codeAnimal, String nomAnimal, String sexe, String couleur, String antecedent, String tatouage, boolean archive,
-			Client client, Race race_espece) {
-		this(nomAnimal, sexe, couleur, antecedent, tatouage, archive, client, race_espece);
+	public Animal(int codeAnimal, String nomAnimal, String sexe, String couleur, Race race_espece, Client client, String tatouage, String antecedent, boolean archive) {
+		this(nomAnimal, sexe, couleur, race_espece, client, tatouage, antecedent, archive);
 		this.setCodeAnimal(codeAnimal);
 	}
 	
