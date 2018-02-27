@@ -4,6 +4,7 @@ import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.dal.DAO;
 import fr.eni.clinique.dal.DAOFactory;
 import fr.eni.clinique.dal.DALException;
+import fr.eni.clinique.dal.jdbc.PersonnelDAOJdbcImpl;
 
 import java.util.List;
 
@@ -19,7 +20,15 @@ public class PersonnelManager {
              return this.personnelDAO.selectById(codePers);
         } catch (DALException e) {
             e.printStackTrace();
-            throw new BLLException("Récupération du catalogue impossible");
+            throw new BLLException("Récupération du Personnel impossible");
+        }
+    }
+
+    public Personnel getPersonnel(String name) throws BLLException {
+        try {
+            return ((PersonnelDAOJdbcImpl)this.personnelDAO).selectByName(name);
+        } catch (DALException e) {
+            throw new BLLException("Récupération du Personnel impossible");
         }
     }
 

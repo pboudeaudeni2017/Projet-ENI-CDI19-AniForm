@@ -25,8 +25,12 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	private static final String INSERT = "INSERT INTO Personnels(reference, marque, "
 										+ "designation, prixUnitaire, qteStock, grammage, couleur, type)"
 										+ " VALUES(?,?,?,?,?,?,?,?)";
-	
-	private static final String SELECT_BY_ID = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnel WHERE CodePers=?";
+
+	private static final String SELECT = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnel";
+
+	private static final String SELECT_BY_ID = SELECT + " WHERE CodePers=?";
+
+	private static final String SELECT_BY_NAME = SELECT + " WHERE Nom=?";
 	
 	private final static String SELECT_ALL = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnel";
 	
@@ -78,6 +82,24 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 		}
 		return personnel;
 	}
+
+    public Personnel selectByName(String name) throws DALException {
+        Personnel personnel = null;
+        try (Connection cnx = DBConnection.getConnexion()){
+            //Préparation de la requête
+            PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
+            pStmt.setString(1, name);
+
+            //Execution
+            ResultSet rs = pStmt.executeQuery();
+            if(rs.next()) {
+                personnel = map(rs);
+            }
+        } catch (SQLException e) {
+            throw new DALException("Personnels", e);
+        }
+        return personnel;
+    }
 
 	/* (non-Javadoc)
 	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#selectAll()
