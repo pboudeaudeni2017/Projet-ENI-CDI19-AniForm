@@ -28,6 +28,7 @@ public class PersonnelManager {
         try {
             return ((PersonnelDAOJdbcImpl)this.personnelDAO).selectByName(name);
         } catch (DALException e) {
+        	e.printStackTrace();
             throw new BLLException("Récupération du Personnel impossible");
         }
     }

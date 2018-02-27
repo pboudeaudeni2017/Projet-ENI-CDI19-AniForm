@@ -26,19 +26,17 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 										+ "designation, prixUnitaire, qteStock, grammage, couleur, type)"
 										+ " VALUES(?,?,?,?,?,?,?,?)";
 
-	private static final String SELECT = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnel";
+	private static final String SELECT_ALL = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnels";
 
-	private static final String SELECT_BY_ID = SELECT + " WHERE CodePers=?";
+	private static final String SELECT_BY_ID = SELECT_ALL + " WHERE CodePers=?";
 
-	private static final String SELECT_BY_NAME = SELECT + " WHERE Nom=?";
+	private static final String SELECT_BY_NAME = SELECT_ALL + " WHERE Nom=?";
 	
-	private final static String SELECT_ALL = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnel";
-	
-	private final static String UPDATE = "UPDATE Personnel SET CodePers=?, Nom=?, "
+	private final static String UPDATE = "UPDATE Personnels SET CodePers=?, Nom=?, "
 										+ "MotPasse=?, Role=?, Archive=?"
 										+ " WHERE CodePers=?";
 	
-	private final static String DELETE = "DELETE FROM Personnel WHERE CodePers=?";
+	private final static String DELETE = "DELETE FROM Personnels WHERE CodePers=?";
 	
 	/* (non-Javadoc)
 	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#insert(fr.eni.papeterie.bo.Personnel)

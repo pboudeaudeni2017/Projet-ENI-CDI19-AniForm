@@ -17,15 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import fr.eni.clinique.bll.PersonnelManager;
+
 
 
 
 public class EcranLogin extends JFrame {
 
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private JPanel panelConnexion;
@@ -139,8 +138,9 @@ public class EcranLogin extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					//notifyObservers(connexion_on);
-					System.out.println("It works!" + getTxtLogin().getText() + " " + getTxtMotPasse().getText());
-				}
+					LoginController logCon = new LoginController();
+					logCon.connexion(getTxtLogin().getText(), getTxtMotPasse().getText()); 
+					}
 			});
 		}
 		return valider;
