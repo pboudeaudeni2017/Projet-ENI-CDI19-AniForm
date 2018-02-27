@@ -124,7 +124,7 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 			//Préparation de la requête
 			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
 			objectToStatement(pStmt, personnel);
-			pStmt.setInt(9, personnel.getCodePers());
+			pStmt.setInt(6, personnel.getCodePers());
 			
 			//Execution
 			pStmt.executeUpdate();			
