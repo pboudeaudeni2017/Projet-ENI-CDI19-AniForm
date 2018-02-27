@@ -10,7 +10,7 @@ import java.util.List;
 public class PersonnelManager {
     private DAO<Personnel> personnelDAO;
 
-    PersonnelManager(){
+    public PersonnelManager(){
         this.personnelDAO = DAOFactory.getPersonnelDAO();
     }
 

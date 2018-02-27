@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -131,7 +133,15 @@ public class EcranLogin extends JFrame {
 
 	public JButton getValider() {
 		if(valider == null) {
-			valider = new JButton("Valider");
+			valider = new JButton("Connexion");
+			valider.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					//notifyObservers(connexion_on);
+					System.out.println("It works!" + getTxtLogin().getText() + " " + getTxtMotPasse().getText());
+				}
+			});
 		}
 		return valider;
 	}
