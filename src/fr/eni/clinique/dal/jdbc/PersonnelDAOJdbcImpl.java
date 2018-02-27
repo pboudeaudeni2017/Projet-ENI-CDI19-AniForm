@@ -148,7 +148,7 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 		}
 	}
 
-	private Personnel map(ResultSet rs) throws SQLException {
+	public static Personnel map(ResultSet rs) throws SQLException {
 		Personnel personnel = null;
 		
 		int codePers = rs.getInt("CodePers");
