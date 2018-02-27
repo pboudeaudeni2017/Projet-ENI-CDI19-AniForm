@@ -145,7 +145,7 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 		}
 	}
 
-	private Client map(ResultSet rs) throws SQLException {
+	public static Client map(ResultSet rs) throws SQLException {
 		Client client = null;
 		
 		int codeClient = rs.getInt("CodeClient");
