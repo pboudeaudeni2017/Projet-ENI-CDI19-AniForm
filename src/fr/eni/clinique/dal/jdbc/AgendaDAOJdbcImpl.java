@@ -4,7 +4,6 @@
 package fr.eni.clinique.dal.jdbc;
 
 import fr.eni.clinique.bo.Agenda;
-import fr.eni.clinique.bo.Agenda;
 import fr.eni.clinique.bo.Animal;
 import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.dal.DALException;

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +101,7 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 			PreparedStatement pStmt = cnx.prepareStatement(DELETE);
 			
 			pStmt.setString(1, raceObject.getRace());
-			pStmt.setString(2,  raceObject.getEspece());
+			pStmt.setString(2, raceObject.getEspece());
 			
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
@@ -115,7 +114,7 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 	
 	
 	
-	private Race map(ResultSet rs) throws SQLException {
+	public static Race map(ResultSet rs) throws SQLException {
 		Race raceObject = null;
 		
 		String race = rs.getString("Race");
