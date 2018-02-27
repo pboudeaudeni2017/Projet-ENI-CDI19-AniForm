@@ -5,7 +5,7 @@ import java.util.Date;
 public class Agenda {
 	
 	private Animal animal;
-	private Client codeClient;
+	private Personnel personnel;
 	
 	private Date dateRdv;
 
@@ -17,12 +17,12 @@ public class Agenda {
 		this.animal = animal;
 	}
 
-	public Client getCodeClient() {
-		return codeClient;
+	public Personnel getPersonnel() {
+		return personnel;
 	}
 
-	public void setCodeClient(Client codeClient) {
-		this.codeClient = codeClient;
+	public void setPersonnel(Personnel personnel) {
+		this.personnel = personnel;
 	}
 
 	public Date getDateRdv() {
@@ -38,14 +38,14 @@ public class Agenda {
 	public Agenda() {
 		super();
 		this.setAnimal(new Animal());
-		this.setCodeClient(new Client());
+		this.setPersonnel(new Personnel());
 		this.setDateRdv(null);
 	}
 	
-	public Agenda(Animal animal, Client codeClient, Date dateRdv) {
+	public Agenda(Animal animal, Personnel personnel, Date dateRdv) {
 		this();
 		this.setAnimal(animal);
-		this.setCodeClient(codeClient);
+		this.setPersonnel(personnel);
 		this.setDateRdv(dateRdv);
 	}
 
@@ -56,8 +56,8 @@ public class Agenda {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Agenda [animal=");
 		builder.append(animal);
-		builder.append(", codeClient=");
-		builder.append(codeClient);
+		builder.append(", personnel=");
+		builder.append(personnel);
 		builder.append(", dateRdv=");
 		builder.append(dateRdv);
 		builder.append("]");
