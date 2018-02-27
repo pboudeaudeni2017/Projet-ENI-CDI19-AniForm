@@ -63,12 +63,11 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#selectById(int)
 	 */
 	@Override
-	public Personnel selectById(int id) throws DALException {
-		Personnel personnel = null;
+	public Personnel selectById(Personnel personnel) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
 			//Préparation de la requête
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ID);
-			pStmt.setInt(1, id);
+			pStmt.setInt(1, personnel.getCodePers());
 			
 			//Execution
 			ResultSet rs = pStmt.executeQuery();
@@ -81,12 +80,11 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 		return personnel;
 	}
 
-    public Personnel selectByName(String name) throws DALException {
-        Personnel personnel = null;
+    public Personnel selectByName(Personnel personnel) throws DALException {
         try (Connection cnx = DBConnection.getConnexion()){
             //Préparation de la requête
             PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
-            pStmt.setString(1, name);
+            pStmt.setString(1, personnel.getNom());
 
             //Execution
             ResultSet rs = pStmt.executeQuery();

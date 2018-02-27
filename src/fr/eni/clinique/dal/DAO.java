@@ -6,7 +6,7 @@ public interface DAO<T> {
 
 	void insert(T o) throws DALException;
 
-	T selectById(int id) throws DALException;
+	T selectById(T o) throws DALException;
 
 	List<T> selectAll() throws DALException;
 
