@@ -32,7 +32,7 @@ public class EcranLogin extends JFrame {
 	private JButton valider;
 
 	public EcranLogin() {
-		setSize(300, 300);
+		setSize(280, 150);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocation(600, 250);
 
@@ -47,10 +47,10 @@ public class EcranLogin extends JFrame {
 		if (panelConnexion == null) {
 			panelConnexion = new JPanel(new GridBagLayout());
 
-			addComponentTo(getLblLogin(), panelConnexion, 0, 0, 1, 1, 0.2);
-			addComponentTo(getTxtLogin(), panelConnexion, 1, 0, 1, 1, 0.8);
-			addComponentTo(getLblMotPasse(), panelConnexion, 0, 1, 1, 1, 0.2);
-			addComponentTo(getTxtMotPasse(), panelConnexion, 1, 1, 1, 1, 0.8);
+			addComponentTo(getLblLogin(), panelConnexion, 0, 0, 1, 1, 0.1);
+			addComponentTo(getTxtLogin(), panelConnexion, 1, 0, 1, 1, 0.9);
+			addComponentTo(getLblMotPasse(), panelConnexion, 0, 1, 1, 1, 0.1);
+			addComponentTo(getTxtMotPasse(), panelConnexion, 1, 1, 1, 1, 0.9);
 
 			addComponentTo(getValider(), panelConnexion, 0, 5, 2, 2, 1);
 		}
@@ -87,8 +87,8 @@ public class EcranLogin extends JFrame {
 
 	public JLabel getLblLogin() {
 		if(lblLogin == null) {
-			lblLogin = new JLabel("Login");
-			lblLogin.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblLogin = new JLabel("Login: ");
+			lblLogin.setHorizontalAlignment(SwingConstants.LEFT);
 		}
 
 		return lblLogin;
@@ -105,8 +105,8 @@ public class EcranLogin extends JFrame {
 
 	public JLabel getLblMotPasse() {
 		if(lblMotPasse == null) {
-			lblMotPasse = new JLabel("Mot de passe:");
-			lblMotPasse.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblMotPasse = new JLabel("Mot de passe: ");
+			lblMotPasse.setHorizontalAlignment(SwingConstants.LEFT);
 		}
 
 		return lblMotPasse;
@@ -122,7 +122,7 @@ public class EcranLogin extends JFrame {
 
 	public JButton getValider() {
 		if(valider == null) {
-			valider = new JButton();
+			valider = new JButton("Valider");
 		}
 		return valider;
 	}
