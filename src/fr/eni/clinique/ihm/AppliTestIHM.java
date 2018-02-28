@@ -16,6 +16,7 @@ public class AppliTestIHM {
 
                 LoginController loginControl = LoginController.getInstance();
 
+                mainFrame.setVisible(true);
                 if(loginControl.getCurrentPersonnel().getCodePers() < 0) {
                     loginFrame.setVisible(true);
                 }
