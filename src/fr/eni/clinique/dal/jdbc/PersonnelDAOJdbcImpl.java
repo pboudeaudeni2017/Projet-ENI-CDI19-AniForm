@@ -43,7 +43,7 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	@Override
 	public void insert(Personnel personnel) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
-			//Préparation de la requête
+			//PrÃ©paration de la requÃªte
 			PreparedStatement pStmt = cnx.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			objectToStatement(pStmt, personnel);
 			
@@ -64,7 +64,7 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	@Override
 	public Personnel selectById(Personnel personnel) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
-			//Préparation de la requête
+			//PrÃ©paration de la requÃªte
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ID);
 			pStmt.setInt(1, personnel.getCodePers());
 			
@@ -81,7 +81,7 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 
     public Personnel selectByName(Personnel personnel) throws DALException {
         try (Connection cnx = DBConnection.getConnexion()){
-            //Préparation de la requête
+            //PrÃ©paration de la requÃªte
             PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
             pStmt.setString(1, personnel.getNom());
 
@@ -120,7 +120,7 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	@Override
 	public void update(Personnel personnel) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
-			//Préparation de la requête
+			//PrÃ©paration de la requÃªte
 			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
 			objectToStatement(pStmt, personnel);
 			pStmt.setInt(6, personnel.getCodePers());

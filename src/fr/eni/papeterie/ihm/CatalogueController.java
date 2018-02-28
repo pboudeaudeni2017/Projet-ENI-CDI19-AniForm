@@ -70,7 +70,7 @@ public class CatalogueController {
 		//supprime l'article dans la BDD
 		manager.removeArticle(listeArticles.get(indexArticle));
 		
-		//supprime l'article dans la liste ("affichée")
+		//supprime l'article dans la liste ("affichï¿½e")
 		listeArticles.remove(indexArticle);
 		
 		try {

@@ -65,7 +65,7 @@ public class CatalogueFrame extends JFrame implements Observer {
 					}
 				});
 			} catch (BLLException e) {
-				JOptionPane.showMessageDialog(this, "Erreur lors du chargement des données", "Erreur", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Erreur lors du chargement des donnÃ©es", "Erreur", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return tableCatalogue;

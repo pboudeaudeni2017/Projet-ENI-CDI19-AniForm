@@ -139,15 +139,11 @@ public class EcranLogin extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					//notifyObservers(connexion_on);
-					LoginController logCon = new LoginController();
+					LoginController logCon = LoginController.getInstance();
 					logCon.connexion(getTxtLogin().getText(), getTxtMotPasse().getText()); 
 					}
 			});
 		}
 		return valider;
 	}
-
-
-
-
 }
