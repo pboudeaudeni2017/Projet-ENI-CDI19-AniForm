@@ -7,14 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.AppliTestIHM;
@@ -27,6 +20,9 @@ public class EcranLogin extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel panelConnexion;
+
+	private JLabel labelTitle;
+	private JLabel imageLogo;
 
 	private JLabel lblLogin;
 	private JTextField txtLogin;
@@ -44,7 +40,7 @@ public class EcranLogin extends JFrame {
 	public EcranLogin() {
 	    this.loginControll = LoginController.getInstance();
 
-		setSize(280, 150);
+		setSize(400, 350);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocation(600, 250);
 
@@ -64,12 +60,15 @@ public class EcranLogin extends JFrame {
 		if (panelConnexion == null) {
 			panelConnexion = new JPanel(new GridBagLayout());
 
-			addComponentTo(getLblLogin(), panelConnexion, 0, 0, 1, 1, 0.1);
-			addComponentTo(getTxtLogin(), panelConnexion, 1, 0, 1, 1, 0.9);
-			addComponentTo(getLblMotPasse(), panelConnexion, 0, 1, 1, 1, 0.1);
-			addComponentTo(getTxtMotPasse(), panelConnexion, 1, 1, 1, 1, 0.9);
+			addComponentTo(getLabelTitle(), panelConnexion, 0,0,1,1,0.2);
+			addComponentTo(getImageLogo(), panelConnexion, 1, 0, 1, 1, 0.8);
 
-			addComponentTo(getValider(), panelConnexion, 0, 5, 2, 2, 1);
+			addComponentTo(getLblLogin(), panelConnexion, 0, 2, 1, 1, 0.1);
+			addComponentTo(getTxtLogin(), panelConnexion, 1, 2, 1, 1, 0.9);
+			addComponentTo(getLblMotPasse(), panelConnexion, 0, 3, 1, 1, 0.1);
+			addComponentTo(getTxtMotPasse(), panelConnexion, 1, 3, 1, 1, 0.9);
+
+			addComponentTo(getValider(), panelConnexion, 0, 6, 2, 2, 1);
 		}
 
 		return panelConnexion;
@@ -101,8 +100,14 @@ public class EcranLogin extends JFrame {
 		panel.add(component, gbc);
 	}
 
+    public JLabel getLabelTitle() {
+	    if(this.labelTitle == null){
+	        this.labelTitle = new JLabel("Ani'Form");
+        }
+        return labelTitle;
+    }
 
-	public JLabel getLblLogin() {
+    public JLabel getLblLogin() {
 		if(lblLogin == null) {
 			lblLogin = new JLabel("Login: ");
 			lblLogin.setHorizontalAlignment(SwingConstants.LEFT);
@@ -153,7 +158,15 @@ public class EcranLogin extends JFrame {
 		return valider;
 	}
 
-	public void reset(){
+    public JLabel getImageLogo() {
+	    if(this.imageLogo == null){
+            ImageIcon icon = new ImageIcon(MainFrame.class.getResource("ressources/fond_frame.jpg"));
+	        this.imageLogo = new JLabel(icon);
+        }
+        return imageLogo;
+    }
+
+    public void reset(){
 	    this.txtLogin.setText("");
 	    this.txtMotPasse.setText("");
 	    this.loginControll.setCurrentPersonnel(new Personnel());

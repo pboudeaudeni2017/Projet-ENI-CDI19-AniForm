@@ -1,25 +1,30 @@
 package fr.eni.clinique.ihm;
 
 import fr.eni.clinique.bo.Personnel;
+import fr.eni.clinique.ihm.gestionPersonnel.CreationPersonnelPanel;
 import fr.eni.clinique.ihm.login.LoginController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 
 public class MainFrame extends JFrame{
     private LoginController loginController;
 
     private JPanel mainPanel;
-    private JLabel unLabel;
     private JLabel labelConnectedPersonnelName;
     private JMenuBar menuBar;
     private JMenu fichiers;
     private JMenuItem fichier_quit;
     private JMenu gestionPersonnel;
+
+    private JDialog creationView;
+    private JButton addTest;
 
     URL iconURL;
     ImageIcon icon;
@@ -27,15 +32,14 @@ public class MainFrame extends JFrame{
     public MainFrame() {
         this.loginController = LoginController.getInstance();
 
-        setSize(800, 400);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                AppliTestIHM.loginFrame.reset();
-
+                quitter();
             }
         });
+        setSize(800, 400);
         setLocation(600, 250);
 
         this.iconURL = getClass().getResource("ressources/ico_veto.png");
@@ -51,29 +55,23 @@ public class MainFrame extends JFrame{
     public JPanel getMainPanel() {
         if(this.mainPanel == null) {
             this.mainPanel = new JPanel(new GridBagLayout());
-            addComponentTo(this.getLabelConnectedPersonnelName(), this.mainPanel, 0, 0, 1, 1, 0.5);
-            addComponentTo(this.getUnLabel(), this.mainPanel, 1, 1, 10, 25, 1);
+            addComponentTo(this.getAddTest(), this.mainPanel, 0, 0, 1, 1, 1);
+            addComponentTo(this.getLabelConnectedPersonnelName(), this.mainPanel, 0, 2, 1, 1, 1);
         }
         return mainPanel;
     }
 
     public void reloadCurrentPersonnel() {
         Personnel currentPersonnel = this.loginController.getCurrentPersonnel();
-        this.labelConnectedPersonnelName.setText(currentPersonnel.getNom());
+        this.getLabelConnectedPersonnelName().setText("Utilisateur: " + currentPersonnel.getNom());
     }
 
     public JLabel getLabelConnectedPersonnelName() {
         if(this.labelConnectedPersonnelName == null) {
-            this.labelConnectedPersonnelName = new JLabel();
+            this.labelConnectedPersonnelName = new JLabel("Aucun utilisateur connecté");
+            this.labelConnectedPersonnelName.setForeground(Color.GRAY);
         }
         return labelConnectedPersonnelName;
-    }
-
-    public JLabel getUnLabel() {
-        if(this.unLabel == null){
-            this.unLabel = new JLabel("MainFrame works !");
-        }
-        return unLabel;
     }
 
     public JMenuBar getMenu() {
@@ -100,11 +98,47 @@ public class MainFrame extends JFrame{
         return gestionPersonnel;
     }
 
+    public JDialog getCreationView() {
+        if(this.creationView == null){
+            this.creationView = new JDialog();
+            this.creationView.setContentPane(new CreationPersonnelPanel());
+            this.creationView.setVisible(true);
+            this.creationView.setSize(800, 400);
+            this.creationView.setLocation(600, 250);
+
+            this.creationView.setIconImage(icon.getImage());
+            this.creationView.setResizable(false);
+            this.creationView.setTitle("Création personnel");
+            this.creationView.setJMenuBar(this.getMenu());
+        }
+        return creationView;
+    }
+
     public JMenuItem getFichier_quit() {
         if(this.fichier_quit == null) {
             this.fichier_quit = new JMenuItem("Quitter");
+            this.fichier_quit.addActionListener(e -> quitter());
         }
         return fichier_quit;
+    }
+
+    public void quitter(){
+        int reply = JOptionPane.showConfirmDialog(this.mainPanel, "Êtes-vous certain de vouloir quitter ?", "Déconnexion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(reply == JOptionPane.YES_OPTION){
+            AppliTestIHM.loginFrame.reset();
+            this.getCreationView().setVisible(false);
+            JOptionPane.showMessageDialog(this.mainPanel, "Vous êtes déconnecté", "Déconnecté", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public JButton getAddTest() {
+        if(this.addTest == null){
+            this.addTest = new JButton("+");
+            this.addTest.addActionListener(e -> {
+                this.getCreationView().setVisible(true);
+            });
+        }
+        return addTest;
     }
 
     private void addComponentTo(JComponent component, JPanel panel,
