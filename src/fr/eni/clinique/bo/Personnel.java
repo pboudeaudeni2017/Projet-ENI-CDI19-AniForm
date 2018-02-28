@@ -45,7 +45,7 @@ public class Personnel {
 	
 	public Personnel() {
 		super();
-		this.setCodePers(0);
+		this.setCodePers(-1);
 		this.setNom("");
 		this.setMotPasse("");
 		this.setRole("");

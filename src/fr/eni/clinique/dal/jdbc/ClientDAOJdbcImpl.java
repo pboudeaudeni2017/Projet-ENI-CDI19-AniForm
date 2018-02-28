@@ -40,7 +40,7 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	@Override
 	public void insert(Client client) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
-			//Préparation de la requête
+			//Prï¿½paration de la requï¿½te
 			PreparedStatement pStmt = cnx.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			objectToStatement(pStmt, client);
 			
@@ -61,7 +61,7 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	@Override
 	public Client selectById(Client client) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
-			//Préparation de la requête
+			//Prï¿½paration de la requï¿½te
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ID);
 			pStmt.setInt(1, client.getCodeClient());
 			
@@ -79,7 +79,7 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
     public Client selectByName(String name) throws DALException {
         Client client = null;
         try (Connection cnx = DBConnection.getConnexion()){
-            //Préparation de la requête
+            //Prï¿½paration de la requï¿½te
             PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
             pStmt.setString(1, name);
 
@@ -118,7 +118,7 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	@Override
 	public void update(Client client) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()){
-			//Préparation de la requête
+			//Prï¿½paration de la requï¿½te
 			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
 			objectToStatement(pStmt, client);
 			pStmt.setInt(9, client.getCodeClient());

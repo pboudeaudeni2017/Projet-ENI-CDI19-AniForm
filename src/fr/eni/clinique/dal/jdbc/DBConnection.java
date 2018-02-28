@@ -20,7 +20,7 @@ public class DBConnection {
 	
 	/**
 	 * 
-	 * @return Connexion vers la base de données.
+	 * @return Connexion vers la base de donnÃ©es.
 	 * @throws SQLException
 	 */
 	public static Connection getConnexion() throws SQLException {

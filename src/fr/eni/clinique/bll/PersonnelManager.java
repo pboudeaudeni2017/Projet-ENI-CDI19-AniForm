@@ -23,7 +23,7 @@ public class PersonnelManager {
              return this.personnelDAO.selectById(personnel);
         } catch (DALException e) {
             e.printStackTrace();
-            throw new BLLException("Récupération du Personnel impossible");
+            throw new BLLException("Rï¿½cupï¿½ration du Personnel impossible");
         }
     }
 
@@ -34,7 +34,7 @@ public class PersonnelManager {
             return ((PersonnelDAOJdbcImpl)this.personnelDAO).selectByName(personnel);
         } catch (DALException e) {
         	e.printStackTrace();
-            throw new BLLException("Récupération du Personnel impossible");
+            throw new BLLException("Rï¿½cupï¿½ration du Personnel impossible");
         }
     }
 
@@ -42,7 +42,7 @@ public class PersonnelManager {
         try{
             return this.personnelDAO.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Récupération de la liste des personnels impossible");
+            throw new BLLException("Rï¿½cupï¿½ration de la liste des personnels impossible");
         }
     }
 
@@ -50,7 +50,7 @@ public class PersonnelManager {
         try {
             this.personnelDAO.update(personnel);
         } catch (DALException e) {
-            throw new BLLException("Mise à jour du personnel impossible");
+            throw new BLLException("Mise ï¿½ jour du personnel impossible");
         }
     }
 
@@ -78,7 +78,7 @@ public class PersonnelManager {
         }
 
         if(personnel.getCodePers() >= 0) {
-            exceptions.ajouterException(new ParameterException("CodePers", "Doit être supérieur ou égale à zéro"));
+            exceptions.ajouterException(new ParameterException("CodePers", "Doit ï¿½tre supï¿½rieur ou ï¿½gale ï¿½ zï¿½ro"));
         }
 
         if(personnel.getNom() == null ||
