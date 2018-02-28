@@ -99,17 +99,17 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	 */
 	@Override
 	public List<Client> selectAll() throws DALException {
-		List<Client> articles = new ArrayList<>();
+		List<Client> clients = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()){
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
 			ResultSet rs = pStmt.executeQuery();
 			while(rs.next()) {
-				articles.add(map(rs));
+				clients.add(map(rs));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Clients", e);
 		}
-		return articles;
+		return clients;
 	}
 
 	/* (non-Javadoc)
