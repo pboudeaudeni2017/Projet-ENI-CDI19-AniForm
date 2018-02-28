@@ -79,18 +79,24 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 		return personnel;
 	}
 
-    public Personnel selectByName(Personnel personnel) throws DALException {
+    public Personnel selectByName(Personnel _personnel) throws DALException {
+		Personnel personnel = null;
         try (Connection cnx = DBConnection.getConnexion()){
             //Préparation de la requête
             PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
-            pStmt.setString(1, personnel.getNom());
+            pStmt.setString(1, _personnel.getNom());
 
             //Execution
             ResultSet rs = pStmt.executeQuery();
             if(rs.next()) {
                 personnel = map(rs);
             }
+System.out.println(personnel);
+            if(personnel == null) {
+            	throw new SQLException("Aucun personnel trouvé avec le nom " + _personnel.getNom());
+			}
         } catch (SQLException e) {
+        	e.printStackTrace();
             throw new DALException("Personnels", e);
         }
         return personnel;

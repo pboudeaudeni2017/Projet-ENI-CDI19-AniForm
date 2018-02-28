@@ -7,6 +7,7 @@ import fr.eni.clinique.bll.PersonnelManager;
 import fr.eni.clinique.bo.Observable;
 import fr.eni.clinique.bo.Observable.Observer;
 import fr.eni.clinique.bo.Personnel;
+import fr.eni.clinique.ihm.AppliTestIHM;
 
 public class LoginController {
 
@@ -48,33 +49,47 @@ public class LoginController {
 	}
 
 	public void setCurrentPersonnel(Personnel currentPersonnel) {
-		CurrentPersonnel = currentPersonnel;
+
+	    CurrentPersonnel = currentPersonnel;
+        if(currentPersonnel != null && currentPersonnel.getCodePers() > 0) {
+            AppliTestIHM.mainFrame.reloadCurrentPersonnel();
+        }
 	}
 
 	public void connexion(String nom, String motPasse) {
+
+	    String erreurs = "";
 		try {
 			Personnel resultat = this.manager.getPersonnel(nom);
 
-			if (resultat == null) {
-				throw new BLLException("Erreur: Le r�sultat n'existe pas");
-			}
+			if (resultat == null || resultat.getCodePers() <= 0) {
+                throw new BLLException("Erreur: Le rêsultat n'existe pas");
+            }
 
 			if (resultat.getNom().equals(nom)) {
-				System.out.println("M�me nom");
+				System.out.println("Même nom");
 			} else {
-				throw new BLLException("Erreur de r�cup�ration");
+                erreurs += "Erreur de récupèration\n";
 			}
 			
 			if (resultat.getMotPasse().equals(motPasse)) {
-				System.out.println("M�me mot de passe");
+				System.out.println("Même mot de passe");
 			} else {
-				throw new BLLException("Mauvaise concordance");
+                erreurs += "Mauvaise concordance\n";
 			}
+            System.out.println(resultat);
 
-			this.setCurrentPersonnel(resultat);
-
+			if(!erreurs.equals("")){
+			    AppliTestIHM.showError("Erreur", erreurs);
+            }
+			if(resultat.getCodePers() > 0){
+                AppliTestIHM.loginFrame.setVisible(false);
+                AppliTestIHM.mainFrame.setVisible(true);
+                this.setCurrentPersonnel(resultat);
+            }
 		} catch (BLLException e) {
-			e.printStackTrace();
+		    e.printStackTrace();
+			AppliTestIHM.showError("Erreur BLL", e.getMessage());
 		}
 		
 	}

@@ -23,7 +23,7 @@ public class PersonnelManager {
              return this.personnelDAO.selectById(personnel);
         } catch (DALException e) {
             e.printStackTrace();
-            throw new BLLException("R�cup�ration du Personnel impossible");
+            throw new BLLException("Récupèration du Personnel impossible");
         }
     }
 
@@ -31,19 +31,20 @@ public class PersonnelManager {
     	Personnel personnel = new Personnel();
     	personnel.setNom(name);
         try {
-            return ((PersonnelDAOJdbcImpl)this.personnelDAO).selectByName(personnel);
+            personnel = ((PersonnelDAOJdbcImpl)this.personnelDAO).selectByName(personnel);
         } catch (DALException e) {
         	e.printStackTrace();
-            throw new BLLException("R�cup�ration du Personnel impossible");
+            throw new BLLException("Récupèration du Personnel impossible");
         }
+        return personnel;
     }
 
     public List<Personnel> getPersonnels() throws BLLException {
         try{
             return personnelDAO.selectAll();
         } catch (DALException e) {
-        	e.printStackTrace();
-            throw new BLLException("R�cup�ration de la liste des personnels impossible");
+            e.printStackTrace();
+            throw new BLLException("Récupèration de la liste des personnels impossible");
         }
     }
 
@@ -51,7 +52,7 @@ public class PersonnelManager {
         try {
             this.personnelDAO.update(personnel);
         } catch (DALException e) {
-            throw new BLLException("Mise � jour du personnel impossible");
+            throw new BLLException("Mise à jour du personnel impossible");
         }
     }
 
@@ -79,7 +80,7 @@ public class PersonnelManager {
         }
 
         if(personnel.getCodePers() >= 0) {
-            exceptions.ajouterException(new ParameterException("CodePers", "Doit �tre sup�rieur ou �gale � z�ro"));
+            exceptions.ajouterException(new ParameterException("CodePers", "Doit être supérieur ou égale � zéro"));
         }
 
         if(personnel.getNom() == null ||
