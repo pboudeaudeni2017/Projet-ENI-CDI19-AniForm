@@ -10,7 +10,7 @@ import fr.eni.clinique.bo.Personnel;
 
 public class LoginController {
 
-	private static  LoginController _instance;
+	private static LoginController _instance;
 	private Personnel CurrentPersonnel;
 
 	private Observable<Personnel> currentPersonnel = new Observable<>();
@@ -18,7 +18,8 @@ public class LoginController {
 	private JDialog jdog;
 	
 	private LoginController(){
-		this._instance.manager = new PersonnelManager();
+		this.manager = new PersonnelManager();
+		this.setCurrentPersonnel(new Personnel());
 	}
 
 	public static LoginController getInstance() {

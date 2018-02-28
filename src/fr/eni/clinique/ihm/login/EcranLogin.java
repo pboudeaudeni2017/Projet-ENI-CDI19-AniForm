@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import fr.eni.clinique.ihm.MainFrame;
+
 
 public class EcranLogin extends JFrame {
 
@@ -32,19 +34,22 @@ public class EcranLogin extends JFrame {
 
 	private JButton valider;
 	
-	URL iconURL = getClass().getResource("ico_veto.png");
-	ImageIcon icon = new ImageIcon(iconURL);
+	URL iconURL;
+	ImageIcon icon;
 
 	public EcranLogin() {
 		setSize(280, 150);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocation(600, 250);
 
+        this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
+        this.icon = new ImageIcon(iconURL);
+
 		setContentPane(getLoginForm());
 		setIconImage(icon.getImage());
 		setResizable(false);
 		setTitle("Connexion");
-		}
+	}
 	
 
 
