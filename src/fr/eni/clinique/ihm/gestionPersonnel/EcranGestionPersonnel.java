@@ -12,7 +12,7 @@ public class EcranGestionPersonnel extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	URL iconURL = getClass().getResource("ico_veto2.png");
+	URL iconURL = getClass().getResource("ico_veto.png");
 	ImageIcon icon = new ImageIcon(iconURL);
 
 	public EcranGestionPersonnel() {
