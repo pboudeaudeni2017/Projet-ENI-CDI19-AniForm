@@ -48,6 +48,7 @@ public class EcranLogin extends JFrame {
 		setContentPane(getLoginForm());
 		setIconImage(icon.getImage());
 		setResizable(false);
+		setTitle("Connexion");
 		}
 	
 
