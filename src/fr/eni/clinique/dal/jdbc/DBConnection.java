@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import fr.eni.papeterie.dal.Settings;
+import fr.eni.clinique.dal.Settings;
 
 public class DBConnection {
 
