@@ -41,8 +41,9 @@ public class PersonnelManager {
 
     public List<Personnel> getPersonnels() throws BLLException {
         try{
-            return this.personnelDAO.selectAll();
+            return personnelDAO.selectAll();
         } catch (DALException e) {
+            e.printStackTrace();
             throw new BLLException("Récupèration de la liste des personnels impossible");
         }
     }
