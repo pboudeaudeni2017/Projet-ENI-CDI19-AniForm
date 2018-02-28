@@ -40,8 +40,9 @@ public class PersonnelManager {
 
     public List<Personnel> getPersonnels() throws BLLException {
         try{
-            return this.personnelDAO.selectAll();
+            return personnelDAO.selectAll();
         } catch (DALException e) {
+        	e.printStackTrace();
             throw new BLLException("R�cup�ration de la liste des personnels impossible");
         }
     }
