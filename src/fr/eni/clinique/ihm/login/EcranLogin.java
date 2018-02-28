@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import fr.eni.clinique.bo.Personnel;
+import fr.eni.clinique.ihm.AppliTestIHM;
 import fr.eni.clinique.ihm.MainFrame;
 
 
@@ -33,11 +35,15 @@ public class EcranLogin extends JFrame {
 	private JTextField txtMotPasse;
 
 	private JButton valider;
+
+	private LoginController loginControll;
 	
 	URL iconURL;
 	ImageIcon icon;
 
 	public EcranLogin() {
+	    this.loginControll = LoginController.getInstance();
+
 		setSize(280, 150);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocation(600, 250);
@@ -146,4 +152,13 @@ public class EcranLogin extends JFrame {
 		}
 		return valider;
 	}
+
+	public void reset(){
+	    this.txtLogin.setText("");
+	    this.txtMotPasse.setText("");
+	    this.loginControll.setCurrentPersonnel(new Personnel());
+        AppliTestIHM.mainFrame.setVisible(false);
+        this.setVisible(true);
+        AppliTestIHM.mainFrame.getLabelConnectedPersonnelName().setText("");
+    }
 }
