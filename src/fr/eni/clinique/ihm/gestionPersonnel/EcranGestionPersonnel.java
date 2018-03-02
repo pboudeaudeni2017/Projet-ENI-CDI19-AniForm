@@ -23,7 +23,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class EcranGestionPersonnel extends JFrame implements Observer {
+public class EcranGestionPersonnel extends JPanel implements Observer {
 
 	/**
 	 * 
@@ -35,43 +35,27 @@ public class EcranGestionPersonnel extends JFrame implements Observer {
 
 	private JScrollPane scrollPane;
 	private BoutonMenuPersonnel panelButtons;
-	
+
 	private JPanel buttonForm;
 	private JPanel panelPrincipal;
 
 	URL iconURL;
 	ImageIcon icon;
 
+
 	public EcranGestionPersonnel() {
-		setSize(600, 500);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocation(530, 150);
-		setContentPane(getPanelPrincipal());
 
-		this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
-		this.icon = new ImageIcon(iconURL);
-
-		setIconImage(icon.getImage());
-		setTitle("Gestion du personnel");
-		setResizable(false);
-	
+		setLayout(new BorderLayout());
+		
+		add(getButtonForm(), BorderLayout.NORTH);
+		add(getScrollPane(), BorderLayout.SOUTH);
 
 		try {
 			PersonnelController.getInstance().registerToCurrentPersonnel(this);
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private JPanel getPanelPrincipal() {
-		if (panelPrincipal == null) {
-			panelPrincipal = new JPanel(new BorderLayout());
-			
-			panelPrincipal.add(getButtonForm(), BorderLayout.NORTH);
-			panelPrincipal.add(getScrollPane(), BorderLayout.SOUTH);
-		}
-		
-		return panelPrincipal;
+
 	}
 
 	private JScrollPane getScrollPane() {
@@ -111,30 +95,30 @@ public class EcranGestionPersonnel extends JFrame implements Observer {
 		}
 		return tablePersonnel;
 	}
-	
+
 	private JPanel getButtonForm() {
 		if (buttonForm == null) {
 			buttonForm = new JPanel(new GridBagLayout());
-			
+
 			addComponentTo(getPanelButtons(), buttonForm, 0, 0, 2, 1, 1);
-			
+
 		}
-		
+
 		return buttonForm;
 	}
-	
-	
+
+
 	private BoutonMenuPersonnel getPanelButtons() {
 		if (panelButtons == null) {
 			panelButtons = new BoutonMenuPersonnel();
 		}
-		
+
 		return panelButtons;
-		
+
 	}
-	
-	
-	
+
+
+
 	private void addComponentTo(JComponent component, JPanel panel,
 			int x, int y, int width, int height,
 			double weightX) {
@@ -165,9 +149,9 @@ public class EcranGestionPersonnel extends JFrame implements Observer {
 
 
 	}
-	
-	
+
+
 	public void onCreate() {
-		
+
 	}
 }

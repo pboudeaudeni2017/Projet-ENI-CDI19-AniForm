@@ -2,9 +2,14 @@ package fr.eni.clinique.ihm;
 
 import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.gestionPersonnel.CreationPersonnelPanel;
+import fr.eni.clinique.ihm.gestionPersonnel.EcranGestionPersonnel;
+import fr.eni.clinique.ihm.login.EcranLogin;
 import fr.eni.clinique.ihm.login.LoginController;
 
 import javax.swing.*;
+
+import ch.qos.logback.core.encoder.EchoEncoder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +34,8 @@ public class MainFrame extends JFrame{
 
     private JDialog creationView;
     private JButton addTest;
+    
+    private EcranGestionPersonnel jPanelEcranGestionPerso;
 
     private final String VIEW_GEST_PERSO = "Gestion Personnels";
     private final String VIEW_GEST_CLIENT = "Gestion Clients";
@@ -118,6 +125,13 @@ public class MainFrame extends JFrame{
     public JMenu getGestionPersonnel() {
         if(this.gestionPersonnel == null) {
             this.gestionPersonnel = new JMenu("Gestion du personnel");
+            this.gestionPersonnel.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					this.changeView(VIEW_GEST_PERSO);
+				}
+			});
         }
         return gestionPersonnel;
     }
@@ -219,4 +233,15 @@ public class MainFrame extends JFrame{
         gbc.insets = new Insets(7, 10, 5, 10);
         panel.add(component, gbc);
     }
+
+	public EcranGestionPersonnel getjPanelEcranGestionPerso() {
+		if (jPanelEcranGestionPerso == null) {
+			this.jPanelEcranGestionPerso = new EcranGestionPersonnel();
+		}
+		
+		return jPanelEcranGestionPerso;
+	}
+    
+    
+    
 }
