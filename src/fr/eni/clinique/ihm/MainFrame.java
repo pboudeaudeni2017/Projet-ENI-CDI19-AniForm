@@ -17,6 +17,7 @@ public class MainFrame extends JFrame{
     private LoginController loginController;
 
     private JPanel currentPanel;
+    private String currentPanelName;
 
     private JLabel labelConnectedPersonnelName;
 
@@ -69,21 +70,25 @@ public class MainFrame extends JFrame{
     }
 
     public void changeTheView(String nomView) {
-        switch(nomView) {
-            case VIEW_GEST_PERSO:
-                this.setContentPane(this.getjPanelEcranGestionPerso());
-                this.getjPanelEcranGestionPerso().setVisible(false);
-                this.getjPanelEcranGestionPerso().setVisible(true);
-                this.currentPanel = this.getjPanelEcranGestionPerso();
-                break;
+    	if(currentPanelName != nomView) {
+    		switch(nomView) {
+    		case VIEW_GEST_PERSO:
+    			this.setContentPane(this.getjPanelEcranGestionPerso());
+    			this.getjPanelEcranGestionPerso().setVisible(false);
+    			this.getjPanelEcranGestionPerso().setVisible(true);
+    			this.getjPanelEcranGestionPerso().stateVisible();
+    			this.currentPanel = this.getjPanelEcranGestionPerso();
+    			this.currentPanelName = nomView;
+    			break;
 
-            case VIEW_GEST_CLIENT:
-                System.out.println("Écran Gestion des clients");
-                break;
+    		case VIEW_GEST_CLIENT:
+    			System.out.println("Écran Gestion des clients");
+    			break;
 
-            default:
-                System.out.println("Error not integreted");
-        }
+    		default:
+    			System.out.println("Error not integreted");
+    		}
+    	}
     }
 
     public JLabel getLabelConnectedPersonnelName() {

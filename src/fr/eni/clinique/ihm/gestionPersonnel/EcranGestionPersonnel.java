@@ -1,6 +1,6 @@
 package fr.eni.clinique.ihm.gestionPersonnel;
 
-import fr.eni.clinique.ihm.MainFrame;
+
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Observable.Observer;
 import fr.eni.clinique.bo.Personnel;
@@ -29,7 +29,7 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	private BoutonMenuPersonnel panelButtons;
 
 	private JPanel buttonForm;
-	private JPanel panelPrincipal;
+	private JPanel tablePanel;
 
 	private JDialog creationView;
 
@@ -38,10 +38,10 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 
 
 	public EcranGestionPersonnel() {
-		setLayout(new BorderLayout());
+		super(new GridBagLayout());
+		addComponentTo(getButtonForm(), this, 0, 0, 1, 1, 1);
+		addComponentTo(getTablePanel(), this, 0, 5, 1, 1, 3);
 		
-		add(getButtonForm(), BorderLayout.NORTH);
-		add(getScrollPane(), BorderLayout.SOUTH);
 
 		try {
 			PersonnelController.getInstance().registerToCurrentPersonnel(this);
@@ -57,7 +57,20 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 		}
 		return scrollPane;
 	}
+	
+	private JPanel getTablePanel() {
+		if (tablePanel == null) {
+			tablePanel = new JPanel();
+			tablePanel.add(getTablePersonnel());
+		}
+		
+		return tablePanel;
+	}
 
+	public void stateVisible() {
+		getTablePersonnel().setVisible(true);
+		getButtonForm().setVisible(true);
+	}
 
 	private JTable getTablePersonnel() {
 		if(tablePersonnel == null) {
@@ -93,7 +106,6 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 			buttonForm = new JPanel(new GridBagLayout());
 
 			addComponentTo(getPanelButtons(), buttonForm, 0, 0, 2, 1, 1);
-
 		}
 
 		return buttonForm;
