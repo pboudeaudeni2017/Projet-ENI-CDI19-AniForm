@@ -4,11 +4,14 @@ package fr.eni.clinique.ihm.gestionPersonnel;
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Observable.Observer;
 import fr.eni.clinique.bo.Personnel;
+import fr.eni.clinique.ihm.AppliTestIHM;
 import fr.eni.clinique.ihm.MainFrame;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.util.Enumeration;
 
@@ -123,6 +126,17 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
     public JDialog getCreationView() {
         if(this.creationView == null){
             this.creationView = new JDialog();
+            this.creationView.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+            this.creationView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    int reply = JOptionPane.showConfirmDialog(getCreationPersonnelPanel(), "Toutes modifications non enregistrées seront perdues !\nVoulez-vous vraiment quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (reply == JOptionPane.YES_OPTION) {
+                        getCreationPersonnelPanel().resetDialog();
+                        creationView.setVisible(false);
+                    }
+                }
+            });
             this.creationView.setContentPane(this.getCreationPersonnelPanel());
             this.creationView.setVisible(true);
             this.creationView.setSize(400, 200);
@@ -131,6 +145,16 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
             this.creationView.setIconImage(icon.getImage());
             this.creationView.setResizable(false);
             this.creationView.setTitle("Création personnel");
+            this.getCreationPersonnelPanel().resetDialog();
+        }
+        return creationView;
+    }
+
+    public JDialog getCreationViewOnUpdate(int id) {
+        if(this.creationView == null){
+            this.getCreationView();
+            this.creationView.setTitle("Mise à jour du personnel");
+            this.getCreationPersonnelPanel().writeInputs(id);
         }
         return creationView;
     }
@@ -177,4 +201,13 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	public void onCreate() {
 
 	}
+
+    public void reloadView() {
+        try {
+            this.model.updateData();
+        } catch (BLLException e) {
+            e.printStackTrace();
+            AppliTestIHM.showError("Erreur rechargement des données", "Erreur de mise à jour des données:\n" + e.getMessage());
+        }
+    }
 }

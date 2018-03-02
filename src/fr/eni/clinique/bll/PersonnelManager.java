@@ -52,7 +52,7 @@ public class PersonnelManager {
         try {
             this.personnelDAO.update(personnel);
         } catch (DALException e) {
-            throw new BLLException("Mise à jour du personnel impossible");
+            throw new BLLException("Mise à jour du personnel impossible", e);
         }
     }
 
@@ -60,7 +60,7 @@ public class PersonnelManager {
         try {
             this.personnelDAO.delete(personnel);
         } catch (DALException e) {
-            throw new BLLException("Suppression impossible");
+            throw new BLLException("Suppression impossible", e);
         }
     }
 
@@ -68,7 +68,7 @@ public class PersonnelManager {
         try {
             this.personnelDAO.insert(personnel);
         } catch (DALException e){
-            throw new BLLException("Ajout du personnel impossible");
+            throw new BLLException("Ajout du personnel impossible", e);
         }
     }
 

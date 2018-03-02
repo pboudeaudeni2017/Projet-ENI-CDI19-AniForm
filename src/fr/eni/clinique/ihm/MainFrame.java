@@ -69,6 +69,10 @@ public class MainFrame extends JFrame{
         this.getLabelConnectedPersonnelName().setText("Utilisateur: " + currentPersonnel.getNom());
     }
 
+    public void reloadCurrentView(){
+        this.changeTheView(this.currentPanelName);
+    }
+
     public void changeTheView(String nomView) {
     	if(currentPanelName != nomView) {
     		switch(nomView) {

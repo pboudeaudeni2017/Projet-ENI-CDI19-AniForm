@@ -1,5 +1,7 @@
 package fr.eni.clinique.bll;
 
+import fr.eni.clinique.dal.DALException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,11 @@ public class BLLException extends Exception {
 	
 	public BLLException(String message) {
 		super(message);
+		exceptions = new ArrayList<>();
+	}
+
+	public BLLException(String message, DALException dalException){
+		super(message, dalException);
 		exceptions = new ArrayList<>();
 	}
 	

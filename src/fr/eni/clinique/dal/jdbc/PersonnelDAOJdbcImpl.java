@@ -21,9 +21,9 @@ import fr.eni.clinique.dal.DALException;
  */
 public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	
-	private static final String INSERT = "INSERT INTO Personnels(reference, marque, "
-										+ "designation, prixUnitaire, qteStock, grammage, couleur, type)"
-										+ " VALUES(?,?,?,?,?,?,?,?)";
+	private static final String INSERT = "INSERT INTO Personnels(Nom, "
+										+ "MotPasse, Role, Archive)"
+										+ " VALUES(?,?,?,?)";
 
 	private static final String SELECT_ALL = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnels";
 
@@ -31,7 +31,7 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 
 	private static final String SELECT_BY_NAME = SELECT_ALL + " WHERE Nom=?";
 	
-	private final static String UPDATE = "UPDATE Personnels SET CodePers=?, Nom=?, "
+	private final static String UPDATE = "UPDATE Personnels SET Nom=?, "
 										+ "MotPasse=?, Role=?, Archive=?"
 										+ " WHERE CodePers=?";
 	
@@ -129,7 +129,7 @@ System.out.println(personnel);
 			//Préparation de la requête
 			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
 			objectToStatement(pStmt, personnel);
-			pStmt.setInt(6, personnel.getCodePers());
+			pStmt.setInt(5, personnel.getCodePers());
 			
 			//Execution
 			pStmt.executeUpdate();			
@@ -168,10 +168,9 @@ System.out.println(personnel);
 	}
 	
 	private void objectToStatement(PreparedStatement pStmt, Personnel personnel) throws SQLException {
-        pStmt.setInt(1, personnel.getCodePers());
-        pStmt.setString(2, personnel.getNom());
-        pStmt.setString(3, personnel.getMotPasse());
-        pStmt.setString(4, personnel.getRole());
-        pStmt.setBoolean(5, personnel.isArchive());
+			pStmt.setString(1, personnel.getNom());
+			pStmt.setString(2, personnel.getMotPasse());
+			pStmt.setString(3, personnel.getRole());
+			pStmt.setBoolean(4, personnel.isArchive());
     }
 }

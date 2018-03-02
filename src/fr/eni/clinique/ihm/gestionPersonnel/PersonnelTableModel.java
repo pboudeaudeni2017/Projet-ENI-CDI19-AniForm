@@ -41,7 +41,12 @@ public class PersonnelTableModel extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int column) {
-		return this.nomColonnes[column];
+		if(column >= 0 && column < this.nomColonnes.length){
+			return this.nomColonnes[column];
+		}
+		else{
+			return "undefined";
+		}
 	}
 
 	@Override
