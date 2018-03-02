@@ -11,15 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.net.URL;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -39,12 +31,13 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	private JPanel buttonForm;
 	private JPanel panelPrincipal;
 
+	private JDialog creationView;
+
 	URL iconURL;
 	ImageIcon icon;
 
 
 	public EcranGestionPersonnel() {
-
 		setLayout(new BorderLayout());
 		
 		add(getButtonForm(), BorderLayout.NORTH);
@@ -55,7 +48,6 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private JScrollPane getScrollPane() {
@@ -110,14 +102,27 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 
 	private BoutonMenuPersonnel getPanelButtons() {
 		if (panelButtons == null) {
-			panelButtons = new BoutonMenuPersonnel();
+			panelButtons = new BoutonMenuPersonnel(this);
 		}
 
 		return panelButtons;
 
 	}
 
+    public JDialog getCreationView() {
+        if(this.creationView == null){
+            this.creationView = new JDialog();
+            this.creationView.setContentPane(new CreationPersonnelPanel());
+            this.creationView.setVisible(true);
+            this.creationView.setSize(800, 400);
+            this.creationView.setLocation(600, 250);
 
+            this.creationView.setIconImage(icon.getImage());
+            this.creationView.setResizable(false);
+            this.creationView.setTitle("Création personnel");
+        }
+        return creationView;
+    }
 
 	private void addComponentTo(JComponent component, JPanel panel,
 			int x, int y, int width, int height,

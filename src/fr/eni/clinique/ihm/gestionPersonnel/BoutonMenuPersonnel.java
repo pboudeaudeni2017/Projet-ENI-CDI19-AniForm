@@ -9,15 +9,18 @@ public class BoutonMenuPersonnel extends JPanel {
 	private JButton bttDelete;
 	private JButton bttReset;
 
-	public BoutonMenuPersonnel() {
-		add(getBttNew());
+	public BoutonMenuPersonnel(EcranGestionPersonnel gestionPersonnel) {
+		add(getBttNew(gestionPersonnel));
 		add(getBttDelete());
 		add(getBttReset());
 	}
 
-	private JButton getBttNew() {
+	private JButton getBttNew(EcranGestionPersonnel gestionPersonnel) {
 		if(bttNew == null) {
 			bttNew = new JButton("Ajouter");
+			bttNew.addActionListener(e -> {
+				gestionPersonnel.getCreationView().setVisible(true);
+			});
 		}
 
 		return bttNew;

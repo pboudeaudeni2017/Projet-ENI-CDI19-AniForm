@@ -1,18 +1,14 @@
 package fr.eni.clinique.ihm;
 
 import fr.eni.clinique.bo.Personnel;
-import fr.eni.clinique.ihm.gestionPersonnel.CreationPersonnelPanel;
 import fr.eni.clinique.ihm.gestionPersonnel.EcranGestionPersonnel;
-import fr.eni.clinique.ihm.login.EcranLogin;
 import fr.eni.clinique.ihm.login.LoginController;
 
 import javax.swing.*;
-
-import ch.qos.logback.core.encoder.EchoEncoder;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -20,7 +16,8 @@ import java.net.URL;
 public class MainFrame extends JFrame{
     private LoginController loginController;
 
-    private JPanel mainPanel;
+    private JPanel currentPanel;
+
     private JLabel labelConnectedPersonnelName;
 
     private JMenuBar menuBar;
@@ -32,8 +29,6 @@ public class MainFrame extends JFrame{
     private JMenu agenda;
     private JMenu gestionPersonnel;
 
-    private JDialog creationView;
-    private JButton addTest;
     
     private EcranGestionPersonnel jPanelEcranGestionPerso;
 
@@ -61,20 +56,11 @@ public class MainFrame extends JFrame{
         this.iconURL = getClass().getResource("ressources/ico_veto.png");
         this.icon = new ImageIcon(iconURL);
 
-        setContentPane(this.getMainPanel());
+        this.changeTheView(VIEW_GEST_PERSO);
         setIconImage(icon.getImage());
         setResizable(true);
         setTitle("Clinique Vétérinaire");
         setJMenuBar(this.getMenu());
-    }
-
-    public JPanel getMainPanel() {
-        if(this.mainPanel == null) {
-            this.mainPanel = new JPanel(new GridBagLayout());
-            addComponentTo(this.getAddTest(), this.mainPanel, 0, 0, 1, 1, 1);
-            addComponentTo(this.getLabelConnectedPersonnelName(), this.mainPanel, 0, 2, 1, 1, 1);
-        }
-        return mainPanel;
     }
 
     public void reloadCurrentPersonnel() {
@@ -82,10 +68,13 @@ public class MainFrame extends JFrame{
         this.getLabelConnectedPersonnelName().setText("Utilisateur: " + currentPersonnel.getNom());
     }
 
-    public void changeView(String nomView) {
+    public void changeTheView(String nomView) {
         switch(nomView) {
             case VIEW_GEST_PERSO:
                 this.setContentPane(this.getjPanelEcranGestionPerso());
+                this.getjPanelEcranGestionPerso().setVisible(false);
+                this.getjPanelEcranGestionPerso().setVisible(true);
+                this.currentPanel = this.getjPanelEcranGestionPerso();
                 break;
 
             case VIEW_GEST_CLIENT:
@@ -109,6 +98,8 @@ public class MainFrame extends JFrame{
         if( this.menuBar == null){
             this.menuBar = new JMenuBar();
             this.menuBar.add(this.getFichiers());
+            this.menuBar.add(this.getGestionRdV());
+            this.menuBar.add(this.getAgenda());
             this.menuBar.add(this.getGestionPersonnel());
         }
         return this.menuBar;
@@ -125,32 +116,27 @@ public class MainFrame extends JFrame{
     public JMenu getGestionPersonnel() {
         if(this.gestionPersonnel == null) {
             this.gestionPersonnel = new JMenu("Gestion du personnel");
-            this.gestionPersonnel.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					this.changeView(VIEW_GEST_PERSO);
-				}
-			});
+            this.gestionPersonnel.addMenuListener(new MenuListener() {
+                @Override
+                public void menuSelected(MenuEvent e) {
+                    changeTheView(VIEW_GEST_PERSO);
+                }
+
+                @Override
+                public void menuDeselected(MenuEvent e) {
+
+                }
+
+                @Override
+                public void menuCanceled(MenuEvent e) {
+
+                }
+            });
         }
         return gestionPersonnel;
     }
 
-    public JDialog getCreationView() {
-        if(this.creationView == null){
-            this.creationView = new JDialog();
-            this.creationView.setContentPane(new CreationPersonnelPanel());
-            this.creationView.setVisible(true);
-            this.creationView.setSize(800, 400);
-            this.creationView.setLocation(600, 250);
 
-            this.creationView.setIconImage(icon.getImage());
-            this.creationView.setResizable(false);
-            this.creationView.setTitle("Création personnel");
-            this.creationView.setJMenuBar(this.getMenu());
-        }
-        return creationView;
-    }
 
     public JMenuItem getDeconnexion() {
         if(this.deconnexion == null) {
@@ -161,11 +147,10 @@ public class MainFrame extends JFrame{
     }
 
     public void quitter(){
-        int reply = JOptionPane.showConfirmDialog(this.mainPanel, "Êtes-vous certain de vouloir quitter ?", "Déconnexion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int reply = JOptionPane.showConfirmDialog(this.currentPanel, "Êtes-vous certain de vouloir quitter ?", "Déconnexion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(reply == JOptionPane.YES_OPTION){
             AppliTestIHM.loginFrame.reset();
-            this.getCreationView().setVisible(false);
-            JOptionPane.showMessageDialog(this.mainPanel, "Vous êtes déconnecté", "Déconnecté", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this.currentPanel, "Vous êtes déconnecté", "Déconnecté", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -181,12 +166,6 @@ public class MainFrame extends JFrame{
     public JMenuItem getPriseGestionRdv() {
         if(this.priseGestionRdv == null){
             this.priseGestionRdv = new JMenuItem("Prise de rendez-vous");
-            this.priseGestionRdv.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-
-                }
-            });
         }
         return priseGestionRdv;
     }
@@ -199,17 +178,10 @@ public class MainFrame extends JFrame{
     }
 
     public JMenu getAgenda() {
-        return agenda;
-    }
-
-    public JButton getAddTest() {
-        if(this.addTest == null){
-            this.addTest = new JButton("+");
-            this.addTest.addActionListener(e -> {
-                this.getCreationView().setVisible(true);
-            });
+        if(this.agenda == null){
+            this.agenda = new JMenu("Agenda");
         }
-        return addTest;
+        return agenda;
     }
 
     private void addComponentTo(JComponent component, JPanel panel,
@@ -241,7 +213,4 @@ public class MainFrame extends JFrame{
 		
 		return jPanelEcranGestionPerso;
 	}
-    
-    
-    
 }
