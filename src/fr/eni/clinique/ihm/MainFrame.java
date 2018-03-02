@@ -7,10 +7,9 @@ import fr.eni.clinique.ihm.login.LoginController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
 
 public class MainFrame extends JFrame{
@@ -18,13 +17,23 @@ public class MainFrame extends JFrame{
 
     private JPanel mainPanel;
     private JLabel labelConnectedPersonnelName;
+
     private JMenuBar menuBar;
     private JMenu fichiers;
-    private JMenuItem fichier_quit;
+    private JMenuItem deconnexion;
+    private JMenu gestionRdV;
+    private JMenuItem priseGestionRdv;
+    private JMenuItem gestionClient;
+    private JMenu agenda;
     private JMenu gestionPersonnel;
 
     private JDialog creationView;
     private JButton addTest;
+
+    private final String VIEW_GEST_PERSO = "Gestion Personnels";
+    private final String VIEW_GEST_CLIENT = "Gestion Clients";
+    private final String VIEW_AGENDA = "Agenda";
+    private final String VIEW_RdV = "Rendez-vous";
 
     URL iconURL;
     ImageIcon icon;
@@ -66,6 +75,21 @@ public class MainFrame extends JFrame{
         this.getLabelConnectedPersonnelName().setText("Utilisateur: " + currentPersonnel.getNom());
     }
 
+    public void changeView(String nomView) {
+        switch(nomView) {
+            case VIEW_GEST_PERSO:
+                this.setContentPane(this.getjPanelEcranGestionPerso());
+                break;
+
+            case VIEW_GEST_CLIENT:
+                System.out.println("Écran Gestion des clients");
+                break;
+
+            default:
+                System.out.println("Error not integreted");
+        }
+    }
+
     public JLabel getLabelConnectedPersonnelName() {
         if(this.labelConnectedPersonnelName == null) {
             this.labelConnectedPersonnelName = new JLabel("Aucun utilisateur connecté");
@@ -86,7 +110,7 @@ public class MainFrame extends JFrame{
     public JMenu getFichiers() {
         if(this.fichiers == null){
             this.fichiers = new JMenu("Fichiers");
-            this.fichiers.add(this.getFichier_quit());
+            this.fichiers.add(this.getDeconnexion());
         }
         return fichiers;
     }
@@ -114,12 +138,12 @@ public class MainFrame extends JFrame{
         return creationView;
     }
 
-    public JMenuItem getFichier_quit() {
-        if(this.fichier_quit == null) {
-            this.fichier_quit = new JMenuItem("Quitter");
-            this.fichier_quit.addActionListener(e -> quitter());
+    public JMenuItem getDeconnexion() {
+        if(this.deconnexion == null) {
+            this.deconnexion = new JMenuItem("Quitter");
+            this.deconnexion.addActionListener(e -> quitter());
         }
-        return fichier_quit;
+        return deconnexion;
     }
 
     public void quitter(){
@@ -129,6 +153,39 @@ public class MainFrame extends JFrame{
             this.getCreationView().setVisible(false);
             JOptionPane.showMessageDialog(this.mainPanel, "Vous êtes déconnecté", "Déconnecté", JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+    public JMenu getGestionRdV() {
+        if(this.gestionRdV == null){
+            this.gestionRdV = new JMenu("Gestion des rendez-vous");
+            this.gestionRdV.add(this.getPriseGestionRdv());
+            this.gestionRdV.add(this.getGestionClient());
+        }
+        return gestionRdV;
+    }
+
+    public JMenuItem getPriseGestionRdv() {
+        if(this.priseGestionRdv == null){
+            this.priseGestionRdv = new JMenuItem("Prise de rendez-vous");
+            this.priseGestionRdv.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+        }
+        return priseGestionRdv;
+    }
+
+    public JMenuItem getGestionClient() {
+        if(this.gestionClient == null){
+            this.gestionClient = new JMenuItem("Gestion des clients");
+        }
+        return gestionClient;
+    }
+
+    public JMenu getAgenda() {
+        return agenda;
     }
 
     public JButton getAddTest() {
