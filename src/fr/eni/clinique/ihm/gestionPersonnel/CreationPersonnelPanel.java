@@ -19,15 +19,15 @@ public class CreationPersonnelPanel extends JPanel {
 
     public CreationPersonnelPanel() {
         setLayout(new GridBagLayout());
-        addComponentTo(this.getLabelNom(), this, 0, 0, 1, 1, 0.2);
-        addComponentTo(this.getTextNom(), this, 1, 0, 1, 1, 0.8);
-        addComponentTo(this.getLabelMotDePasse(), this, 0, 1, 1, 1, 0.2);
-        addComponentTo(this.getTextMotDePasse(), this, 1, 1, 1, 1, 0.8);
-        addComponentTo(this.getLabelRole(), this, 0, 2, 1, 1, 0.2);
-        addComponentTo(this.getTextRole(), this, 1, 2, 1, 1, 0.8);
-        addComponentTo(this.getLabelArchive(), this, 0, 3, 1, 1, 0.2);
-        addComponentTo(this.getCheckBoxArchive(), this, 1, 3, 1, 1, 0.8);
-        addComponentTo(this.getButtonSave(), this, 0, 6, 1, 1, 1);
+        addComponentTo(this.getLabelNom(), this, 0, 0, 1, 1, 0.1);
+        addComponentTo(this.getTextNom(), this, 1, 0, 1, 1, 0.9);
+        addComponentTo(this.getLabelMotDePasse(), this, 0, 1, 1, 1, 0.1);
+        addComponentTo(this.getTextMotDePasse(), this, 1, 1, 1, 1, 0.9);
+        addComponentTo(this.getLabelRole(), this, 0, 2, 1, 1, 0.1);
+        addComponentTo(this.getTextRole(), this, 1, 2, 1, 1, 0.9);
+        addComponentTo(this.getLabelArchive(), this, 0, 3, 1, 1, 0.1);
+        addComponentTo(this.getCheckBoxArchive(), this, 1, 3, 1, 1, 0.9);
+        addComponentTo(this.getButtonSave(), this, 0, 6, 2, 1, 1);
     }
 
     private void addComponentTo(JComponent component, JPanel panel,

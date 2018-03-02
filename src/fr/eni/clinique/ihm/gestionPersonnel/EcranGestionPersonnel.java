@@ -4,6 +4,7 @@ package fr.eni.clinique.ihm.gestionPersonnel;
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Observable.Observer;
 import fr.eni.clinique.bo.Personnel;
+import fr.eni.clinique.ihm.MainFrame;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -33,6 +34,8 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 
 	private JDialog creationView;
 
+	private CreationPersonnelPanel creationPersonnelPanel;
+
 	URL iconURL;
 	ImageIcon icon;
 
@@ -41,7 +44,8 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 		super(new GridBagLayout());
 		addComponentTo(getButtonForm(), this, 0, 0, 1, 1, 1);
 		addComponentTo(getTablePanel(), this, 0, 5, 1, 1, 3);
-		
+        this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
+        this.icon = new ImageIcon(iconURL);
 
 		try {
 			PersonnelController.getInstance().registerToCurrentPersonnel(this);
@@ -124,9 +128,9 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
     public JDialog getCreationView() {
         if(this.creationView == null){
             this.creationView = new JDialog();
-            this.creationView.setContentPane(new CreationPersonnelPanel());
+            this.creationView.setContentPane(this.getCreationPersonnelPanel());
             this.creationView.setVisible(true);
-            this.creationView.setSize(800, 400);
+            this.creationView.setSize(400, 200);
             this.creationView.setLocation(600, 250);
 
             this.creationView.setIconImage(icon.getImage());
@@ -136,9 +140,16 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
         return creationView;
     }
 
-	private void addComponentTo(JComponent component, JPanel panel,
-			int x, int y, int width, int height,
-			double weightX) {
+    public CreationPersonnelPanel getCreationPersonnelPanel() {
+	    if(this.creationPersonnelPanel == null){
+	        this.creationPersonnelPanel = new CreationPersonnelPanel();
+        }
+        return creationPersonnelPanel;
+    }
+
+    private void addComponentTo(JComponent component, JPanel panel,
+                                int x, int y, int width, int height,
+                                double weightX) {
 		addComponentTo(component, panel, x, y, width, height, weightX, true);
 	}
 

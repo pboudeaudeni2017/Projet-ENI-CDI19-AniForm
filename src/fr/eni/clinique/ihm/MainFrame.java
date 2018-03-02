@@ -211,6 +211,10 @@ public class MainFrame extends JFrame{
         panel.add(component, gbc);
     }
 
+    public JPanel getCurrentPanel(){
+        return this.currentPanel;
+    }
+
 	public EcranGestionPersonnel getjPanelEcranGestionPerso() {
 		if (jPanelEcranGestionPerso == null) {
 			this.jPanelEcranGestionPerso = new EcranGestionPersonnel();
