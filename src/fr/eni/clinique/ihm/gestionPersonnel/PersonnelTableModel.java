@@ -41,7 +41,7 @@ public class PersonnelTableModel extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int column) {
-		return nomColonnes[column];
+		return this.nomColonnes[column];
 	}
 
 	@Override

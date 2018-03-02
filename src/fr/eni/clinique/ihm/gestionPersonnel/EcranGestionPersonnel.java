@@ -6,15 +6,18 @@ import fr.eni.clinique.bo.Observable.Observer;
 import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.MainFrame;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.net.URL;
+import java.util.Enumeration;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableColumnModelListener;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class EcranGestionPersonnel extends JPanel implements Observer {
 
@@ -30,7 +33,6 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	private BoutonMenuPersonnel panelButtons;
 
 	private JPanel buttonForm;
-	private JPanel tablePanel;
 
 	private JDialog creationView;
 
@@ -43,10 +45,9 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	public EcranGestionPersonnel() {
 		super(new GridBagLayout());
 		addComponentTo(getButtonForm(), this, 0, 0, 1, 1, 1);
-		addComponentTo(getTablePanel(), this, 0, 5, 1, 1, 3);
+		addComponentTo(getScrollPane(), this, 0, 1, 1, 1, 1);
         this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
         this.icon = new ImageIcon(iconURL);
-
 		try {
 			PersonnelController.getInstance().registerToCurrentPersonnel(this);
 		} catch (BLLException e) {
@@ -58,19 +59,12 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 		if(scrollPane == null) {
 			scrollPane = new JScrollPane();
 			scrollPane.setViewportView(getTablePersonnel());
+			
 		}
 		return scrollPane;
 	}
 	
-	private JPanel getTablePanel() {
-		if (tablePanel == null) {
-			tablePanel = new JPanel();
-			tablePanel.add(getTablePersonnel());
-		}
-		
-		return tablePanel;
-	}
-
+	
 	public void stateVisible() {
 		getTablePersonnel().setVisible(true);
 		getButtonForm().setVisible(true);
@@ -83,8 +77,9 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 				tablePersonnel = new JTable(model);
 				tablePersonnel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				tablePersonnel.setRowHeight(30);
+				tablePersonnel.setPreferredScrollableViewportSize(tablePersonnel.getPreferredSize());
+				tablePersonnel.setFillsViewportHeight(true);
 				tablePersonnel.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
 
 					@Override
 					public void valueChanged(ListSelectionEvent arg0) {
