@@ -29,6 +29,15 @@ public class PersonnelTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
+	public Personnel getPersonnel(int row){
+		Personnel personnel = new Personnel();
+		if(row > 0 && row < this.personnels.size()){
+			personnel = this.personnels.get(row);
+		}
+
+		return personnel;
+	}
+
 	@Override
 	public int getColumnCount() {
 		return nomColonnes.length;

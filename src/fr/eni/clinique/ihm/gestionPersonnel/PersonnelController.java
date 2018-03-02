@@ -48,6 +48,10 @@ public class PersonnelController {
 		}
 	}
 
+	public void deletePersonnel(Personnel personnel) throws BLLException {
+		this.manager.deletePersonnel(personnel);
+	}
+
 	public void registerToCurrentPersonnel(Observer obs) {
 		currentPersonnel.registerObserver(obs);
 	}

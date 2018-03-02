@@ -22,6 +22,7 @@ public class CreationPersonnelPanel extends JPanel {
     private JCheckBox checkBoxArchive;
 
     private Personnel currentPerso;
+    private Personnel initPerso;
     private PersoController persoController;
 
     private JButton buttonSave;
@@ -33,6 +34,7 @@ public class CreationPersonnelPanel extends JPanel {
     public CreationPersonnelPanel(int id) {
         this.persoController = new PersoController();
         this.currentPerso = new Personnel();
+        this.initPerso = this.currentPerso.copy();
 
         setLayout(new GridBagLayout());
         addComponentTo(this.getLabelNom(), this, 0, 0, 1, 1, 0.1);
@@ -70,6 +72,7 @@ public class CreationPersonnelPanel extends JPanel {
 
     public void writeInputs(int id){
         this.currentPerso = this.persoController.getPerso(id);
+        this.initPerso = this.currentPerso.copy();
         this.getTextNom().setText(this.currentPerso.getNom());
         this.getTextMotDePasse().setText(this.currentPerso.getMotPasse());
         this.getTextRole().setText(this.currentPerso.getRole());
@@ -143,6 +146,10 @@ public class CreationPersonnelPanel extends JPanel {
         EcranGestionPersonnel ecranGestionPersonnel =  ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel());
         ecranGestionPersonnel.reloadView();
         ecranGestionPersonnel.getCreationView().setVisible(false);
+    }
+
+    public boolean isSaved(){
+        return this.currentPerso.equals(this.initPerso);
     }
 
     public void resetDialog(){

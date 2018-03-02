@@ -81,6 +81,7 @@ public class MainFrame extends JFrame{
     			this.getjPanelEcranGestionPerso().setVisible(false);
     			this.getjPanelEcranGestionPerso().setVisible(true);
     			this.getjPanelEcranGestionPerso().stateVisible();
+    			this.getjPanelEcranGestionPerso().reloadView();
     			this.currentPanel = this.getjPanelEcranGestionPerso();
     			this.currentPanelName = nomView;
     			break;

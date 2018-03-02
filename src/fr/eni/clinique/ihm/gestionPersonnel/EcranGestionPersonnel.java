@@ -10,6 +10,8 @@ import fr.eni.clinique.ihm.MainFrame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -73,7 +75,12 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 		getButtonForm().setVisible(true);
 	}
 
-	private JTable getTablePersonnel() {
+	public Personnel getPersonnelFromJTable(int row){
+	    Personnel personnel = this.model.getPersonnel(row);
+	    return personnel;
+    }
+
+	public JTable getTablePersonnel() {
 		if(tablePersonnel == null) {
 			try {
 				model = new PersonnelTableModel();
@@ -96,7 +103,41 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 						}
 					}
 				});
+				tablePersonnel.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        System.out.println(e.getClickCount());
+                        if (e.getClickCount() == 2) {
+                            JTable target = (JTable)e.getSource();
+                            int row = target.getSelectedRow();
+                            Personnel personnel = getPersonnelFromJTable(row);
+                            getCreationViewOnUpdate(personnel.getCodePers());
+                            e.consume();
+                        }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
 			} catch (BLLException e) {
+			    e.printStackTrace();
 				JOptionPane.showMessageDialog(this, "Erreur lors du chargement des données", "Erreur", JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -124,38 +165,37 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	}
 
     public JDialog getCreationView() {
-        if(this.creationView == null){
-            this.creationView = new JDialog();
-            this.creationView.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-            this.creationView.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
+        this.creationView = new JDialog();
+        this.creationView.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.creationView.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if(!creationPersonnelPanel.isSaved()) {
                     int reply = JOptionPane.showConfirmDialog(getCreationPersonnelPanel(), "Toutes modifications non enregistrées seront perdues !\nVoulez-vous vraiment quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (reply == JOptionPane.YES_OPTION) {
                         getCreationPersonnelPanel().resetDialog();
                         creationView.setVisible(false);
                     }
                 }
-            });
-            this.creationView.setContentPane(this.getCreationPersonnelPanel());
-            this.creationView.setVisible(true);
-            this.creationView.setSize(400, 200);
-            this.creationView.setLocation(600, 250);
+                getTablePersonnel().clearSelection();
+            }
+        });
+        this.creationView.setContentPane(this.getCreationPersonnelPanel());
+        this.creationView.setVisible(true);
+        this.creationView.setSize(400, 200);
+        this.creationView.setLocation(600, 250);
 
-            this.creationView.setIconImage(icon.getImage());
-            this.creationView.setResizable(false);
-            this.creationView.setTitle("Création personnel");
-            this.getCreationPersonnelPanel().resetDialog();
-        }
+        this.creationView.setIconImage(icon.getImage());
+        this.creationView.setResizable(false);
+        this.creationView.setTitle("Création personnel");
+        this.getCreationPersonnelPanel().resetDialog();
         return creationView;
     }
 
     public JDialog getCreationViewOnUpdate(int id) {
-        if(this.creationView == null){
-            this.getCreationView();
-            this.creationView.setTitle("Mise à jour du personnel");
-            this.getCreationPersonnelPanel().writeInputs(id);
-        }
+        this.getCreationView();
+        this.creationView.setTitle("Mise à jour du personnel");
+        this.getCreationPersonnelPanel().writeInputs(id);
         return creationView;
     }
 
@@ -191,9 +231,6 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 
 	@Override
 	public void onChanged(Object value) {
-		int index = model.getIndexOf((Personnel)value);
-		tablePersonnel.setRowSelectionInterval(index, index);
-
 
 	}
 
