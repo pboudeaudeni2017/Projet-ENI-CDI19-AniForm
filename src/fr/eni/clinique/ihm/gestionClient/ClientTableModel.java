@@ -57,9 +57,8 @@ public class ClientTableModel extends AbstractTableModel {
 	public Class<?> getColumnClass(int columnIndex) {
 		if (columnIndex != 10) {
 			return String.class;
-			
 		} else {
-			return boolean.class;
+			return Boolean.class;
 		}
 		//return getValueAt(0, columnIndex).getClass();
 	}
