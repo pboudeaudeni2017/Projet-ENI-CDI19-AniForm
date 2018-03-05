@@ -39,15 +39,6 @@ public class ClientTableModel extends AbstractTableModel {
 		return client;
 	}
 	
-	public Client getClient (int row) {
-		Client client = new Client();
-		if(row >= 0 && row < this.clients.size()) {
-			client = this.clients.get(row);
-		}
-		
-		return client;
-	}
-	
 	@Override
 	public int getColumnCount() {
 		return nomColonnes.length;

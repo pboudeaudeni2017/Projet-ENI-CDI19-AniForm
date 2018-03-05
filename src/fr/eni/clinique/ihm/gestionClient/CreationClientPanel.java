@@ -2,11 +2,8 @@ package fr.eni.clinique.ihm.gestionClient;
 
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Client;
-import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.AppliTestIHM;
 import fr.eni.clinique.ihm.gestionPersonnel.EcranGestionPersonnel;
-import fr.eni.clinique.ihm.gestionPersonnel.PersoController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -332,7 +329,7 @@ public class CreationClientPanel extends JPanel {
                     else{
                         try {
                             clientController.addClient(currentClient);
-                            ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
                             JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentClient.toString() + " réussite");
                         } catch (BLLException e1) {
                             e1.printStackTrace();
