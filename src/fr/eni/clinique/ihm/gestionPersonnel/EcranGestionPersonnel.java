@@ -94,12 +94,14 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 					@Override
 					public void valueChanged(ListSelectionEvent arg0) {
 						int index = tablePersonnel.getSelectedRow();
-						try {
-							PersonnelController.getInstance().setPersonnel(index);
-						} catch (PersonnelNotFoundException e) {
-							e.printStackTrace();
-						} catch (BLLException e) {
-							e.printStackTrace();
+						if(index >= 0 && tablePersonnel.getRowCount() < index) {
+							try {
+								PersonnelController.getInstance().setPersonnel(index);
+							} catch (PersonnelNotFoundException e) {
+								e.printStackTrace();
+							} catch (BLLException e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				});
@@ -170,13 +172,20 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
         this.creationView.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                reloadView();
                 if(!creationPersonnelPanel.isSaved()) {
                     int reply = JOptionPane.showConfirmDialog(getCreationPersonnelPanel(), "Toutes modifications non enregistrées seront perdues !\nVoulez-vous vraiment quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (reply == JOptionPane.YES_OPTION) {
                         getCreationPersonnelPanel().resetDialog();
                         creationView.setVisible(false);
+                        reloadView();
                     }
                 }
+                else{
+					getCreationPersonnelPanel().resetDialog();
+                	creationView.setVisible(false);
+                	reloadView();
+				}
                 getTablePersonnel().clearSelection();
             }
         });

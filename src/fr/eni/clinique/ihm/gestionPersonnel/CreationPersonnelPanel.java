@@ -3,6 +3,7 @@ package fr.eni.clinique.ihm.gestionPersonnel;
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.AppliTestIHM;
+import fr.eni.clinique.ihm.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -149,7 +150,10 @@ public class CreationPersonnelPanel extends JPanel {
     }
 
     public boolean isSaved(){
-        return this.currentPerso.equals(this.initPerso);
+        this.inputToPerso();
+        System.out.println(this.currentPerso);
+        System.out.println(this.initPerso);
+        return this.currentPerso.equals(this.initPerso) || (this.initPerso.getCodePers() == 0 && this.currentPerso.getCodePers() > 0) ;
     }
 
     public void resetDialog(){
@@ -168,7 +172,8 @@ public class CreationPersonnelPanel extends JPanel {
                     if(currentPerso.getCodePers() > 0){
                         try {
                             persoController.updatePerso(currentPerso);
-                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel");
+                            ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Modifications enregistrées");
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
@@ -177,7 +182,8 @@ public class CreationPersonnelPanel extends JPanel {
                     else{
                         try {
                             persoController.addPerso(currentPerso);
-                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentPerso.toString());
+                            ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentPerso.toString() + " réussite");
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());

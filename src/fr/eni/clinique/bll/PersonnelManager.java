@@ -50,6 +50,7 @@ public class PersonnelManager {
 
     public void updatePersonnel(Personnel personnel) throws BLLException {
         try {
+            this.validationPersonnel(personnel);
             this.personnelDAO.update(personnel);
         } catch (DALException e) {
             throw new BLLException("Mise à jour du personnel impossible", e);
@@ -66,6 +67,7 @@ public class PersonnelManager {
 
     public void addPersonnel(Personnel personnel) throws BLLException {
         try {
+            this.validationPersonnel(personnel);
             this.personnelDAO.insert(personnel);
         } catch (DALException e){
             throw new BLLException("Ajout du personnel impossible", e);
@@ -76,11 +78,7 @@ public class PersonnelManager {
         BLLException exceptions = new BLLException();
         String needed = "Obligatoire";
         if(personnel == null) {
-            throw new BLLException("Personnel null");
-        }
-
-        if(personnel.getCodePers() >= 0) {
-            exceptions.ajouterException(new ParameterException("CodePers", "Doit être supérieur ou égale � zéro"));
+            throw new BLLException("Les infos du personnel sont manquantes");
         }
 
         if(personnel.getNom() == null ||
@@ -96,6 +94,10 @@ public class PersonnelManager {
         if(personnel.getRole() == null ||
                 personnel.getRole().trim().length() == 0) {
             exceptions.ajouterException(new ParameterException("Role", needed));
+        }
+
+        if(personnel.getRole().trim().length() > 3) {
+            exceptions.ajouterException(new ParameterException("Role", "Le role doit être ADM, SEC ou VET"));
         }
 
         if(exceptions.size() > 0){
