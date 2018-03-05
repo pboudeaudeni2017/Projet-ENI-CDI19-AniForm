@@ -1,5 +1,7 @@
 package fr.eni.clinique.ihm.gestionClient;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -19,6 +21,7 @@ import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Client;
 import fr.eni.clinique.bo.Observable.Observer;
 import fr.eni.clinique.ihm.MainFrame;
+import javafx.scene.layout.Border;
 
 public class EcranGestionClient extends JPanel implements Observer {
 	
@@ -32,14 +35,16 @@ public class EcranGestionClient extends JPanel implements Observer {
 		
 	private JScrollPane scrollPane;
 	
+	private JPanel panelScrollTable;
+	
 	URL iconURL;
 	ImageIcon icon;
 
 
 	public EcranGestionClient() {
-		super (new GridBagLayout());
-		addComponentTo(getTableClient(), this, 0, 0, 1, 1, 1);
-        this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
+		super (new BorderLayout());
+        add(getPanelScrollTable(), BorderLayout.CENTER);
+		this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
         this.icon = new ImageIcon(iconURL);
         
         
@@ -49,12 +54,22 @@ public class EcranGestionClient extends JPanel implements Observer {
 			e.printStackTrace();
 		}
 	}
+	
+	private JPanel getPanelScrollTable() {
+		if(this.panelScrollTable == null) {
+			this.panelScrollTable = new JPanel();
+			this.panelScrollTable.add(this.getScrollPane());
+			//this.setPreferredSize(new Dimension(600, 200));
+		}
+		return this.panelScrollTable;
+	}
 		
 	
 	private JScrollPane getScrollPane() {
 		if(scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setViewportView(getTableClient());
+			scrollPane = new JScrollPane(getTableClient());
+			scrollPane.setAutoscrolls(true);
+			//scrollPane.setViewportView(getTableClient());
 		}
 		return scrollPane;
 	}
@@ -72,7 +87,8 @@ public class EcranGestionClient extends JPanel implements Observer {
 				tableClient = new JTable(model);
 				tableClient.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				tableClient.setRowHeight(30);
-				tableClient.setPreferredScrollableViewportSize(tableClient.getPreferredSize());
+				tableClient.setPreferredScrollableViewportSize(new Dimension(825, 320));
+				tableClient.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				tableClient.setFillsViewportHeight(true);
 				tableClient.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 

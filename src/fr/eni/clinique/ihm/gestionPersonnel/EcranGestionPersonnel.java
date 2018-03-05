@@ -7,6 +7,8 @@ import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.AppliTestIHM;
 import fr.eni.clinique.ihm.MainFrame;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -34,6 +36,7 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	private BoutonMenuPersonnel panelButtons;
 
 	private JPanel buttonForm;
+	private JPanel panelListPerso;
 
 	private JDialog creationView;
 
@@ -44,9 +47,9 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 
 
 	public EcranGestionPersonnel() {
-		super(new GridBagLayout());
-		addComponentTo(getButtonForm(), this, 0, 0, 1, 1, 1);
-		addComponentTo(getScrollPane(), this, 0, 1, 1, 1, 1);
+		//this.setLayout();
+		add(getButtonForm());
+		add(getPanelListPerso());
         this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
         this.icon = new ImageIcon(iconURL);
 		try {
@@ -58,8 +61,8 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 
 	private JScrollPane getScrollPane() {
 		if(scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setViewportView(getTablePersonnel());
+			scrollPane = new JScrollPane(getTablePersonnel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.setAutoscrolls(true);
 			
 		}
 		return scrollPane;
@@ -76,6 +79,14 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	    return personnel;
     }
 
+	public JPanel getPanelListPerso() {
+		if(this.panelListPerso == null) {
+			this.panelListPerso = new JPanel();
+			this.panelListPerso.add(this.getScrollPane());
+		}
+		return panelListPerso;
+	}
+
 	public JTable getTablePersonnel() {
 		if(tablePersonnel == null) {
 			try {
@@ -83,7 +94,7 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 				tablePersonnel = new JTable(model);
 				tablePersonnel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				tablePersonnel.setRowHeight(30);
-				tablePersonnel.setPreferredScrollableViewportSize(tablePersonnel.getPreferredSize());
+				tablePersonnel.setPreferredScrollableViewportSize(new Dimension(820, 240));
 				tablePersonnel.setFillsViewportHeight(true);
 				tablePersonnel.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
