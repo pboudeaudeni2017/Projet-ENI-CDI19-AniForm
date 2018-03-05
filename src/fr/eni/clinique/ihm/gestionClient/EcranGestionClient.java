@@ -10,19 +10,15 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Client;
 import fr.eni.clinique.bo.Observable.Observer;
-import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.AppliTestIHM;
 import fr.eni.clinique.ihm.MainFrame;
-import fr.eni.clinique.ihm.gestionPersonnel.CreationPersonnelPanel;
-import javafx.scene.layout.Border;
+
 
 public class EcranGestionClient extends JPanel implements Observer {
 	
@@ -33,12 +29,18 @@ public class EcranGestionClient extends JPanel implements Observer {
 	
 	private JTable tableClient;
 	private ClientTableModel model;
-		
+
 	private JScrollPane scrollPane;
 	
 	private JPanel panelScrollTable;
-	private CreationClientPanel creationClientPanel;
+
+	private JPanel buttonForm;
+	
+	private BoutonMenuClient panelButtons;
+	
 	private JDialog creationView;
+	
+	private CreationClientPanel creationClientPanel;
 	
 	URL iconURL;
 	ImageIcon icon;
@@ -46,6 +48,7 @@ public class EcranGestionClient extends JPanel implements Observer {
 
 	public EcranGestionClient() {
 		super (new BorderLayout());
+		add(getButtonForm(), BorderLayout.NORTH);
         add(getPanelScrollTable(), BorderLayout.CENTER);
 		this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
         this.icon = new ImageIcon(iconURL);
@@ -192,23 +195,7 @@ public class EcranGestionClient extends JPanel implements Observer {
 		this.getCreationClientPanel().resetDialog();
 		return creationView;
 	}
-
-	public JDialog getCreationViewOnUpdate(int id) {
-		this.getCreationView();
-		this.creationView.setTitle("Mise à jour du personnel");
-		this.getCreationClientPanel().writeInputs(id);
-		return creationView;
-	}
-
-	public void reloadView() {
-		try {
-			this.model.updateData();
-		} catch (BLLException e) {
-			e.printStackTrace();
-			AppliTestIHM.showError("Erreur rechargement des données", "Erreur de mise à jour des données:\n" + e.getMessage());
-		}
-	}
-	
+		
 	private void addComponentTo(JComponent component, JPanel panel, int x, int y, int width, int height, double weightX) {
 		addComponentTo(component, panel, x, y, width, height, weightX, true);
 	}
@@ -229,7 +216,31 @@ public class EcranGestionClient extends JPanel implements Observer {
 		panel.add(component, gbc);
 	}
 	
+	private JPanel getButtonForm() {
+		if (buttonForm == null) {
+			buttonForm = new JPanel(new GridBagLayout());
+			
+			addComponentTo(getPanelButtons(), buttonForm, 0, 0, 2, 1, 1);
+		}
+		
+		return buttonForm;
+	}
 	
+	private BoutonMenuClient getPanelButtons() {
+		if (panelButtons == null) {
+			panelButtons = new BoutonMenuClient(this);
+		}
+		
+		return panelButtons;
+	}
+		
+	public JDialog getCreationViewOnUpdate(int id) {
+		this.getCreationView();
+		this.creationView.setTitle("Mise à jour du client");
+		this.getCreationClientPanel().writeInputs(id);
+		
+		return creationView;
+	}
 	
 	public void onChanged(Object value) {
 		//int index = model.getIndexOf((Client)value);
@@ -238,6 +249,15 @@ public class EcranGestionClient extends JPanel implements Observer {
 	
 	public void onCreate() {
 		
+	}
+	
+	public void reloadView() {
+		try {
+			this.model.updateData();
+		} catch (BLLException e) {
+			e.printStackTrace();
+			AppliTestIHM.showError("Erreur rechargement des données", "Erreur de mise à jour des données:\n" + e.getMessage());
+		}
 	}
 
 
