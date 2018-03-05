@@ -14,6 +14,7 @@ public class Client {
 	private String email;
 	private String remarque;
 	private boolean archive;
+	
 	public int getCodeClient() {
 		return codeClient;
 	}

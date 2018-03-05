@@ -76,12 +76,12 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 		return client;
 	}
 
-    public Client selectByName(String name) throws DALException {
+    public Client selectByName(Client _client) throws DALException {
         Client client = null;
         try (Connection cnx = DBConnection.getConnexion()){
             //Pr�paration de la requ�te
             PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
-            pStmt.setString(1, name);
+            pStmt.setString(1, _client.getNomClient());
 
             //Execution
             ResultSet rs = pStmt.executeQuery();

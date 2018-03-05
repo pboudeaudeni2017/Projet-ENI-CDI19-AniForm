@@ -40,12 +40,33 @@ public class PersonnelController {
 	}
 
 	public void setPersonnel(int index) throws PersonnelNotFoundException {
+		System.out.println("Index: " + index);
 		if(index >=0 && index < listePersonnels.size()) {
 			indexPersonnel = index;
 			currentPersonnel.set(listePersonnels.get(indexPersonnel));
 		} else {
 			throw new PersonnelNotFoundException();
 		}
+	}
+	
+	public void next() throws PersonnelNotFoundException {
+		if (indexPersonnel + 1 < listePersonnels.size()) {
+			currentPersonnel.set(listePersonnels.get(++indexPersonnel));
+		} else {
+			throw new PersonnelNotFoundException();
+		}
+	}
+	
+	public void previous() throws PersonnelNotFoundException {
+		if (indexPersonnel - 1 >= 0) {
+			currentPersonnel.set(listePersonnels.get(--indexPersonnel));
+		} else {
+			throw new PersonnelNotFoundException();
+		}
+	}
+
+	public void deletePersonnel(Personnel personnel) throws BLLException {
+		this.manager.deletePersonnel(personnel);
 	}
 
 	public void registerToCurrentPersonnel(Observer obs) {

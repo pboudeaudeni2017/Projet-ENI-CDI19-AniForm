@@ -1,6 +1,7 @@
 package fr.eni.clinique.ihm;
 
 import fr.eni.clinique.bo.Personnel;
+import fr.eni.clinique.ihm.gestionClient.EcranGestionClient;
 import fr.eni.clinique.ihm.gestionPersonnel.EcranGestionPersonnel;
 import fr.eni.clinique.ihm.login.LoginController;
 
@@ -9,6 +10,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -32,6 +35,7 @@ public class MainFrame extends JFrame{
 
     
     private EcranGestionPersonnel jPanelEcranGestionPerso;
+    private EcranGestionClient jPanelEcranGestionClient;
 
     private final String VIEW_GEST_PERSO = "Gestion Personnels";
     private final String VIEW_GEST_CLIENT = "Gestion Clients";
@@ -81,12 +85,20 @@ public class MainFrame extends JFrame{
     			this.getjPanelEcranGestionPerso().setVisible(false);
     			this.getjPanelEcranGestionPerso().setVisible(true);
     			this.getjPanelEcranGestionPerso().stateVisible();
+    			this.getjPanelEcranGestionPerso().reloadView();
     			this.currentPanel = this.getjPanelEcranGestionPerso();
     			this.currentPanelName = nomView;
+    			setTitle("Gestion du personnel");
     			break;
 
     		case VIEW_GEST_CLIENT:
-    			System.out.println("Écran Gestion des clients");
+    			this.setContentPane(this.getjPanelEcranGestionClient());
+    			this.getjPanelEcranGestionClient().setVisible(false);
+    			this.getjPanelEcranGestionClient().setVisible(true);
+    			this.getjPanelEcranGestionClient().stateVisible();
+    			this.currentPanel = this.getjPanelEcranGestionClient();
+    			this.currentPanelName = nomView;
+    			setTitle("Liste des clients");
     			break;
 
     		default:
@@ -182,6 +194,15 @@ public class MainFrame extends JFrame{
     public JMenuItem getGestionClient() {
         if(this.gestionClient == null){
             this.gestionClient = new JMenuItem("Gestion des clients");
+            this.gestionClient.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					changeTheView(VIEW_GEST_CLIENT);
+				}
+				
+			});
         }
         return gestionClient;
     }
@@ -225,5 +246,13 @@ public class MainFrame extends JFrame{
 		}
 		
 		return jPanelEcranGestionPerso;
+	}
+	
+	public EcranGestionClient getjPanelEcranGestionClient() {
+		if (jPanelEcranGestionClient == null) {
+			this.jPanelEcranGestionClient = new EcranGestionClient();
+		}
+		
+		return jPanelEcranGestionClient;
 	}
 }
