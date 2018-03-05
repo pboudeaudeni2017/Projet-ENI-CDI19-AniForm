@@ -8,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bll.ClientManager;
 import fr.eni.clinique.bo.Client;
-import fr.eni.clinique.bo.Personnel;
 
 public class ClientTableModel extends AbstractTableModel {
 	

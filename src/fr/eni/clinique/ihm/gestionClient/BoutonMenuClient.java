@@ -8,13 +8,14 @@ import javax.swing.JPanel;
 
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Client;
-import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.AppliTestIHM;
-import fr.eni.clinique.ihm.gestionPersonnel.EcranGestionPersonnel;
-import fr.eni.clinique.ihm.gestionPersonnel.PersonnelController;
 
 public class BoutonMenuClient extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton bttNew;
 	private JButton bttDelete;
 
