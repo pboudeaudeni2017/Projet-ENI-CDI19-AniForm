@@ -45,12 +45,44 @@ public class ClientController {
 			throw new ClientNotFoundException();
 		}
 	}
-	
+
+	public void setClient(Client client) throws ClientNotFoundException {
+	    if(client.getCodeClient() > 0){
+	        int index = 0;
+            while(index < this.listeClients.size() && this.listeClients.get(index).getCodeClient() != client.getCodeClient()){
+                index++;
+            }
+
+            if(index < this.listeClients.size()){
+                this.currentClient.set(client);
+                this.listeClients.set(index, client);
+            }
+            else{
+                throw new ClientNotFoundException();
+            }
+        } else {
+            throw new ClientNotFoundException();
+        }
+    }
+
+	public void updateClient() throws BLLException{
+	    this.manager.updateClient(this.currentClient.get());
+    }
+
+    public void addClient(Client client) throws BLLException, ClientNotFoundException {
+	    this.manager.addClient(client);
+	    this.listeClients.add(client);
+	    this.setClient(this.listeClients.indexOf(client));
+    }
+
+    public void deleteClient() throws BLLException {
+	    this.manager.deleteClient(this.currentClient.get());
+    }
 	
 	public void registerToCurrentClient(Observer obs) {
-		currentClient.registerObserver(obs);
+        this.currentClient.registerObserver(obs);
 	}
-	
+
 	
 
 }
