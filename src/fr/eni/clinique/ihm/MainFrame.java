@@ -55,8 +55,8 @@ public class MainFrame extends JFrame{
                 quitter();
             }
         });
-        setSize(800, 400);
-        setLocation(600, 250);
+        setSize(1000, 400);
+        setLocation(300, 250);
         
         this.iconURL = getClass().getResource("ressources/ico_veto.png");
         this.icon = new ImageIcon(iconURL);
@@ -98,6 +98,7 @@ public class MainFrame extends JFrame{
     			this.getjPanelEcranGestionClient().stateVisible();
     			this.currentPanel = this.getjPanelEcranGestionClient();
     			this.currentPanelName = nomView;
+    			this.setResizable(false);
     			setTitle("Liste des clients");
     			break;
 
@@ -214,9 +215,7 @@ public class MainFrame extends JFrame{
         return agenda;
     }
 
-    private void addComponentTo(JComponent component, JPanel panel,
-                                int x, int y, int width, int height,
-                                double weightX) {
+    private void addComponentTo(JComponent component, JPanel panel, int x, int y, int width, int height, double weightX) {
         addComponentTo(component, panel, x, y, width, height, weightX, true);
     }
 
