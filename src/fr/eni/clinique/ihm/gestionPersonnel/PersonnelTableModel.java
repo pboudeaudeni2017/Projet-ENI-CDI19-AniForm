@@ -31,7 +31,7 @@ public class PersonnelTableModel extends AbstractTableModel {
 
 	public Personnel getPersonnel(int row){
 		Personnel personnel = new Personnel();
-		if(row > 0 && row < this.personnels.size()){
+		if(row >= 0 && row < this.personnels.size()){
 			personnel = this.personnels.get(row);
 		}
 
