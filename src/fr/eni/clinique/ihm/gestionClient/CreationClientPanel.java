@@ -60,30 +60,30 @@ public class CreationClientPanel extends JPanel {
         setLayout(new GridBagLayout());
         addComponentTo(this.getLabelNom(), this, 0, 0, 1, 1, 0.1);
         addComponentTo(this.getTextNom(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelPrenom(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getTextPrenom(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelAdresse(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getLabelAdresse(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelAdresse2(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getLabelAdresse2(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelCodePostal(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getTextCodePostal(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelVille(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getTextVille(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelNumTel(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getTextNumTel(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelAssurance(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getTextAssurance(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelEmail(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getTextEmail(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelRemarque(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getTextRemarque(), this, 1, 0, 1, 1, 0.9);
-        addComponentTo(this.getLabelArchive(), this, 0, 0, 1, 1, 0.1);
-        addComponentTo(this.getCheckBoxArchive(), this, 1, 0, 1, 1, 0.9);
+        addComponentTo(this.getLabelPrenom(), this, 0, 1, 1, 1, 0.1);
+        addComponentTo(this.getTextPrenom(), this, 1, 1, 1, 1, 0.9);
+        addComponentTo(this.getLabelAdresse(), this, 0, 2, 1, 1, 0.1);
+        addComponentTo(this.getTextAdresse(), this, 1, 2, 1, 1, 0.9);
+        addComponentTo(this.getLabelAdresse2(), this, 0, 3, 1, 1, 0.1);
+        addComponentTo(this.getTextAdresse2(), this, 1, 3, 1, 1, 0.9);
+        addComponentTo(this.getLabelCodePostal(), this, 0, 4, 1, 1, 0.1);
+        addComponentTo(this.getTextCodePostal(), this, 1, 4, 1, 1, 0.9);
+        addComponentTo(this.getLabelVille(), this, 0, 5, 1, 1, 0.1);
+        addComponentTo(this.getTextVille(), this, 1, 5, 1, 1, 0.9);
+        addComponentTo(this.getLabelNumTel(), this, 0, 6, 1, 1, 0.1);
+        addComponentTo(this.getTextNumTel(), this, 1, 6, 1, 1, 0.9);
+        addComponentTo(this.getLabelAssurance(), this, 0, 7, 1, 1, 0.1);
+        addComponentTo(this.getTextAssurance(), this, 1, 7, 1, 1, 0.9);
+        addComponentTo(this.getLabelEmail(), this, 0, 8, 1, 1, 0.1);
+        addComponentTo(this.getTextEmail(), this, 1, 8, 1, 1, 0.9);
+        addComponentTo(this.getLabelRemarque(), this, 0, 9, 1, 1, 0.1);
+        addComponentTo(this.getTextRemarque(), this, 1, 9, 1, 1, 0.9);
+        addComponentTo(this.getLabelArchive(), this, 0, 10, 1, 1, 0.1);
+        addComponentTo(this.getCheckBoxArchive(), this, 1, 10, 1, 1, 0.9);
 
-        addComponentTo(this.getLabelArchive(), this, 0, 3, 1, 1, 0.1);
-        addComponentTo(this.getCheckBoxArchive(), this, 1, 3, 1, 1, 0.9);
-        addComponentTo(this.getButtonSave(), this, 0, 6, 2, 1, 1);
+        addComponentTo(this.getLabelArchive(), this, 0, 13, 1, 1, 0.1);
+        addComponentTo(this.getCheckBoxArchive(), this, 1, 13, 1, 1, 0.9);
+        addComponentTo(this.getButtonSave(), this, 0, 16, 2, 1, 1);
     }
 
     private void addComponentTo(JComponent component, JPanel panel,

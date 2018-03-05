@@ -56,10 +56,14 @@ public class BoutonMenuClient extends JPanel {
 				int reply = JOptionPane.showConfirmDialog(bttDelete, "Voulez-vous vraiment supprimer " + client.getNomClient() + " ?\nCette action est définitive", "Suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (reply == JOptionPane.YES_OPTION) {
 					try {
-						this.clientController.deleteClient(client);
+						this.clientController.setClient(client);
+						this.clientController.deleteClient();
 						this.gestionClient.reloadView();
 						JOptionPane.showMessageDialog(this, "Suppression du client " + client.getNomClient() + " réussie !");
 					} catch (BLLException e1) {
+						e1.printStackTrace();
+						AppliTestIHM.showError("Erreur de suppression", "Erreur de suppression:\n" + e1.getMessage());
+					} catch (ClientNotFoundException e1) {
 						e1.printStackTrace();
 						AppliTestIHM.showError("Erreur de suppression", "Erreur de suppression:\n" + e1.getMessage());
 					}
