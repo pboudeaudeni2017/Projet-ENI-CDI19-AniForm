@@ -104,7 +104,6 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 				tablePersonnel.addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println(e.getClickCount());
                         if (e.getClickCount() == 2) {
                             JTable target = (JTable)e.getSource();
                             int row = target.getSelectedRow();

@@ -22,7 +22,6 @@ public class PersonnelController {
 		manager = new PersonnelManager();
 
 		listePersonnels = manager.getPersonnels();
-		System.out.println(listePersonnels);
 		indexPersonnel = 0;
 	}
 

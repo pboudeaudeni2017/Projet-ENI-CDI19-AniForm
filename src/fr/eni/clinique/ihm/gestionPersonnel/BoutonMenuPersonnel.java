@@ -11,7 +11,6 @@ public class BoutonMenuPersonnel extends JPanel {
 
 	private JButton bttNew;
 	private JButton bttDelete;
-	private JButton bttReset;
 
 	private EcranGestionPersonnel gestionPersonnel;
 	private PersonnelController personnelController;
@@ -27,7 +26,6 @@ public class BoutonMenuPersonnel extends JPanel {
 		}
 		add(getBttNew());
 		add(getBttDelete());
-		add(getBttReset());
 	}
 
 	private JButton getBttNew() {
@@ -66,16 +64,4 @@ public class BoutonMenuPersonnel extends JPanel {
 		return bttDelete;
 
 	}
-
-	private JButton getBttReset() {
-		if (bttReset == null) {
-			bttReset = new JButton("Réinitaliser");
-		}
-		
-		return bttReset;
-
-	}
-
-
-
 }
