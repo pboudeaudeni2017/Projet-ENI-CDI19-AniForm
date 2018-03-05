@@ -8,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bll.ClientManager;
 import fr.eni.clinique.bo.Client;
-import fr.eni.clinique.bo.Personnel;
 
 public class ClientTableModel extends AbstractTableModel {
 	
@@ -39,14 +38,6 @@ public class ClientTableModel extends AbstractTableModel {
 		return client;
 	}
 	
-	public Client getClient (int row) {
-		Client client = new Client();
-		if(row >= 0 && row < this.clients.size()) {
-			client = this.clients.get(row);
-		}
-		
-		return client;
-	}
 	
 	@Override
 	public int getColumnCount() {

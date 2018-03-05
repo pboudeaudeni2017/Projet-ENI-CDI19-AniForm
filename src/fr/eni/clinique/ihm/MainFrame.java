@@ -55,7 +55,7 @@ public class MainFrame extends JFrame{
                 quitter();
             }
         });
-        setSize(1000, 400);
+        setSize(1000, 475);
         setLocation(300, 250);
         
         this.iconURL = getClass().getResource("ressources/ico_veto.png");
