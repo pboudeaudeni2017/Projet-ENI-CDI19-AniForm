@@ -1,5 +1,7 @@
 package fr.eni.clinique.bo;
 
+import java.util.Objects;
+
 public class Personnel {
 	
 	private int codePers;
@@ -67,10 +69,6 @@ public class Personnel {
 		this.setCodePers(codePers);
 	}
 	
-	
-	
-	
-	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -87,10 +85,26 @@ public class Personnel {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
-	
-	
 
+	public Personnel copy(){
+		return new Personnel(this.getCodePers(), this.getNom(), this.getMotPasse(), this.getRole(), this.isArchive());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Personnel personnel = (Personnel) o;
+		return codePers == personnel.codePers &&
+				archive == personnel.archive &&
+				Objects.equals(nom, personnel.nom) &&
+				Objects.equals(motPasse, personnel.motPasse) &&
+				Objects.equals(role, personnel.role);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(codePers, nom, motPasse, role, archive);
+	}
 }

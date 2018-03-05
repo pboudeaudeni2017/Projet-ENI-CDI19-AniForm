@@ -1,7 +1,14 @@
 package fr.eni.clinique.ihm.gestionPersonnel;
 
+import fr.eni.clinique.bll.BLLException;
+import fr.eni.clinique.bo.Personnel;
+import fr.eni.clinique.ihm.AppliTestIHM;
+import fr.eni.clinique.ihm.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CreationPersonnelPanel extends JPanel {
 
@@ -15,9 +22,21 @@ public class CreationPersonnelPanel extends JPanel {
     private JTextField textRole;
     private JCheckBox checkBoxArchive;
 
+    private Personnel currentPerso;
+    private Personnel initPerso;
+    private PersoController persoController;
+
     private JButton buttonSave;
 
-    public CreationPersonnelPanel() {
+    public CreationPersonnelPanel(){
+        this(0);
+    }
+
+    public CreationPersonnelPanel(int id) {
+        this.persoController = new PersoController();
+        this.currentPerso = new Personnel();
+        this.initPerso = this.currentPerso.copy();
+
         setLayout(new GridBagLayout());
         addComponentTo(this.getLabelNom(), this, 0, 0, 1, 1, 0.1);
         addComponentTo(this.getTextNom(), this, 1, 0, 1, 1, 0.9);
@@ -50,6 +69,15 @@ public class CreationPersonnelPanel extends JPanel {
         }
         gbc.insets = new Insets(7, 10, 5, 10);
         panel.add(component, gbc);
+    }
+
+    public void writeInputs(int id){
+        this.currentPerso = this.persoController.getPerso(id);
+        this.initPerso = this.currentPerso.copy();
+        this.getTextNom().setText(this.currentPerso.getNom());
+        this.getTextMotDePasse().setText(this.currentPerso.getMotPasse());
+        this.getTextRole().setText(this.currentPerso.getRole());
+        this.getCheckBoxArchive().setSelected(this.currentPerso.isArchive());
     }
 
     public JLabel getLabelNom() {
@@ -108,9 +136,62 @@ public class CreationPersonnelPanel extends JPanel {
         return checkBoxArchive;
     }
 
+    private void inputToPerso(){
+        this.currentPerso.setNom(this.getTextNom().getText());
+        this.currentPerso.setMotPasse(this.getTextMotDePasse().getText());
+        this.currentPerso.setRole(this.getTextRole().getText());
+        this.currentPerso.setArchive(this.getCheckBoxArchive().isSelected());
+    }
+
+    private void quitter(){
+        EcranGestionPersonnel ecranGestionPersonnel =  ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel());
+        ecranGestionPersonnel.reloadView();
+        ecranGestionPersonnel.getCreationView().setVisible(false);
+    }
+
+    public boolean isSaved(){
+        this.inputToPerso();
+        System.out.println(this.currentPerso);
+        System.out.println(this.initPerso);
+        return this.currentPerso.equals(this.initPerso) || (this.initPerso.getCodePers() == 0 && this.currentPerso.getCodePers() > 0) ;
+    }
+
+    public void resetDialog(){
+        this.currentPerso = new Personnel();
+        this.writeInputs(this.currentPerso.getCodePers());
+    }
+
     public JButton getButtonSave() {
         if(this.buttonSave == null){
             this.buttonSave = new JButton("Enregistrer");
+            this.buttonSave.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println(currentPerso);
+                    inputToPerso();
+                    if(currentPerso.getCodePers() > 0){
+                        try {
+                            persoController.updatePerso(currentPerso);
+                            ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Modifications enregistrées");
+                        } catch (BLLException e1) {
+                            e1.printStackTrace();
+                            AppliTestIHM.showError("Erreur mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
+                        }
+                    }
+                    else{
+                        try {
+                            persoController.addPerso(currentPerso);
+                            ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentPerso.toString() + " réussite");
+                        } catch (BLLException e1) {
+                            e1.printStackTrace();
+                            AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());
+                        }
+                    }
+                    System.out.println(currentPerso);
+                }
+            });
         }
         return buttonSave;
     }

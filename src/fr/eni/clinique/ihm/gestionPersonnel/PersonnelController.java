@@ -22,6 +22,7 @@ public class PersonnelController {
 		manager = new PersonnelManager();
 
 		listePersonnels = manager.getPersonnels();
+		System.out.println(listePersonnels);
 		indexPersonnel = 0;
 	}
 
@@ -40,6 +41,7 @@ public class PersonnelController {
 	}
 
 	public void setPersonnel(int index) throws PersonnelNotFoundException {
+		System.out.println("Index: " + index);
 		if(index >=0 && index < listePersonnels.size()) {
 			indexPersonnel = index;
 			currentPersonnel.set(listePersonnels.get(indexPersonnel));
@@ -62,6 +64,10 @@ public class PersonnelController {
 		} else {
 			throw new PersonnelNotFoundException();
 		}
+	}
+
+	public void deletePersonnel(Personnel personnel) throws BLLException {
+		this.manager.deletePersonnel(personnel);
 	}
 
 	public void registerToCurrentPersonnel(Observer obs) {
