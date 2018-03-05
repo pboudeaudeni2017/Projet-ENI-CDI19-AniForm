@@ -26,7 +26,8 @@ public class PersonnelManager {
             throw new BLLException("Récupèration du Personnel impossible");
         }
     }
-
+    
+  
     public Personnel getPersonnel(String name) throws BLLException {
     	Personnel personnel = new Personnel();
     	personnel.setNom(name);

@@ -10,14 +10,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.net.URL;
-import java.util.Enumeration;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableColumnModelListener;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 public class EcranGestionPersonnel extends JPanel implements Observer {
 
@@ -169,8 +165,6 @@ public class EcranGestionPersonnel extends JPanel implements Observer {
 	public void onChanged(Object value) {
 		int index = model.getIndexOf((Personnel)value);
 		tablePersonnel.setRowSelectionInterval(index, index);
-
-
 	}
 
 

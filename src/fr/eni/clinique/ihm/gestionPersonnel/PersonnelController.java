@@ -47,6 +47,22 @@ public class PersonnelController {
 			throw new PersonnelNotFoundException();
 		}
 	}
+	
+	public void next() throws PersonnelNotFoundException {
+		if (indexPersonnel + 1 < listePersonnels.size()) {
+			currentPersonnel.set(listePersonnels.get(++indexPersonnel));
+		} else {
+			throw new PersonnelNotFoundException();
+		}
+	}
+	
+	public void previous() throws PersonnelNotFoundException {
+		if (indexPersonnel - 1 >= 0) {
+			currentPersonnel.set(listePersonnels.get(--indexPersonnel));
+		} else {
+			throw new PersonnelNotFoundException();
+		}
+	}
 
 	public void registerToCurrentPersonnel(Observer obs) {
 		currentPersonnel.registerObserver(obs);
