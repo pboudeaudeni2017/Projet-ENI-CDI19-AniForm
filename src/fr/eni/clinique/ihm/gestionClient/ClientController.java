@@ -47,6 +47,11 @@ public class ClientController {
 	}
 
 	public void setClient(Client client) throws ClientNotFoundException {
+	    this.setClient(client, true);
+    }
+
+	public void setClient(Client client, boolean full) throws ClientNotFoundException {
+	    System.out.println(client);
 	    if(client.getCodeClient() > 0){
 	        int index = 0;
             while(index < this.listeClients.size() && this.listeClients.get(index).getCodeClient() != client.getCodeClient()){
@@ -54,6 +59,9 @@ public class ClientController {
             }
 
             if(index < this.listeClients.size()){
+                if(!full){
+                    client = this.listeClients.get(index).copy();
+                }
                 this.currentClient.set(client);
                 this.listeClients.set(index, client);
             }
@@ -67,6 +75,10 @@ public class ClientController {
 
 	public void updateClient() throws BLLException{
 	    this.manager.updateClient(this.currentClient.get());
+    }
+
+    public Client getCurrentClient() throws BLLException {
+	    return this.currentClient.get();
     }
 
     public void addClient(Client client) throws BLLException, ClientNotFoundException {

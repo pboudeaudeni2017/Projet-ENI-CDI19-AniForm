@@ -167,6 +167,7 @@ public class EcranGestionClient extends JPanel implements Observer {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				reloadView();
+				getCreationClientPanel().inputToPerso();
 				if(!getCreationClientPanel().isSaved()) {
 					int reply = JOptionPane.showConfirmDialog(getCreationClientPanel(), "Toutes modifications non enregistrées seront perdues !\nVoulez-vous vraiment quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (reply == JOptionPane.YES_OPTION) {
@@ -236,8 +237,12 @@ public class EcranGestionClient extends JPanel implements Observer {
 	public JDialog getCreationViewOnUpdate(int id) {
 		this.getCreationView();
 		this.creationView.setTitle("Mise à jour du client");
-		this.getCreationClientPanel().writeInputs(id);
-		
+		try {
+			this.getCreationClientPanel().writeInputs(id);
+		} catch (ClientNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		return creationView;
 	}
 	

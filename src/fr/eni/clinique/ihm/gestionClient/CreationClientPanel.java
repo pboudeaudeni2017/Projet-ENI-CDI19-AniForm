@@ -46,13 +46,25 @@ public class CreationClientPanel extends JPanel {
     }
 
     public CreationClientPanel(int id) {
+        this.currentClient = new Client();
+        this.initClient = this.currentClient.copy();
         try {
             this.clientController = ClientController.getInstance();
         } catch (BLLException e) {
             e.printStackTrace();
         }
-        this.currentClient = new Client();
-        this.initClient = this.currentClient.copy();
+
+        if(id == 0){
+            this.writeInputs();
+        }
+        else{
+            try {
+                this.writeInputs(id);
+            } catch (ClientNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         setLayout(new GridBagLayout());
         addComponentTo(this.getLabelNom(), this, 0, 0, 1, 1, 0.1);
@@ -105,7 +117,18 @@ public class CreationClientPanel extends JPanel {
         panel.add(component, gbc);
     }
 
-    public void writeInputs(int id){
+    public void writeInputs(int id) throws ClientNotFoundException {
+        this.currentClient.setCodeClient(id);
+        this.clientController.setClient(this.currentClient, false);
+        try {
+            this.currentClient = this.clientController.getCurrentClient();
+        } catch (BLLException e) {
+            e.printStackTrace();
+        }
+        this.writeInputs();
+    }
+
+    public void writeInputs(){
         this.getTextNom().setText(this.currentClient.getNomClient());
         this.getTextPrenom().setText(this.currentClient.getPrenomClient());
         this.getTextAdresse().setText(this.currentClient.getAdresse1());
@@ -117,6 +140,8 @@ public class CreationClientPanel extends JPanel {
         this.getTextEmail().setText(this.currentClient.getEmail());
         this.getTextRemarque().setText(this.currentClient.getRemarque());
         this.getCheckBoxArchive().setSelected(this.currentClient.isArchive());
+        this.inputToPerso();
+        this.initClient = this.currentClient.copy();
     }
 
     public JLabel getLabelNom() {
@@ -273,7 +298,7 @@ public class CreationClientPanel extends JPanel {
         return checkBoxArchive;
     }
 
-    private void inputToPerso(){
+    public void inputToPerso(){
         this.currentClient.setNomClient(this.getTextNom().getText());
         this.currentClient.setPrenomClient(this.getTextPrenom().getText());
         this.currentClient.setAdresse1(this.getTextAdresse().getText());
@@ -296,12 +321,15 @@ public class CreationClientPanel extends JPanel {
         this.inputToPerso();
         System.out.println(this.currentClient);
         System.out.println(this.initClient);
+        System.out.println(this.currentClient.equals(this.initClient));
+        System.out.println((this.initClient.getCodeClient() == 0 && this.currentClient.getCodeClient() > 0));
         return this.currentClient.equals(this.initClient) || (this.initClient.getCodeClient() == 0 && this.currentClient.getCodeClient() > 0) ;
     }
 
     public void resetDialog(){
         this.currentClient = new Client();
-        this.writeInputs(this.currentClient.getCodeClient());
+        this.initClient = this.currentClient.copy();
+        this.writeInputs();
     }
 
     public JButton getButtonSave() {
@@ -316,8 +344,9 @@ public class CreationClientPanel extends JPanel {
                         try {
                             clientController.setClient(currentClient);
                             clientController.updateClient();
-                            ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
                             JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Modifications enregistrées");
+                            initClient = currentClient.copy();
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
