@@ -44,12 +44,12 @@ public class EcranGestionClient extends JPanel implements Observer {
 	
 	URL iconURL;
 	ImageIcon icon;
-
+	
 
 	public EcranGestionClient() {
 		super (new BorderLayout());
 		add(getButtonForm(), BorderLayout.NORTH);
-        add(getPanelScrollTable(), BorderLayout.CENTER);
+		add(getPanelScrollTable(), BorderLayout.CENTER);
 		this.iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
         this.icon = new ImageIcon(iconURL);
         
@@ -195,7 +195,8 @@ public class EcranGestionClient extends JPanel implements Observer {
 		this.getCreationClientPanel().resetDialog();
 		return creationView;
 	}
-		
+	
+			
 	private void addComponentTo(JComponent component, JPanel panel, int x, int y, int width, int height, double weightX) {
 		addComponentTo(component, panel, x, y, width, height, weightX, true);
 	}
@@ -221,11 +222,13 @@ public class EcranGestionClient extends JPanel implements Observer {
 			buttonForm = new JPanel(new GridBagLayout());
 			
 			addComponentTo(getPanelButtons(), buttonForm, 0, 0, 2, 1, 1);
+			
 		}
 		
 		return buttonForm;
 	}
-	
+		
+		
 	private BoutonMenuClient getPanelButtons() {
 		if (panelButtons == null) {
 			panelButtons = new BoutonMenuClient(this);
@@ -233,7 +236,8 @@ public class EcranGestionClient extends JPanel implements Observer {
 		
 		return panelButtons;
 	}
-		
+	
+			
 	public JDialog getCreationViewOnUpdate(int id) {
 		this.getCreationView();
 		this.creationView.setTitle("Mise à jour du client");
