@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CreationClientPanel extends JPanel {
+public class DetailClientPanel extends JPanel {
 
     private JLabel labelNom;
     private JLabel labelPrenom;
@@ -41,11 +41,11 @@ public class CreationClientPanel extends JPanel {
 
     private JButton buttonSave;
 
-    public CreationClientPanel(){
+    public DetailClientPanel(){
         this(0);
     }
 
-    public CreationClientPanel(int id) {
+    public DetailClientPanel(int id) {
         this.currentClient = new Client();
         this.initClient = this.currentClient.copy();
         try {

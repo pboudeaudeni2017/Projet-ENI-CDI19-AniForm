@@ -86,10 +86,11 @@ public class LoginController {
                 AppliTestIHM.loginFrame.setVisible(false);
                 AppliTestIHM.mainFrame.setVisible(true);
                 this.setCurrentPersonnel(resultat);
+                AppliTestIHM.mainFrame.changeTheView(AppliTestIHM.mainFrame.VIEW_GEST_PERSO);
             }
 		} catch (BLLException e) {
 		    e.printStackTrace();
-			AppliTestIHM.showError("Erreur BLL", e.getMessage());
+			AppliTestIHM.showError("Erreur de connexion", e.getMessage());
 		}
 		
 	}

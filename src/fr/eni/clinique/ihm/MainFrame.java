@@ -37,10 +37,10 @@ public class MainFrame extends JFrame{
     private EcranGestionPersonnel jPanelEcranGestionPerso;
     private EcranGestionClient jPanelEcranGestionClient;
 
-    private final String VIEW_GEST_PERSO = "Gestion Personnels";
-    private final String VIEW_GEST_CLIENT = "Gestion Clients";
-    private final String VIEW_AGENDA = "Agenda";
-    private final String VIEW_RdV = "Rendez-vous";
+    public static final String VIEW_GEST_PERSO = "Gestion Personnels";
+    public static final String VIEW_GEST_CLIENT = "Gestion Clients";
+    public static final String VIEW_AGENDA = "Agenda";
+    public static final String VIEW_RdV = "Rendez-vous";
 
     URL iconURL;
     ImageIcon icon;
@@ -61,7 +61,6 @@ public class MainFrame extends JFrame{
         this.iconURL = getClass().getResource("ressources/ico_veto.png");
         this.icon = new ImageIcon(iconURL);
 
-        this.changeTheView(VIEW_GEST_PERSO);
         setIconImage(icon.getImage());
         setResizable(true);
         setTitle("Clinique Vétérinaire");

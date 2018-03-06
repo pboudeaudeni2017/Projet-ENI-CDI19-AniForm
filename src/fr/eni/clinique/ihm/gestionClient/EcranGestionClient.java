@@ -40,7 +40,7 @@ public class EcranGestionClient extends JPanel implements Observer {
 	
 	private JDialog creationView;
 	
-	private CreationClientPanel creationClientPanel;
+	private DetailClientPanel detailClientPanel;
 	
 	URL iconURL;
 	ImageIcon icon;
@@ -89,11 +89,11 @@ public class EcranGestionClient extends JPanel implements Observer {
 		return client;
 	}
 
-	public CreationClientPanel getCreationClientPanel() {
-		if(this.creationClientPanel == null){
-			this.creationClientPanel = new CreationClientPanel();
+	public DetailClientPanel getDetailClientPanel() {
+		if(this.detailClientPanel == null){
+			this.detailClientPanel = new DetailClientPanel();
 		}
-		return creationClientPanel;
+		return detailClientPanel;
 	}
 
 	public JTable getTableClient() {
@@ -167,24 +167,24 @@ public class EcranGestionClient extends JPanel implements Observer {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				reloadView();
-				getCreationClientPanel().inputToPerso();
-				if(!getCreationClientPanel().isSaved()) {
-					int reply = JOptionPane.showConfirmDialog(getCreationClientPanel(), "Toutes modifications non enregistrées seront perdues !\nVoulez-vous vraiment quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				getDetailClientPanel().inputToPerso();
+				if(!getDetailClientPanel().isSaved()) {
+					int reply = JOptionPane.showConfirmDialog(getDetailClientPanel(), "Toutes modifications non enregistrées seront perdues !\nVoulez-vous vraiment quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (reply == JOptionPane.YES_OPTION) {
-						getCreationClientPanel().resetDialog();
+						getDetailClientPanel().resetDialog();
 						creationView.setVisible(false);
 						reloadView();
 					}
 				}
 				else{
-					getCreationClientPanel().resetDialog();
+					getDetailClientPanel().resetDialog();
 					creationView.setVisible(false);
 					reloadView();
 				}
 				getTableClient().clearSelection();
 			}
 		});
-		this.creationView.setContentPane(this.getCreationClientPanel());
+		this.creationView.setContentPane(this.getDetailClientPanel());
 		this.creationView.setVisible(true);
 		this.creationView.setSize(400, 450);
 		this.creationView.setLocation(600, 250);
@@ -192,7 +192,7 @@ public class EcranGestionClient extends JPanel implements Observer {
 		this.creationView.setIconImage(icon.getImage());
 		this.creationView.setResizable(false);
 		this.creationView.setTitle("Création personnel");
-		this.getCreationClientPanel().resetDialog();
+		this.getDetailClientPanel().resetDialog();
 		return creationView;
 	}
 	
@@ -242,7 +242,7 @@ public class EcranGestionClient extends JPanel implements Observer {
 		this.getCreationView();
 		this.creationView.setTitle("Mise à jour du client");
 		try {
-			this.getCreationClientPanel().writeInputs(id);
+			this.getDetailClientPanel().writeInputs(id);
 		} catch (ClientNotFoundException e) {
 			e.printStackTrace();
 		}
