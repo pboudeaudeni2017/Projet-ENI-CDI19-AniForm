@@ -131,6 +131,10 @@ public class Client {
 		this.setCodeClient(codeClient);
 	}
 	
+	public Client copy(){
+		return new Client(this.codeClient, this.nomClient, this.prenomClient, this.adresse1, this.adresse2,
+				this.codePostal, this.ville, this.numTel, this.assurance, this.email, this.remarque, this.archive);
+	}
 	
 	@Override
 	public String toString() {
@@ -162,10 +166,5 @@ public class Client {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
-	
-	
-	
+
 }

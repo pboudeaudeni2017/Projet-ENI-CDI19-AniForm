@@ -25,7 +25,7 @@ public class ClientManager {
 			return this.clientDAO.selectById(client);
 		} catch (DALException e) {
 			e.printStackTrace();
-			throw new BLLException("Récupération du Client impossible");
+			throw new BLLException("Récupération du Client impossible", e);
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class ClientManager {
 			client = ((ClientDAOJdbcImpl)this.clientDAO).selectByName(client);
 		} catch (DALException e) {
 			e.printStackTrace();
-			throw new BLLException("Récupération du Client impossible");
+			throw new BLLException("Récupération du Client impossible", e);
 		}
 		
 		return client;
@@ -50,7 +50,7 @@ public class ClientManager {
 			return clientDAO.selectAll();
 		} catch (DALException e ) {
 			e.printStackTrace();
-			throw new BLLException("Récupération de la liste des clients impossible");
+			throw new BLLException("Récupération de la liste des clients impossible", e);
 		}
 	}
 	
@@ -58,7 +58,7 @@ public class ClientManager {
 		try {
 			this.clientDAO.update(client);
 		} catch (DALException e) {
-			throw new BLLException("Mise à jour du client impossible");
+			throw new BLLException("Mise à jour du client impossible", e);
 		}
 	}
 	
@@ -76,7 +76,7 @@ public class ClientManager {
 		try {
 			this.clientDAO.insert(client);
 		} catch (DALException e){
-			throw new BLLException("Ajout du personnel impossible");
+			throw new BLLException("Ajout du personnel impossible", e);
 			
 		}
 	}

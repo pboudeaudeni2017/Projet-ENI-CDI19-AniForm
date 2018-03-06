@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class ClientDAOJdbcImpl implements DAO<Client> {
 	
-	private static final String INSERT = "INSERT INTO Clients(CodeClient, NomClient, PrenomClient, Adresse1, Adresse2,"
+	private static final String INSERT = "INSERT INTO Clients(NomClient, PrenomClient, Adresse1, Adresse2,"
 										+ "CodePostal, Ville, NumTel, Assurance, Email, Remarque, Archive)"
-										+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+										+ " VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
 	private static final String SELECT_ALL = "SELECT CodeClient, NomClient, PrenomClient, Adresse1, Adresse2, CodePostal," +
 			" Ville, NumTel, Assurance, Email, Remarque, Archive FROM Clients";
@@ -27,12 +27,16 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	private static final String SELECT_BY_ID = SELECT_ALL + " WHERE CodeClient=?";
 
 	private static final String SELECT_BY_NAME = SELECT_ALL + " WHERE NomClient=? AND PrenomClient=?";
+
+	private final static String WITHOUT_ARCHIVE = " WHERE Archive = 0";
+
+	private final static String ORDER_BY_NAME =  " ORDER BY NomClient, PrenomClient";
 	
-	private final static String UPDATE = "UPDATE Clients SET CodeClient=?, NomClient=?, PrenomClient=?, Adresse1=?, Adresse2=?,"
+	private final static String UPDATE = "UPDATE Clients SET NomClient=?, PrenomClient=?, Adresse1=?, Adresse2=?,"
 										+ " CodePostal=?, Ville=?, NumTel=?, Assurance=?, Email=?, Remarque=?, Archive=?"
-										+ " WHERE CodePers=?";
+										+ " WHERE CodeClient=?";
 	
-	private final static String DELETE = "DELETE FROM Clients WHERE CodeClient=?";
+	private final static String DELETE = "UPDATE Clients SET Archive = 1 WHERE CodeClient=?";
 	
 	/* (non-Javadoc)
 	 * @see fr.eni.papeterie.dal.jdbc.ClientDAO#insert(fr.eni.papeterie.bo.Client)
@@ -101,7 +105,7 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	public List<Client> selectAll() throws DALException {
 		List<Client> clients = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()){
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL + WITHOUT_ARCHIVE + ORDER_BY_NAME);
 			ResultSet rs = pStmt.executeQuery();
 			while(rs.next()) {
 				clients.add(map(rs));
@@ -121,7 +125,7 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 			//Pr�paration de la requ�te
 			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
 			objectToStatement(pStmt, client);
-			pStmt.setInt(9, client.getCodeClient());
+			pStmt.setInt(12, client.getCodeClient());
 			
 			//Execution
 			pStmt.executeUpdate();			
@@ -168,17 +172,16 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	}
 	
 	private void objectToStatement(PreparedStatement pStmt, Client client) throws SQLException {
-        pStmt.setInt(1, client.getCodeClient());
-        pStmt.setString(2, client.getNomClient());
-        pStmt.setString(3, client.getPrenomClient());
-        pStmt.setString(4, client.getAdresse1());
-        pStmt.setString(5, client.getAdresse2());
-        pStmt.setString(6, client.getCodePostal());
-        pStmt.setString(7, client.getVille());
-        pStmt.setString(8, client.getNumTel());
-        pStmt.setString(9, client.getAssurance());
-        pStmt.setString(10, client.getEmail());
-        pStmt.setString(11, client.getRemarque());
-        pStmt.setBoolean(12, client.isArchive());
+        pStmt.setString(1, client.getNomClient());
+        pStmt.setString(2, client.getPrenomClient());
+        pStmt.setString(3, client.getAdresse1());
+        pStmt.setString(4, client.getAdresse2());
+        pStmt.setString(5, client.getCodePostal());
+        pStmt.setString(6, client.getVille());
+        pStmt.setString(7, client.getNumTel());
+        pStmt.setString(8, client.getAssurance());
+        pStmt.setString(9, client.getEmail());
+        pStmt.setString(10, client.getRemarque());
+        pStmt.setBoolean(11, client.isArchive());
     }
 }

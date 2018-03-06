@@ -18,7 +18,7 @@ public class PersonnelTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	private List<Personnel> personnels = new ArrayList<>();
 
-	private String[] nomColonnes = {"Nom", "Role", "Archive"};
+	private String[] nomColonnes = {"Nom", "Role"};
 
 	public PersonnelTableModel() throws BLLException {
 		updateData();
@@ -74,11 +74,8 @@ public class PersonnelTableModel extends AbstractTableModel {
 				value = personnel.getNom();
 				break;
 			case 1:
-				value = personnel.getRole();
+				value = personnel.libelleRole();
 				break;
-			case 2:
-				value = personnel.isArchive();
-				break;			
 			}
 		}
 

@@ -34,8 +34,12 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 	private final static String UPDATE = "UPDATE Personnels SET Nom=?, "
 										+ "MotPasse=?, Role=?, Archive=?"
 										+ " WHERE CodePers=?";
+
+	private final static String WITHOUT_ARCHIVE = " WHERE Archive = 0";
+
+	private final static String ORDER_BY_ROLE =  " ORDER BY Role, Nom";
 	
-	private final static String DELETE = "DELETE FROM Personnels WHERE CodePers=?";
+	private final static String DELETE = "UPDATE Personnels SET Archive = 1 FROM Personnels WHERE CodePers=?";
 	
 	/* (non-Javadoc)
 	 * @see fr.eni.papeterie.dal.jdbc.PersonnelDAO#insert(fr.eni.papeterie.bo.Personnel)
@@ -83,7 +87,7 @@ public class PersonnelDAOJdbcImpl implements DAO<Personnel> {
 		Personnel personnel = null;
         try (Connection cnx = DBConnection.getConnexion()){
             //Préparation de la requête
-            PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
+            PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME + ORDER_BY_ROLE);
             pStmt.setString(1, _personnel.getNom());
 
             //Execution
@@ -109,7 +113,7 @@ System.out.println(personnel);
 	public List<Personnel> selectAll() throws DALException {
 		List<Personnel> articles = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()){
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL + WITHOUT_ARCHIVE + ORDER_BY_ROLE);
 			ResultSet rs = pStmt.executeQuery();
 			while(rs.next()) {
 				articles.add(map(rs));
