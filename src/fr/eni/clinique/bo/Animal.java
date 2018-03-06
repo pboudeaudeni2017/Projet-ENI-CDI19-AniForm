@@ -105,6 +105,10 @@ public class Animal {
 		this.setCodeAnimal(codeAnimal);
 	}
 	
+	public Animal copy() {
+		return new Animal(this.codeAnimal, this.nomAnimal, this.sexe, this.couleur, this.race_espece, this.client, this.tatouage, this.antecedent, this.archive);
+	}
+	
 	
 	
 	
