@@ -66,13 +66,12 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	}
 	
 	
-	public Animal selectByName(String name) throws DALException {
+	public Animal selectByName(Animal _animal) throws DALException {
 		Animal animal = null;
-		
 		try (Connection cnx = DBConnection.getConnexion()) {
 			
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
-			pStmt.setString(1, name);
+			pStmt.setString(1, _animal.getNomAnimal());
 			
 			ResultSet rs = pStmt.executeQuery();
 			if(rs.next()) {

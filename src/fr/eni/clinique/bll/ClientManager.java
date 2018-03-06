@@ -108,13 +108,6 @@ public class ClientManager {
 		if (exceptions.size() > 0) {
 			throw exceptions;
 		}
-			
-		
-		
-			
 	}
-	
-	
-	
-	
+		
 }
