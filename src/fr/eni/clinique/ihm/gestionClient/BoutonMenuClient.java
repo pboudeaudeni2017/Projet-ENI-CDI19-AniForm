@@ -15,6 +15,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
 import fr.eni.clinique.bll.BLLException;
@@ -108,15 +110,37 @@ public class BoutonMenuClient extends JPanel {
 	public JTextField getTxtSearch() {
 		if (txtSearch == null) {
 			txtSearch = new JTextField();
-			txtSearch.addActionListener((ActionEvent e) -> {
-				EcranGestionClient ecranGestionClient = ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel());
-				JTable jTable = ecranGestionClient.getTableClient();
-				TableRowSorter<ClientTableModel> sorter = new TableRowSorter<ClientTableModel>(((ClientTableModel) jTable.getModel())); 
-			    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + getTxtSearch().getText(), 0));
-			  
+			txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+				
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					warn();
+					
+				}
+				
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					warn();
+					
+				}
+				
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					warn();
+					
+				}
+				
+				public void warn() {
+					EcranGestionClient ecranGestionClient = ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel());
+					JTable jTable = ecranGestionClient.getTableClient();
+					TableRowSorter<ClientTableModel> sorter = new TableRowSorter<ClientTableModel>(((ClientTableModel) jTable.getModel())); 
+				    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + getTxtSearch().getText(), 0));
+				  
 
-			    jTable.setRowSorter(sorter);			    
+				    jTable.setRowSorter(sorter);
+				}
 			});
+			
 		}
 
 		return txtSearch;
