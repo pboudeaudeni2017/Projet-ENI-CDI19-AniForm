@@ -13,6 +13,9 @@ public class Personnel {
 	public static final String VETERINAIRE = "VET";
 	public static final String SECRETAIRE = "SEC";
 	public static final String ADMINISTRATEUR = "ADM";
+    public static final String VETERINAIRE_LABEL = "Vétérinaire";
+    public static final String SECRETAIRE_LABEL = "Secrétaire";
+    public static final String ADMINISTRATEUR_LABEL = "Administrateur";
 	
 	
 	public int getCodePers() {
@@ -77,15 +80,15 @@ public class Personnel {
 		String result;
 		switch(this.getRole()){
 			case ADMINISTRATEUR:
-				result = "Administrateur";
+				result = ADMINISTRATEUR_LABEL;
 				break;
 
 			case SECRETAIRE:
-				result = "Secrétaire";
+				result = SECRETAIRE_LABEL;
 				break;
 
 			case VETERINAIRE:
-				result = "Vétérinaire";
+				result = VETERINAIRE_LABEL;
 				break;
 
 			default:

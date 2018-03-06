@@ -19,20 +19,18 @@ public class CreationPersonnelPanel extends JPanel {
 
     private JTextField textNom;
     private JTextField textMotDePasse;
-    private JTextField textRole;
     private JCheckBox checkBoxArchive;
+    private JComboBox comboBoxRole;
 
     private Personnel currentPerso;
     private Personnel initPerso;
     private PersoController persoController;
 
+    private static final String[] ROLES = {Personnel.ADMINISTRATEUR_LABEL, Personnel.VETERINAIRE_LABEL, Personnel.SECRETAIRE_LABEL};
+
     private JButton buttonSave;
 
-    public CreationPersonnelPanel(){
-        this(0);
-    }
-
-    public CreationPersonnelPanel(int id) {
+    public CreationPersonnelPanel() {
         this.persoController = new PersoController();
         this.currentPerso = new Personnel();
         this.initPerso = this.currentPerso.copy();
@@ -43,7 +41,7 @@ public class CreationPersonnelPanel extends JPanel {
         addComponentTo(this.getLabelMotDePasse(), this, 0, 1, 1, 1, 0.1);
         addComponentTo(this.getTextMotDePasse(), this, 1, 1, 1, 1, 0.9);
         addComponentTo(this.getLabelRole(), this, 0, 2, 1, 1, 0.1);
-        addComponentTo(this.getTextRole(), this, 1, 2, 1, 1, 0.9);
+        addComponentTo(this.getComboBoxRole(), this, 1, 2, 1, 1, 0.9);
         addComponentTo(this.getLabelArchive(), this, 0, 3, 1, 1, 0.1);
         addComponentTo(this.getCheckBoxArchive(), this, 1, 3, 1, 1, 0.9);
         addComponentTo(this.getButtonSave(), this, 0, 6, 2, 1, 1);
@@ -64,132 +62,159 @@ public class CreationPersonnelPanel extends JPanel {
         gbc.gridwidth = width;
         gbc.gridheight = height;
         gbc.weightx = weightX;
-        if(fillHorizontal) {
+        if (fillHorizontal) {
             gbc.fill = GridBagConstraints.HORIZONTAL;
         }
         gbc.insets = new Insets(7, 10, 5, 10);
         panel.add(component, gbc);
     }
 
-    public void writeInputs(int id){
+    public void writeInputs(int id) {
         this.currentPerso = this.persoController.getPerso(id);
         this.initPerso = this.currentPerso.copy();
         this.getTextNom().setText(this.currentPerso.getNom());
         this.getTextMotDePasse().setText(this.currentPerso.getMotPasse());
-        this.getTextRole().setText(this.currentPerso.getRole());
+        int selectedRole = 2;
+        switch (this.currentPerso.getRole()) {
+            case Personnel.ADMINISTRATEUR:
+                selectedRole = 0;
+                break;
+
+            case Personnel.VETERINAIRE:
+                selectedRole = 1;
+                break;
+
+            case Personnel.SECRETAIRE:
+                selectedRole = 2;
+                break;
+        }
+        this.getComboBoxRole().setSelectedIndex(selectedRole);
         this.getCheckBoxArchive().setSelected(this.currentPerso.isArchive());
     }
 
+    public JComboBox getComboBoxRole() {
+        if (this.comboBoxRole == null) {
+            this.comboBoxRole = new JComboBox(ROLES);
+        }
+        return comboBoxRole;
+    }
+
     public JLabel getLabelNom() {
-        if(this.labelNom == null){
+        if (this.labelNom == null) {
             this.labelNom = new JLabel("Nom : ");
         }
         return labelNom;
     }
 
     public JLabel getLabelMotDePasse() {
-        if(this.labelMotDePasse == null){
+        if (this.labelMotDePasse == null) {
             this.labelMotDePasse = new JLabel("Mot de passe: ");
         }
         return labelMotDePasse;
     }
 
     public JLabel getLabelRole() {
-        if(this.labelRole == null){
+        if (this.labelRole == null) {
             this.labelRole = new JLabel("Rôle : ");
         }
         return labelRole;
     }
 
     public JLabel getLabelArchive() {
-        if(this.labelArchive == null){
+        if (this.labelArchive == null) {
             this.labelArchive = new JLabel("Archive : ");
         }
         return labelArchive;
     }
 
     public JTextField getTextNom() {
-        if(this.textNom == null){
+        if (this.textNom == null) {
             this.textNom = new JTextField();
         }
         return textNom;
     }
 
     public JTextField getTextMotDePasse() {
-        if(this.textMotDePasse == null){
+        if (this.textMotDePasse == null) {
             this.textMotDePasse = new JTextField();
         }
         return textMotDePasse;
     }
 
-    public JTextField getTextRole() {
-        if(this.textRole == null){
-            this.textRole = new JTextField();
-        }
-        return textRole;
-    }
-
     public JCheckBox getCheckBoxArchive() {
-        if(this.checkBoxArchive == null){
+        if (this.checkBoxArchive == null) {
             this.checkBoxArchive = new JCheckBox();
         }
         return checkBoxArchive;
     }
 
-    private void inputToPerso(){
+    private void inputToPerso() {
         this.currentPerso.setNom(this.getTextNom().getText());
         this.currentPerso.setMotPasse(this.getTextMotDePasse().getText());
-        this.currentPerso.setRole(this.getTextRole().getText());
+        switch (ROLES[this.getComboBoxRole().getSelectedIndex()]) {
+            case Personnel.ADMINISTRATEUR_LABEL:
+                this.currentPerso.setRole(Personnel.ADMINISTRATEUR);
+                break;
+
+            case Personnel.VETERINAIRE_LABEL:
+                this.currentPerso.setRole(Personnel.VETERINAIRE);
+                break;
+
+            case Personnel.SECRETAIRE_LABEL:
+                this.currentPerso.setRole(Personnel.SECRETAIRE);
+                break;
+        }
         this.currentPerso.setArchive(this.getCheckBoxArchive().isSelected());
     }
 
-    private void quitter(){
-        EcranGestionPersonnel ecranGestionPersonnel =  ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel());
+    private void quitter() {
+        EcranGestionPersonnel ecranGestionPersonnel = ((EcranGestionPersonnel) AppliTestIHM.mainFrame.getCurrentPanel());
         ecranGestionPersonnel.reloadView();
         ecranGestionPersonnel.getCreationView().setVisible(false);
     }
 
-    public boolean isSaved(){
+    public boolean isSaved() {
         this.inputToPerso();
-        System.out.println(this.currentPerso);
-        System.out.println(this.initPerso);
-        return this.currentPerso.equals(this.initPerso) || (this.initPerso.getCodePers() == 0 && this.currentPerso.getCodePers() > 0) ;
+        System.out.println("Current: " + this.currentPerso);
+        System.out.println("Last: " + this.initPerso);
+        return this.currentPerso.equals(this.initPerso) || (this.initPerso.getCodePers() == 0 && this.currentPerso.getCodePers() > 0);
     }
 
-    public void resetDialog(){
+    public void resetDialog() {
         this.currentPerso = new Personnel();
         this.writeInputs(this.currentPerso.getCodePers());
     }
 
     public JButton getButtonSave() {
-        if(this.buttonSave == null){
+        if (this.buttonSave == null) {
             this.buttonSave = new JButton("Enregistrer");
             this.buttonSave.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(currentPerso);
                     inputToPerso();
-                    if(currentPerso.getCodePers() > 0){
+                    if (currentPerso.getCodePers() > 0) {
                         try {
                             persoController.updatePerso(currentPerso);
-                            ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            EcranGestionPersonnel ecranGestionPersonnel = ((EcranGestionPersonnel) AppliTestIHM.mainFrame.getCurrentPanel());
+                            ecranGestionPersonnel.reloadView();
                             JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Modifications enregistrées");
+                            initPerso = currentPerso.copy();
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
                         }
-                    }
-                    else{
+                    } else {
                         try {
                             persoController.addPerso(currentPerso);
-                            ((EcranGestionPersonnel)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            ((EcranGestionPersonnel) AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
                             JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentPerso.toString() + " réussite");
+                            initPerso = currentPerso.copy();
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());
                         }
                     }
-                    System.out.println(currentPerso);
                 }
             });
         }
