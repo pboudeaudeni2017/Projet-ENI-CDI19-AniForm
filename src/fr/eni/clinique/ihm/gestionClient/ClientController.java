@@ -75,8 +75,9 @@ public class ClientController {
 	    this.setClient(this.listeClients.indexOf(client));
     }
 
-    public void deleteClient() throws BLLException {
+    public void deleteClient() throws BLLException, ClientNotFoundException {
 	    this.manager.deleteClient(this.currentClient.get());
+	    this.setClient(0);
     }
 	
 	public void registerToCurrentClient(Observer obs) {

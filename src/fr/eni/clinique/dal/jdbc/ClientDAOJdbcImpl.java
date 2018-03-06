@@ -27,12 +27,16 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	private static final String SELECT_BY_ID = SELECT_ALL + " WHERE CodeClient=?";
 
 	private static final String SELECT_BY_NAME = SELECT_ALL + " WHERE NomClient=? AND PrenomClient=?";
+
+	private final static String WITHOUT_ARCHIVE = " WHERE Archive = 0";
+
+	private final static String ORDER_BY_NAME =  " ORDER BY NomClient, PrenomClient";
 	
 	private final static String UPDATE = "UPDATE Clients SET NomClient=?, PrenomClient=?, Adresse1=?, Adresse2=?,"
 										+ " CodePostal=?, Ville=?, NumTel=?, Assurance=?, Email=?, Remarque=?, Archive=?"
-										+ " WHERE CodePers=?";
+										+ " WHERE CodeClient=?";
 	
-	private final static String DELETE = "DELETE FROM Clients WHERE CodeClient=?";
+	private final static String DELETE = "UPDATE Clients SET Archive = 1 WHERE CodeClient=?";
 	
 	/* (non-Javadoc)
 	 * @see fr.eni.papeterie.dal.jdbc.ClientDAO#insert(fr.eni.papeterie.bo.Client)
@@ -101,7 +105,7 @@ public class ClientDAOJdbcImpl implements DAO<Client> {
 	public List<Client> selectAll() throws DALException {
 		List<Client> clients = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()){
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL + WITHOUT_ARCHIVE + ORDER_BY_NAME);
 			ResultSet rs = pStmt.executeQuery();
 			while(rs.next()) {
 				clients.add(map(rs));
