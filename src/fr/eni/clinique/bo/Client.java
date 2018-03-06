@@ -166,10 +166,5 @@ public class Client {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
-	
-	
-	
+
 }

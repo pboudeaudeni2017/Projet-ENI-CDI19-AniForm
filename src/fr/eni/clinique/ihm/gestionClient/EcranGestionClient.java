@@ -104,7 +104,6 @@ public class EcranGestionClient extends JPanel implements Observer {
 				tableClient.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				tableClient.setRowHeight(30);
 				tableClient.setPreferredScrollableViewportSize(new Dimension(825, 320));
-				tableClient.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				tableClient.setFillsViewportHeight(true);
 				tableClient.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 

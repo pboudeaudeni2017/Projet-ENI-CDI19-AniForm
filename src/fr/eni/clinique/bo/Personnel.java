@@ -9,6 +9,10 @@ public class Personnel {
 	private String motPasse;
 	private String role;
 	private boolean archive;
+
+	public static final String VETERINAIRE = "VET";
+	public static final String SECRETAIRE = "SEC";
+	public static final String ADMINISTRATEUR = "ADM";
 	
 	
 	public int getCodePers() {
@@ -67,6 +71,27 @@ public class Personnel {
 	public Personnel(int codePers, String login, String motPasse, String role, boolean archive) {
 		this(login, motPasse, role, archive);
 		this.setCodePers(codePers);
+	}
+
+	public String libelleRole(){
+		String result;
+		switch(this.getRole()){
+			case ADMINISTRATEUR:
+				result = "Administrateur";
+				break;
+
+			case SECRETAIRE:
+				result = "Secrétaire";
+				break;
+
+			case VETERINAIRE:
+				result = "Vétérinaire";
+				break;
+
+			default:
+				result = "Aucun rôle";
+		}
+		return result;
 	}
 	
 	@Override
