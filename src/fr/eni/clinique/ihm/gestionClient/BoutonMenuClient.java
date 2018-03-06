@@ -72,7 +72,11 @@ public class BoutonMenuClient extends JPanel {
 		if(bttDelete == null) {
 			bttDelete = new JButton("Supprimer");
 			bttDelete.addActionListener((ActionEvent e) -> {
-				int selectedRow = this.gestionClient.getTableClient().getSelectedRow();
+				JTable jTable = this.gestionClient.getTableClient();
+				int selectedRow = jTable.getSelectedRow();
+				if (jTable.getRowSorter()!=null) {
+					selectedRow = jTable.getRowSorter().convertRowIndexToModel(selectedRow);
+				}
 				Client client = this.gestionClient.getClientFromJTable(selectedRow);
 				this.gestionClient.getTableClient().clearSelection();
 				int reply = JOptionPane.showConfirmDialog(bttDelete, "Voulez-vous vraiment supprimer " + client.getNomClient() + " ?\nCette action est définitive", "Suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
