@@ -6,6 +6,7 @@ import fr.eni.clinique.bo.Client;
 import fr.eni.clinique.bo.Personnel;
 import fr.eni.clinique.ihm.AppliTestIHM;
 import fr.eni.clinique.ihm.gestionClient.*;
+import fr.eni.clinique.ihm.gestionAnimaux.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -20,13 +21,18 @@ public class AnimalClientPanel extends JPanel{
     private JTable tableAnimal;
     private JScrollPane scrollPane;
     private AnimalTableModel model;
+    
+    private BoutonMenuAnimal panelButtons;
+    
+    private EcranGestionAnimal ecranGestionAnimal;
 
     public AnimalClientPanel() {
         super(new GridBagLayout());
         addComponentTo(this.getDetailClientPanel(), this, 0, 0, 1, 1, 0.8);
         addComponentTo(this.getPanelScrollTable(), this, 1, 0, 1, 1, 0.2);
-        /*add(this.getDetailClientPanel(), BorderLayout.WEST);
-        add(this.getPanelScrollTable(), BorderLayout.EAST);*/
+        //addComponentTo(this.getPanelButtons(), this, 1, 1, 1, 1, 1);
+        /*add(this.getDetailClientPanel(), BorderLayout.NORTH);
+        add(this.getPanelScrollTable(), BorderLayout.SOUTH);*/
     }
 
     public DetailClientPanel getDetailClientPanel() {
@@ -39,13 +45,15 @@ public class AnimalClientPanel extends JPanel{
 
     private JPanel getPanelScrollTable() {
         if(this.panelScrollTable == null) {
-            this.panelScrollTable = new JPanel();
-            this.panelScrollTable.add(this.getScrollPane());
+            this.panelScrollTable = new JPanel(new BorderLayout());
+            
+            this.panelScrollTable.add(this.getScrollPane(), BorderLayout.NORTH);
+            this.panelScrollTable.add(this.getPanelButtons(), BorderLayout.SOUTH);
+            //this.panelScrollTable.add(this.getEcranGestionAnimal());
             //this.setPreferredSize(new Dimension(600, 200));
         }
         return this.panelScrollTable;
     }
-
 
     private JScrollPane getScrollPane() {
         if(scrollPane == null) {
@@ -55,8 +63,18 @@ public class AnimalClientPanel extends JPanel{
         }
         return scrollPane;
     }
+    
+    
+  
 
-    public void stateVisible() {
+    public BoutonMenuAnimal getPanelButtons() {
+    	if (panelButtons == null) {
+    		panelButtons = new BoutonMenuAnimal(this);
+    	}
+		return panelButtons;
+	}
+
+	public void stateVisible() {
         getTableClient().setVisible(true);
     }
 
@@ -164,6 +182,14 @@ public class AnimalClientPanel extends JPanel{
         }
         gbc.insets = new Insets(7, 10, 5, 10);
         panel.add(component, gbc);
+    }
+    
+    private EcranGestionAnimal getEcranGestionAnimal() {
+    	if (ecranGestionAnimal == null) {
+    		ecranGestionAnimal = new EcranGestionAnimal();
+    	}
+    	
+    	return ecranGestionAnimal;
     }
 
 }

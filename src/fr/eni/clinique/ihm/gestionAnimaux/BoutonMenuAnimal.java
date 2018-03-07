@@ -20,12 +20,12 @@ public class BoutonMenuAnimal extends JPanel {
 	private JButton bttNew;
 	private JButton bttDelete;
 	
-	private EcranGestionAnimal gestionAnimal;
+	private AnimalClientPanel animalClientPanel;
 	private AnimalController animalController;
 	
-	public BoutonMenuAnimal (EcranGestionAnimal gestionAnimal) {
+	public BoutonMenuAnimal(AnimalClientPanel animalClientPanel) {
 		super();
-		this.gestionAnimal = gestionAnimal;
+		this.animalClientPanel = animalClientPanel;
 		
 		try {
 			this.animalController = AnimalController.getInstance();
@@ -42,9 +42,10 @@ public class BoutonMenuAnimal extends JPanel {
 	private JButton getBttNew() {
 		if (bttNew == null) {
 			bttNew = new JButton("Ajouter");
-			bttNew.addActionListener((ActionEvent e) -> {
-				this.gestionAnimal.getCreationView().setVisible(true);
-			});
+			/* bttNew.addActionListener((ActionEvent e) -> {
+				this.animalClientPanel.getCreationView().setVisible(true);
+				System.out.println("Hello new");
+			}); */
 		}
 		
 		return bttNew;
@@ -54,24 +55,24 @@ public class BoutonMenuAnimal extends JPanel {
 	private JButton getBttDelete() {
 		if (bttDelete == null) {
 			bttDelete = new JButton("Supprimer");
-			bttDelete.addActionListener((ActionEvent e) -> {
-				int selectedRow = this.gestionAnimal.getTableAnimal().getSelectedRow();
+			/* bttDelete.addActionListener((ActionEvent e) -> {
+				int selectedRow = this.animalClientPanel.getTableAnimal().getSelectedRow();
 
 				Animal animal = this.gestionAnimal.getAnimalFromJTable(selectedRow);
-				this.gestionAnimal.getTableAnimal().clearSelection();
+				this.animalClientPanel.getTableAnimal().clearSelection();
 
 				int reply = JOptionPane.showConfirmDialog(bttDelete, "Voulez-vous vraiment supprimer" + animal.getNomAnimal() + " ?\nCette action est définitive", "Suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (reply == JOptionPane.YES_NO_OPTION) {
 					try {
 						this.animalController.deleteAnimal(animal);
-						this.gestionAnimal.reloadView();
+						this.animalClientPanel.reloadView();
 						JOptionPane.showMessageDialog(this, "Suppression de l'animal" + animal.getNomAnimal() + " réussie !");
 					} catch (BLLException e1) {
 						e1.printStackTrace();
 						AppliTestIHM.showError("Erreur de suppression", "Erreur de suppression:\n" + e1.getMessage());
 					}
 				}
-			});
+			}); */
 		}
 
 		return bttDelete;
