@@ -85,10 +85,6 @@ public class AnimalManager {
 			throw new BLLException("Animal null");
 		}
 		
-		if (animal.getCodeAnimal() >= 0) {
-			exceptions.ajouterException(new ParameterException("CodeAnimal", "Doit être supérieur ou égal à 0"));
-		}
-		
 		if (animal.getNomAnimal() ==  null ||
 				animal.getNomAnimal().trim().length() == 0) {
 			exceptions.ajouterException(new ParameterException("Nom", needed));

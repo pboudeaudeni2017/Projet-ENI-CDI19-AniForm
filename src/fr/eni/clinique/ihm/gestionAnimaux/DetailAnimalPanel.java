@@ -7,17 +7,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.security.auth.login.AccountNotFoundException;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Animal;
+import fr.eni.clinique.bo.Client;
 import fr.eni.clinique.bo.Race;
 import fr.eni.clinique.ihm.AppliTestIHM;
+import fr.eni.clinique.ihm.gestionClient.ClientController;
 import fr.eni.clinique.ihm.gestionClient.EcranGestionClient;
 
 public class DetailAnimalPanel extends JPanel {
@@ -37,8 +41,8 @@ public class DetailAnimalPanel extends JPanel {
 	private JLabel lblRace;
 	private JLabel lblTatouage;
 
-	private JTextField txtClient;
-	private JTextField txtCode;
+	private JLabel txtClient;
+	private JLabel txtCode;
 	private JTextField txtNom;
 	private JTextField txtSexe;
 	private JTextField txtCouleur;
@@ -49,6 +53,7 @@ public class DetailAnimalPanel extends JPanel {
 	private Animal initAnimal;
 	private Animal currentAnimal;
 	private AnimalController animalController;
+	private ClientController clientController;
 	
 	private JButton buttonSave;
 
@@ -61,6 +66,7 @@ public class DetailAnimalPanel extends JPanel {
 		this.initAnimal = this.currentAnimal.copy();
 
 		try {
+			this.clientController = ClientController.getInstance();
 			this.animalController = AnimalController.getInstance();
 		} catch (BLLException e) {
 			e.printStackTrace();
@@ -82,19 +88,18 @@ public class DetailAnimalPanel extends JPanel {
 		addComponentTo(this.getLblCode(), this, 0, 1, 1, 1, 0.1);
 		addComponentTo(this.getTxtCode(), this, 1, 1, 1, 1, 0.9);
 		addComponentTo(this.getLblNom(), this, 0, 2, 1, 1, 0.1);
-		addComponentTo(this.getTxtNom(), this, 1, 2, 1, 1, 0.9);
-		addComponentTo(this.getLblSexe(), this, 0, 3, 1, 1, 0.1);
-		addComponentTo(this.getTxtSexe(), this, 1, 3, 1, 1, 0.9);
+		addComponentTo(this.getTxtNom(), this, 1, 2, 1, 1, 0.5);
+		addComponentTo(this.getTxtSexe(), this, 2, 2, 1, 1, 0.5);
 		addComponentTo(this.getLblCouleur(), this, 0, 4, 1, 1, 0.1);
 		addComponentTo(this.getTxtCouleur(), this, 1, 4, 1, 1, 0.9);
-		addComponentTo(this.getLblEspece(), this, 0, 5, 1, 1, 0.1);
-		addComponentTo(this.getTxtEspece(), this, 1, 5, 1, 1, 0.9);
-		addComponentTo(this.getLblRace(), this, 0, 6, 1, 1, 0.1);
-		addComponentTo(this.getTxtRace(), this, 1, 6, 1, 1, 0.9);
+		addComponentTo(this.getLblEspece(), this, 0, 5, 1, 1, 0.5);
+		addComponentTo(this.getTxtEspece(), this, 1, 5, 1, 1, 0.5);
+		addComponentTo(this.getLblRace(), this, 2, 5, 1, 1, 0.5);
+		addComponentTo(this.getTxtRace(), this, 3, 5, 1, 1, 0.5);
 		addComponentTo(this.getLblTatouage(), this, 0, 7, 1, 1, 0.1);
 		addComponentTo(this.getTxtTatouage(), this, 1, 7, 1, 1, 0.9);
 		
-		addComponentTo(this.getButtonSave(), this, 0, 13, 2, 2, 1);
+		addComponentTo(this.getButtonSave(), this, 3, 13, 1, 2, 1);
 
 	}
 	
@@ -111,7 +116,7 @@ public class DetailAnimalPanel extends JPanel {
 	}
 		
 	public void writeInputs() {
-		this.getTxtClient().setText(this.currentAnimal.getClient().getNomClient());
+		this.getTxtClient().setText(this.currentAnimal.getClient().getNomClient() + " " + this.currentAnimal.getClient().getPrenomClient());
 		this.getTxtCode().setText(String.valueOf(this.currentAnimal.getCodeAnimal()));
 		this.getTxtNom().setText(this.currentAnimal.getNomAnimal());
 		this.getTxtSexe().setText(this.currentAnimal.getSexe());
@@ -127,7 +132,13 @@ public class DetailAnimalPanel extends JPanel {
 		this.currentAnimal.setNomAnimal(this.getTxtNom().getText());
 		this.currentAnimal.setSexe(this.getTxtSexe().getText());
 		this.currentAnimal.setCouleur(this.getTxtCouleur().getText());
-		
+		try {
+			Client client = this.clientController.getCurrentClient();
+			this.currentAnimal.setClient(client);
+		} catch (BLLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Race race = new Race();
 		race.setEspece((this.getTxtEspece().getText()));
 		race.setRace(this.getTxtRace().getText());
@@ -175,12 +186,26 @@ public class DetailAnimalPanel extends JPanel {
 							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout de l'animal\n" + currentAnimal.toString() + " réussie");
 						} catch (BLLException e1) {
 							e1.printStackTrace();
+							AppliTestIHM.showError("Erreur de mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
+						} catch (AnimalNotFoundException e1) {
+							e1.printStackTrace();
+							AppliTestIHM.showError("Erreur de mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
+						}
+					} else {
+						try {
+							animalController.addAnimal(currentAnimal);
+							((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+							initAnimal = currentAnimal.copy();
+							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout de l'animal\n" + currentAnimal.toString() + " réussie");
+						} catch (BLLException e1) {
+							e1.printStackTrace();
 							AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());
 						} catch (AnimalNotFoundException e1) {
 							e1.printStackTrace();
 							AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());
 						}
 					}
+					
 					System.out.println(currentAnimal);
 				}
 			});
@@ -245,17 +270,16 @@ public class DetailAnimalPanel extends JPanel {
 		return lblTatouage;
 	}
 
-	public JTextField getTxtClient() {
+	public JLabel getTxtClient() {
 		if (txtClient == null) {
-			txtClient = new JTextField();
+			txtClient = new JLabel();
 		}
 		return txtClient;
 	}
 
-	public JTextField getTxtCode() {
+	public JLabel getTxtCode() {
 		if (txtCode == null) {
-			txtCode = new JTextField();
-			txtCode.setEnabled(false);
+			txtCode = new JLabel();
 		}
 		return txtCode;
 	}

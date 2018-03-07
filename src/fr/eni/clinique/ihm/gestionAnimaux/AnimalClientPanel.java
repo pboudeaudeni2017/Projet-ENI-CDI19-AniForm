@@ -197,7 +197,7 @@ public class AnimalClientPanel extends JPanel{
 
 		this.creationView.setContentPane(this.getCreationAnimalPanel());
 		this.creationView.setVisible(true);
-		this.creationView.setSize(400, 400);
+		this.creationView.setSize(400, 300);
 		this.creationView.setLocation(600, 250);
 
 		

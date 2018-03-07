@@ -42,10 +42,9 @@ public class BoutonMenuAnimal extends JPanel {
 	private JButton getBttNew() {
 		if (bttNew == null) {
 			bttNew = new JButton("Ajouter");
-			/* bttNew.addActionListener((ActionEvent e) -> {
+			bttNew.addActionListener((ActionEvent e) -> {
 				this.animalClientPanel.getCreationView().setVisible(true);
-				System.out.println("Hello new");
-			}); */
+			});
 		}
 		
 		return bttNew;
