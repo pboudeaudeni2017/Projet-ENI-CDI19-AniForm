@@ -8,6 +8,7 @@ import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Animal;
 import fr.eni.clinique.bo.Observable;
 import fr.eni.clinique.bo.Observable.Observer;
+import fr.eni.clinique.ihm.gestionClient.ClientController;
 
 public class AnimalController {
 	
@@ -15,15 +16,17 @@ public class AnimalController {
 	private int indexAnimal;
 	
 	private Observable<Animal> currentAnimal = new Observable<>();
-	
+
+	private ClientController clientController;
 	private AnimalManager manager;
 	private static AnimalController instance = null;
 	
 	
 	private AnimalController() throws BLLException {
+		this.clientController = ClientController.getInstance();
 		manager = new AnimalManager();
 		
-		listeAnimaux = manager.getAnimaux();
+		listeAnimaux = manager.getAnimaux(this.clientController.getCurrentClient().getCodeClient());
 		indexAnimal = 0;
 	}
 	

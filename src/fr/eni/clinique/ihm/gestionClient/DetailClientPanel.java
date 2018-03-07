@@ -319,10 +319,6 @@ public class DetailClientPanel extends JPanel {
 
     public boolean isSaved(){
         this.inputToPerso();
-        System.out.println(this.currentClient);
-        System.out.println(this.initClient);
-        System.out.println(this.currentClient.equals(this.initClient));
-        System.out.println((this.initClient.getCodeClient() == 0 && this.currentClient.getCodeClient() > 0));
         return this.currentClient.equals(this.initClient) || (this.initClient.getCodeClient() == 0 && this.currentClient.getCodeClient() > 0) ;
     }
 
@@ -345,8 +341,8 @@ public class DetailClientPanel extends JPanel {
                             clientController.setClient(currentClient);
                             clientController.updateClient();
                             ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
-                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Modifications enregistrées");
                             initClient = currentClient.copy();
+                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Modifications enregistrées");
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
@@ -359,6 +355,7 @@ public class DetailClientPanel extends JPanel {
                         try {
                             clientController.addClient(currentClient);
                             ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+                            initClient = currentClient.copy();
                             JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentClient.toString() + " réussite");
                         } catch (BLLException e1) {
                             e1.printStackTrace();

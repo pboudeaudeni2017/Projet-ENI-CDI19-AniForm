@@ -12,20 +12,26 @@ import javax.swing.table.AbstractTableModel;
 import fr.eni.clinique.bll.AnimalManager;
 import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Animal;
+import fr.eni.clinique.bo.Client;
+import fr.eni.clinique.ihm.gestionClient.ClientController;
 
 public class AnimalTableModel extends AbstractTableModel{
 	
 	private List<Animal> animaux = new ArrayList<>();
 	
-	private String[] nomColonnes = {"Code", "Nom", "Sexe", "Couleur", "Race", "Espece", "Tatouage"};	
+	private String[] nomColonnes = {"Code", "Nom", "Sexe", "Couleur", "Race", "Espece", "Tatouage"};
+
+	private ClientController clientController;
 		
 	
 	public AnimalTableModel() throws BLLException {
+		this.clientController = ClientController.getInstance();
 		updateData();
 	}
 	
 	public void updateData() throws BLLException {
-		animaux = new AnimalManager().getAnimaux();
+		animaux = new AnimalManager().getAnimaux(this.clientController.getCurrentClient().getCodeClient());
+		System.out.println(animaux);
 		fireTableDataChanged();
 	}
 	

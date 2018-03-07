@@ -16,7 +16,9 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 	
 	private static final String INSERT = "INSERT into Races(race, espece) VALUES (?, ?)";
 	
-	private static final String SELECT_ALL = "SELECT * FROM Races";
+	private static final String SELECT_ALL = "SELECT Espece, Race FROM Races";
+
+	private static final String SELECT_ESPECES_RACE = SELECT_ALL + "WHERE Espece=?";
 	
 	private static final String UPDATE = "UPDATE Races SET Race=?, Espece=? WHERE Race=? AND Espece=?";
 	
@@ -59,7 +61,22 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 		return raceObject;
 	}
 
-	
+	public Race selectByEspece(Race raceObject) throws DALException {
+		try (Connection cnx = DBConnection.getConnexion()) {
+
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ESPECES_RACE);
+			pStmt.setString(1, raceObject.getRace());
+			pStmt.setString(2, raceObject.getEspece());
+
+			ResultSet rs = pStmt.executeQuery();
+			if(rs.next()) {
+				raceObject = map(rs);
+			}
+		} catch (SQLException e) {
+			throw new DALException("Races", e);
+		}
+		return raceObject;
+	}
 	
 	@Override
 	public List<Race> selectAll() throws DALException {

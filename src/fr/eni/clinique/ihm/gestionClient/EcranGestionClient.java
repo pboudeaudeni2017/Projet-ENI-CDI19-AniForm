@@ -18,6 +18,7 @@ import fr.eni.clinique.bo.Client;
 import fr.eni.clinique.bo.Observable.Observer;
 import fr.eni.clinique.ihm.AppliTestIHM;
 import fr.eni.clinique.ihm.MainFrame;
+import fr.eni.clinique.ihm.gestionAnimaux.AnimalClientPanel;
 
 
 public class EcranGestionClient extends JPanel implements Observer {
@@ -41,6 +42,9 @@ public class EcranGestionClient extends JPanel implements Observer {
 	private JDialog creationView;
 	
 	private DetailClientPanel detailClientPanel;
+
+	private AnimalClientPanel animalClientPanel;
+	private JFrame clientAnimals;
 	
 	URL iconURL;
 	ImageIcon icon;
@@ -128,7 +132,8 @@ public class EcranGestionClient extends JPanel implements Observer {
                             JTable target = (JTable)e.getSource();
                             int row = target.getSelectedRow();
                             Client client = getClientFromJTable(row);
-                            getCreationViewOnUpdate(client.getCodeClient());
+                            //getCreationViewOnUpdate(client.getCodeClient());
+                            getClientAnimals(client.getCodeClient());
                             e.consume();
                         }
                     }
@@ -216,8 +221,55 @@ public class EcranGestionClient extends JPanel implements Observer {
 		gbc.insets = new Insets(7, 10, 5, 10);
 		panel.add(component, gbc);
 	}
-	
-	private JPanel getButtonForm() {
+
+	public AnimalClientPanel getAnimalClientPanel() {
+		if(this.animalClientPanel == null){
+			this.animalClientPanel = new AnimalClientPanel();
+		}
+		return animalClientPanel;
+	}
+
+	public JFrame getClientAnimals(int id) {
+	    if(this.clientAnimals == null){
+	        this.clientAnimals = new JFrame();
+            this.clientAnimals.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            this.clientAnimals.setSize(1200, 475);
+            this.clientAnimals.setLocation(300, 250);
+
+            this.clientAnimals.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    reloadView();
+                    getAnimalClientPanel().getDetailClientPanel().inputToPerso();
+                    if(!getAnimalClientPanel().getDetailClientPanel().isSaved()) {
+                        int reply = JOptionPane.showConfirmDialog(getDetailClientPanel(), "Toutes modifications non enregistrées seront perdues !\nVoulez-vous vraiment quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if (reply == JOptionPane.YES_OPTION) {
+                            getDetailClientPanel().resetDialog();
+                            clientAnimals.setVisible(false);
+                            reloadView();
+                        }
+                    }
+                    else{
+                        getDetailClientPanel().resetDialog();
+                        clientAnimals.setVisible(false);
+                        reloadView();
+                    }
+                    getTableClient().clearSelection();
+                }
+            });
+
+            this.clientAnimals.setContentPane(this.getAnimalClientPanel());
+
+            this.clientAnimals.setIconImage(icon.getImage());
+            this.clientAnimals.setResizable(true);
+            this.clientAnimals.setTitle("Animaux du client");
+        }
+        this.clientAnimals.setVisible(true);
+        this.getAnimalClientPanel().resetDialog(id);
+        return clientAnimals;
+    }
+
+    private JPanel getButtonForm() {
 		if (buttonForm == null) {
 			buttonForm = new JPanel(new GridBagLayout());
 			

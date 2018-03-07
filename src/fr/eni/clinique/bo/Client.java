@@ -1,5 +1,7 @@
 package fr.eni.clinique.bo;
 
+import java.util.Objects;
+
 public class Client {
 
 	private int codeClient;
@@ -135,7 +137,31 @@ public class Client {
 		return new Client(this.codeClient, this.nomClient, this.prenomClient, this.adresse1, this.adresse2,
 				this.codePostal, this.ville, this.numTel, this.assurance, this.email, this.remarque, this.archive);
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Client client = (Client) o;
+		return isArchive() == client.isArchive() &&
+				Objects.equals(getNomClient(), client.getNomClient()) &&
+				Objects.equals(getPrenomClient(), client.getPrenomClient()) &&
+				Objects.equals(getAdresse1(), client.getAdresse1()) &&
+				Objects.equals(getAdresse2(), client.getAdresse2()) &&
+				Objects.equals(getCodePostal(), client.getCodePostal()) &&
+				Objects.equals(getVille(), client.getVille()) &&
+				Objects.equals(getNumTel(), client.getNumTel()) &&
+				Objects.equals(getAssurance(), client.getAssurance()) &&
+				Objects.equals(getEmail(), client.getEmail()) &&
+				Objects.equals(getRemarque(), client.getRemarque());
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(getNomClient(), getPrenomClient(), getAdresse1(), getAdresse2(), getCodePostal(), getVille(), getNumTel(), getAssurance(), getEmail(), getRemarque(), isArchive());
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

@@ -42,9 +42,9 @@ public class AnimalManager {
 		return animal;
 	}
 	
-	public List<Animal> getAnimaux() throws BLLException {
+	public List<Animal> getAnimaux(int codeClient) throws BLLException {
 		try {
-			return animalDAO.selectAll();
+			return ((AnimalDAOJdbcImpl)animalDAO).selectAllClient(codeClient);
 		} catch (DALException e) {
 			e.printStackTrace();
 			throw new BLLException("Récupération de la liste des animaux impossible", e);
@@ -53,6 +53,7 @@ public class AnimalManager {
 	
 	public void updateAnimal(Animal animal) throws BLLException {
 		try {
+			this.validationAnimal(animal);
 			this.animalDAO.update(animal);
 		} catch (DALException e) {
 			throw new BLLException("Mise à jour de l'animal impossible", e);
@@ -69,13 +70,14 @@ public class AnimalManager {
 	
 	public void addAnimal(Animal animal) throws BLLException {
 		try {
+			this.validationAnimal(animal);
 			this.animalDAO.insert(animal);
 		} catch (DALException e) {
 			throw new BLLException("Ajout de l'animal impossible", e);
 		}
 	}
 	
-	public void validatonAnimal(Animal animal) throws BLLException {
+	public void validationAnimal(Animal animal) throws BLLException {
 		BLLException exceptions = new BLLException();
 		String needed = "Obligatoire";
 		

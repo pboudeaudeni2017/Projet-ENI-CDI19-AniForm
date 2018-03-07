@@ -18,11 +18,13 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	
 	private static final String INSERT = "INSERT INTO Animaux(CodeAnimal, NomAnimal, Sexe, Couleur, Race, Espece, CodeClient, Tatouage, Antecedents, Archive) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
-	private static final String SELECT_ALL = "SELECT CodeAnimal, NomAnimal, Sexe, Couleur, Race, Espece, CodeClient, Tatouage, Antecedents, Archive, c.NomClient, c.PrenomClient, c.Adresse1, c.Adresse2, c.CodePostal, c.Ville, c.NumTel, c.Assurance, c.Email, c.Remarque, c.Archive FROM Animaux ani INNER JOIN Clients c ON ani.CodeClient = c.CodeClient INNER JOIN Race r ON ani.race = r.race AND ani.espece = r.espece";
+	private static final String SELECT_ALL = "SELECT CodeAnimal, NomAnimal, Sexe, Couleur, ani.Race, ani.Espece, c.CodeClient, Tatouage, Antecedents, ani.Archive, c.NomClient, c.PrenomClient, c.Adresse1, c.Adresse2, c.CodePostal, c.Ville, c.NumTel, c.Assurance, c.Email, c.Remarque, c.Archive FROM Animaux ani INNER JOIN Clients c ON ani.CodeClient = c.CodeClient INNER JOIN Races r ON ani.race = r.race AND ani.espece = r.espece";
 	
 	private static final String SELECT_BY_ID = SELECT_ALL + "WHERE CodeAnimal=?";
 	
 	private static final String SELECT_BY_NAME = SELECT_ALL + "WHERE NomAnimal=?";
+
+	private static final String SELECT_ALL_BY_CLIENT = SELECT_ALL + " WHERE c.CodeClient=?";
 	
 	private static final String UPDATE = "UPDATE Animaux SET CodeAnimal=?, NomAnimal=?, Sexe=?, Couleur=?, Race=?, Espece=?, CodeClient=?, Tatouage=?, Antecedents=?, Archive=?";
 
@@ -101,6 +103,22 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 		return animaux;
 	}
 
+	public List<Animal> selectAllClient(int codeClient) throws DALException {
+		List<Animal> animaux = new ArrayList<>();
+		try (Connection cnx = DBConnection.getConnexion()) {
+
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL_BY_CLIENT);
+			pStmt.setInt(1, codeClient);
+			ResultSet rs = pStmt.executeQuery();
+			while(rs.next()) {
+				animaux.add(map(rs));
+			}
+		} catch (SQLException e) {
+			throw new DALException("Animaux", e);
+		}
+		return animaux;
+	}
+
 	
 	@Override
 	public void update(Animal animal) throws DALException {
@@ -141,7 +159,7 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 		Race race_espece = RaceDAOJdbcImpl.map(rs);
 		Client codeClient = ClientDAOJdbcImpl.map(rs);
 		String tatouage = rs.getString("Tatouage");
-		String antecedent = rs.getString("Antecedent");		
+		String antecedent = rs.getString("Antecedents");
 		boolean archive = rs.getBoolean("Archive");
 						
 		animal = new Animal(codeAnimal, nomAnimal, sexe, couleur, race_espece, codeClient, tatouage, antecedent, archive);

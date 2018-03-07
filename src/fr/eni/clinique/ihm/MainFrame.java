@@ -95,6 +95,7 @@ public class MainFrame extends JFrame{
     			this.getjPanelEcranGestionClient().setVisible(false);
     			this.getjPanelEcranGestionClient().setVisible(true);
     			this.getjPanelEcranGestionClient().stateVisible();
+    			this.getjPanelEcranGestionClient().reloadView();
     			this.currentPanel = this.getjPanelEcranGestionClient();
     			this.currentPanelName = nomView;
     			this.setResizable(false);
