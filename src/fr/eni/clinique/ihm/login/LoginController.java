@@ -80,7 +80,7 @@ public class LoginController {
             System.out.println(resultat);
 
 			if(!erreurs.equals("")){
-			    AppliTestIHM.showError("Erreur", erreurs);
+			    throw new BLLException(erreurs);
             }
 			if(resultat.getCodePers() > 0){
                 AppliTestIHM.loginFrame.setVisible(false);
