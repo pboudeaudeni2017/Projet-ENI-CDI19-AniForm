@@ -18,6 +18,7 @@ import fr.eni.clinique.bll.BLLException;
 import fr.eni.clinique.bo.Animal;
 import fr.eni.clinique.bo.Race;
 import fr.eni.clinique.ihm.AppliTestIHM;
+import fr.eni.clinique.ihm.gestionClient.EcranGestionClient;
 
 public class DetailAnimalPanel extends JPanel {
 
@@ -135,9 +136,9 @@ public class DetailAnimalPanel extends JPanel {
 	}
 	
 	private void quitter() {
-		EcranGestionAnimal ecranGestionAnimal = ((EcranGestionAnimal)AppliTestIHM.mainFrame.getCurrentPanel());
-		ecranGestionAnimal.reloadView();
-		ecranGestionAnimal.getCreationView().setVisible(false);
+		AnimalClientPanel animalClientPanel = ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).getAnimalClientPanel();
+		animalClientPanel.reloadView();
+		animalClientPanel.getCreationView().setVisible(false);
 	}
 	
 	public boolean isSaved() {
@@ -170,7 +171,7 @@ public class DetailAnimalPanel extends JPanel {
 						try {
 							animalController.setAnimal(currentAnimal);
 							animalController.updateAnimal();
-							((EcranGestionAnimal)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
+							((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).getAnimalClientPanel().reloadView();
 							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout de l'animal\n" + currentAnimal.toString() + " réussie");
 						} catch (BLLException e1) {
 							e1.printStackTrace();
