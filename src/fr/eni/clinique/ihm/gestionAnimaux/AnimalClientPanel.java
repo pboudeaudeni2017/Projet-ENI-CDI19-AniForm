@@ -31,7 +31,7 @@ public class AnimalClientPanel extends JPanel{
 
     public DetailClientPanel getDetailClientPanel() {
         if(this.detailClientPanel == null){
-           this.detailClientPanel = ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).getDetailClientPanel();
+           this.detailClientPanel = ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).getDetailClientPanelAnimal();
            this.detailClientPanel.resetDialog();
         }
         return detailClientPanel;
