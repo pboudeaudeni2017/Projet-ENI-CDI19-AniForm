@@ -356,7 +356,7 @@ public class DetailClientPanel extends JPanel {
                             clientController.addClient(currentClient);
                             ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
                             initClient = currentClient.copy();
-                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentClient.toString() + " réussite");
+                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentClient.toString() + " réussie");
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());
