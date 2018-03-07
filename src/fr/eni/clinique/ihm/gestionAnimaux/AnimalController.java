@@ -94,7 +94,7 @@ public class AnimalController {
 	}
 	
 
-	public void deleteAnimal() throws BLLException, AnimalNotFoundException {
+	public void deleteAnimal(Animal animal) throws BLLException {
 		this.manager.deleteAnimal(this.currentAnimal.get());
 	}
 	
