@@ -21,7 +21,6 @@ public class DetailClientPanel extends JPanel {
     private JLabel labelAssurance;
     private JLabel labelEmail;
     private JLabel labelRemarque;
-    private JLabel labelArchive;
 
     private JTextField textNom;
     private JTextField textPrenom;
@@ -33,7 +32,6 @@ public class DetailClientPanel extends JPanel {
     private JTextField textAssurance;
     private JTextField textEmail;
     private JTextField textRemarque;
-    private JCheckBox checkBoxArchive;
 
     private Client initClient;
     private Client currentClient;
@@ -87,11 +85,7 @@ public class DetailClientPanel extends JPanel {
         addComponentTo(this.getTextEmail(), this, 1, 8, 1, 1, 0.9);
         addComponentTo(this.getLabelRemarque(), this, 0, 9, 1, 1, 0.1);
         addComponentTo(this.getTextRemarque(), this, 1, 9, 1, 1, 0.9);
-        addComponentTo(this.getLabelArchive(), this, 0, 10, 1, 1, 0.1);
-        addComponentTo(this.getCheckBoxArchive(), this, 1, 10, 1, 1, 0.9);
-
-        addComponentTo(this.getLabelArchive(), this, 0, 13, 1, 1, 0.1);
-        addComponentTo(this.getCheckBoxArchive(), this, 1, 13, 1, 1, 0.9);
+        
         addComponentTo(this.getButtonSave(), this, 0, 16, 2, 1, 1);
     }
 
@@ -139,7 +133,6 @@ public class DetailClientPanel extends JPanel {
         this.getTextAssurance().setText(this.currentClient.getAssurance());
         this.getTextEmail().setText(this.currentClient.getEmail());
         this.getTextRemarque().setText(this.currentClient.getRemarque());
-        this.getCheckBoxArchive().setSelected(this.currentClient.isArchive());
         this.inputToPerso();
         this.initClient = this.currentClient.copy();
     }
@@ -214,13 +207,6 @@ public class DetailClientPanel extends JPanel {
         return labelRemarque;
     }
 
-    public JLabel getLabelArchive() {
-        if(this.labelArchive == null){
-            this.labelArchive = new JLabel("Archive : ");
-        }
-        return labelArchive;
-    }
-
     public JTextField getTextNom() {
         if(this.textNom == null){
             this.textNom = new JTextField();
@@ -291,12 +277,6 @@ public class DetailClientPanel extends JPanel {
         return textRemarque;
     }
 
-    public JCheckBox getCheckBoxArchive() {
-        if(this.checkBoxArchive == null){
-            this.checkBoxArchive = new JCheckBox();
-        }
-        return checkBoxArchive;
-    }
 
     public void inputToPerso(){
         this.currentClient.setNomClient(this.getTextNom().getText());
@@ -308,7 +288,6 @@ public class DetailClientPanel extends JPanel {
         this.currentClient.setAssurance(this.getTextAssurance().getText());
         this.currentClient.setEmail(this.getTextEmail().getText());
         this.currentClient.setRemarque(this.getTextRemarque().getText());
-        this.currentClient.setArchive(this.getCheckBoxArchive().isSelected());
     }
 
     private void quitter(){

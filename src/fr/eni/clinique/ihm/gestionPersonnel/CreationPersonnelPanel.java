@@ -15,11 +15,9 @@ public class CreationPersonnelPanel extends JPanel {
     private JLabel labelNom;
     private JLabel labelMotDePasse;
     private JLabel labelRole;
-    private JLabel labelArchive;
 
     private JTextField textNom;
     private JTextField textMotDePasse;
-    private JCheckBox checkBoxArchive;
     private JComboBox comboBoxRole;
 
     private Personnel currentPerso;
@@ -42,8 +40,6 @@ public class CreationPersonnelPanel extends JPanel {
         addComponentTo(this.getTextMotDePasse(), this, 1, 1, 1, 1, 0.9);
         addComponentTo(this.getLabelRole(), this, 0, 2, 1, 1, 0.1);
         addComponentTo(this.getComboBoxRole(), this, 1, 2, 1, 1, 0.9);
-        addComponentTo(this.getLabelArchive(), this, 0, 3, 1, 1, 0.1);
-        addComponentTo(this.getCheckBoxArchive(), this, 1, 3, 1, 1, 0.9);
         addComponentTo(this.getButtonSave(), this, 0, 6, 2, 1, 1);
     }
 
@@ -89,7 +85,6 @@ public class CreationPersonnelPanel extends JPanel {
                 break;
         }
         this.getComboBoxRole().setSelectedIndex(selectedRole);
-        this.getCheckBoxArchive().setSelected(this.currentPerso.isArchive());
     }
 
     public JComboBox getComboBoxRole() {
@@ -120,13 +115,6 @@ public class CreationPersonnelPanel extends JPanel {
         return labelRole;
     }
 
-    public JLabel getLabelArchive() {
-        if (this.labelArchive == null) {
-            this.labelArchive = new JLabel("Archive : ");
-        }
-        return labelArchive;
-    }
-
     public JTextField getTextNom() {
         if (this.textNom == null) {
             this.textNom = new JTextField();
@@ -139,13 +127,6 @@ public class CreationPersonnelPanel extends JPanel {
             this.textMotDePasse = new JTextField();
         }
         return textMotDePasse;
-    }
-
-    public JCheckBox getCheckBoxArchive() {
-        if (this.checkBoxArchive == null) {
-            this.checkBoxArchive = new JCheckBox();
-        }
-        return checkBoxArchive;
     }
 
     private void inputToPerso() {
@@ -164,7 +145,6 @@ public class CreationPersonnelPanel extends JPanel {
                 this.currentPerso.setRole(Personnel.SECRETAIRE);
                 break;
         }
-        this.currentPerso.setArchive(this.getCheckBoxArchive().isSelected());
     }
 
     private void quitter() {
