@@ -28,7 +28,11 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	
 	private static final String UPDATE = "UPDATE Animaux SET NomAnimal=?, Sexe=?, Couleur=?, Race=?, Espece=?, CodeClient=?, Tatouage=?, Antecedents=?, Archive=? WHERE CodeAnimal=?";
 
-	private static final String DELETE = "DELETE FROM Animaux WHERE CodeAnimal=?";
+	private static final String DELETE = "UPDATE Animaux SET Archive = 1";
+
+	private static final String DELETE_ONCE = DELETE + " WHERE CodeAnimal=?";
+
+	private static final String DELETE_ANIMALS_CLIENT = DELETE + " WHERE CodeClient=?";
 	
 	
 	@Override
@@ -139,7 +143,7 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	public void delete(Animal animal) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()) {
 			
-			PreparedStatement pStmt = cnx.prepareStatement(DELETE);
+			PreparedStatement pStmt = cnx.prepareStatement(DELETE_ONCE);
 			pStmt.setInt(1, animal.getCodeAnimal());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
@@ -147,7 +151,18 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 		}
 		
 	}
-	
+
+	public void deleteAllAnimalsClient(Animal animal) throws DALException {
+		try (Connection cnx = DBConnection.getConnexion()) {
+
+			PreparedStatement pStmt = cnx.prepareStatement(DELETE_ANIMALS_CLIENT);
+			pStmt.setInt(1, animal.getClient().getCodeClient());
+			pStmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Animaux", e);
+		}
+
+	}
 	
 	public static Animal map (ResultSet rs) throws SQLException {
 		Animal animal = null;

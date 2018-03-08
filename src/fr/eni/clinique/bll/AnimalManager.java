@@ -64,7 +64,15 @@ public class AnimalManager {
 		try {
 			this.animalDAO.delete(animal);
 		} catch (DALException e) {
-			throw new BLLException("Suppression impossible");
+			throw new BLLException("Suppression impossible", e);
+		}
+	}
+
+	public void deleteAllAnimalsClient(Animal animal) throws BLLException {
+		try {
+			((AnimalDAOJdbcImpl)this.animalDAO).deleteAllAnimalsClient(animal);
+		} catch (DALException e) {
+			throw new BLLException("Suppression impossible", e);
 		}
 	}
 	
