@@ -183,7 +183,8 @@ public class DetailAnimalPanel extends JPanel {
 							animalController.setAnimal(currentAnimal);
 							animalController.updateAnimal();
 							((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).getAnimalClientPanel().reloadView();
-							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout de l'animal\n" + currentAnimal.toString() + " réussie");
+							initAnimal = currentAnimal.copy();
+							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Mise à jour de l'animal " + currentAnimal.getNomAnimal() + " réussite");
 						} catch (BLLException e1) {
 							e1.printStackTrace();
 							AppliTestIHM.showError("Erreur de mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
@@ -196,7 +197,7 @@ public class DetailAnimalPanel extends JPanel {
 							animalController.addAnimal(currentAnimal);
 							((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
 							initAnimal = currentAnimal.copy();
-							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout de l'animal\n" + currentAnimal.toString() + " réussie");
+							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout de l'animal réussie");
 						} catch (BLLException e1) {
 							e1.printStackTrace();
 							AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());
