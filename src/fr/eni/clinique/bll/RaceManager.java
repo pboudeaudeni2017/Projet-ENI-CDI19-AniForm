@@ -21,7 +21,7 @@ public class RaceManager {
         }
     }
 
-    public List<Race> getRacesEspece(Race espece) throws BLLException{
+    public List<String> getRacesEspece(String espece) throws BLLException{
         try {
             return ((RaceDAOJdbcImpl)this.raceDAO).selectByEspece(espece);
         } catch (DALException e) {

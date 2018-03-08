@@ -50,7 +50,7 @@ public class DetailAnimalPanel extends JPanel {
 	private JTextField txtSexe;
 	private JTextField txtCouleur;
 	private JComboBox txtEspece;
-	private JTextField txtRace;
+	private JComboBox txtRace;
 	private JTextField txtTatouage;
 
 	private JComboBox comboBoxSexe;
@@ -61,6 +61,7 @@ public class DetailAnimalPanel extends JPanel {
 	private AnimalController animalController;
 	private ClientController clientController;
 	private List<String> listeEspece;
+	private List<String> listeRace;
 
 	private JButton buttonSave;
 
@@ -158,20 +159,30 @@ public class DetailAnimalPanel extends JPanel {
 		this.getComboBoxSexe().setSelectedIndex(selectedSexe);
 		this.getTxtCouleur().setText(this.currentAnimal.getCouleur());
 		int indexEspece = this.indexOfEspeceInListe(this.currentAnimal.getRace_espece().getEspece());
-		System.out.println("indexEspece: " + indexEspece + " : " + this.currentAnimal.getRace_espece().getEspece());
 		if(indexEspece < this.listeEspece.toArray().length){
 		    this.getTxtEspece().setSelectedIndex(indexEspece);
         }
+        else{
+		    this.getTxtEspece().setSelectedIndex(0);
+        }
 
-		this.getTxtRace().setText(this.currentAnimal.getRace_espece().getRace());
+        this.updateRaceList();
+
+        int indexRace = this.indexOfRaceInListe(this.currentAnimal.getRace_espece().getRace());
+        if(indexRace < this.listeRace.toArray().length){
+            this.getTxtRace().setSelectedIndex(indexRace);
+        }
+        else{
+            this.getTxtRace().setSelectedIndex(0);
+        }
 		this.getTxtTatouage().setText(this.currentAnimal.getTatouage());
 		this.inputToAnimal();
 		this.initAnimal = this.currentAnimal.copy();	
 	}
 
 	private int indexOfEspeceInListe(String _espece){
-	    int i = 0;
-	    for(String espece: this.listeEspece){
+        int i = 0;
+        for(String espece: this.listeEspece){
             if(_espece.equals(espece)){
                 break;
             }
@@ -179,6 +190,31 @@ public class DetailAnimalPanel extends JPanel {
         }
 
         return i;
+    }
+
+    private int indexOfRaceInListe(String _race){
+        int i = 0;
+        for(String race: this.listeRace){
+            if(_race.equals(race)){
+                break;
+            }
+            i++;
+        }
+
+        return i;
+    }
+
+    private void updateRaceList(){
+	    String espece = this.listeEspece.get(this.getTxtEspece().getSelectedIndex());
+        try {
+            this.listeRace = this.animalController.getRacesOfEspece(espece);
+            this.getTxtRace().removeAllItems();
+            for(String race: this.listeRace){
+                this.getTxtRace().addItem(race);
+            }
+        } catch (BLLException e) {
+            e.printStackTrace();
+        }
     }
 
 	public void inputToAnimal() {
@@ -207,7 +243,12 @@ public class DetailAnimalPanel extends JPanel {
         else{
 		    race.setEspece("");
         }
-		race.setRace(this.getTxtRace().getText());
+        if(this.getTxtRace().getSelectedIndex() >= 0){
+            race.setRace((this.listeRace.get(this.getTxtRace().getSelectedIndex())));
+        }
+        else{
+            race.setEspece("");
+        }
 		this.currentAnimal.setRace_espece(race);
 		this.currentAnimal.setTatouage(this.getTxtTatouage().getText());	
 	}
@@ -373,13 +414,20 @@ public class DetailAnimalPanel extends JPanel {
 	public JComboBox getTxtEspece() {
 		if (txtEspece == null) {
 			txtEspece = new JComboBox(this.listeEspece.toArray());
+			this.txtEspece.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    updateRaceList();
+                    getTxtRace().getItemCount();
+                }
+            });
 		}
 		return txtEspece;
 	}
 
-	public JTextField getTxtRace() {
+	public JComboBox getTxtRace() {
 		if (txtRace == null) {
-			txtRace = new JTextField();
+			txtRace = new JComboBox(this.listeRace.toArray());
 		}
 		return txtRace;
 	}

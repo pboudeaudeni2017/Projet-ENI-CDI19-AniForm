@@ -10,6 +10,7 @@ import fr.eni.clinique.bll.RaceManager;
 import fr.eni.clinique.bo.Animal;
 import fr.eni.clinique.bo.Observable;
 import fr.eni.clinique.bo.Observable.Observer;
+import fr.eni.clinique.bo.Race;
 import fr.eni.clinique.ihm.gestionClient.ClientController;
 
 public class AnimalController {
@@ -54,6 +55,10 @@ public class AnimalController {
 		}
 
 		return this.listeEspece;
+	}
+
+	public List<String> getRacesOfEspece(String espece) throws BLLException {
+		return this.raceManager.getRacesEspece(espece);
 	}
 
 	public List<Animal> getAnimaux() throws BLLException{
