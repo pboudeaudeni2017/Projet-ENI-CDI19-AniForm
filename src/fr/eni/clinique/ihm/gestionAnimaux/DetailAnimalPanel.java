@@ -246,7 +246,7 @@ public class DetailAnimalPanel extends JPanel {
 							animalController.updateAnimal();
 							((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).getAnimalClientPanel().reloadView();
 							initAnimal = currentAnimal.copy();
-							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Mise à jour de l'animal " + currentAnimal.getNomAnimal() + " réussite");
+							JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Mise à jour de l'animal " + currentAnimal.getNomAnimal() + " réussie");
 						} catch (BLLException e1) {
 							e1.printStackTrace();
 							AppliTestIHM.showError("Erreur de mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());

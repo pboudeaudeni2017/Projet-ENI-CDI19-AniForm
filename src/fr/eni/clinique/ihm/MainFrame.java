@@ -154,8 +154,17 @@ public class MainFrame extends JFrame{
 
                 }
             });
+            
         }
         return gestionPersonnel;
+    }
+    
+    public void displayScreenRole() {
+    	if (LoginController.getInstance().getCurrentPersonnel().getRole().equals(Personnel.ADMINISTRATEUR)) {
+        	gestionPersonnel.setEnabled(true);
+        } else {
+        	gestionPersonnel.setEnabled(false);
+        }
     }
 
 
@@ -188,6 +197,7 @@ public class MainFrame extends JFrame{
     public JMenuItem getPriseGestionRdv() {
         if(this.priseGestionRdv == null){
             this.priseGestionRdv = new JMenuItem("Prise de rendez-vous");
+            priseGestionRdv.setEnabled(false);
         }
         return priseGestionRdv;
     }
@@ -211,6 +221,7 @@ public class MainFrame extends JFrame{
     public JMenu getAgenda() {
         if(this.agenda == null){
             this.agenda = new JMenu("Agenda");
+            agenda.setEnabled(false);
         }
         return agenda;
     }
