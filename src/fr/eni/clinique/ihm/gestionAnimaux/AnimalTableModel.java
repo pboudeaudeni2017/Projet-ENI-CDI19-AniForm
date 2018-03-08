@@ -22,15 +22,18 @@ public class AnimalTableModel extends AbstractTableModel{
 	private String[] nomColonnes = {"Code", "Nom", "Sexe", "Couleur", "Race", "Espece", "Tatouage"};
 
 	private ClientController clientController;
+
+	private AnimalController animalController;
 		
 	
 	public AnimalTableModel() throws BLLException {
 		this.clientController = ClientController.getInstance();
+		this.animalController = AnimalController.getInstance();
 		updateData();
 	}
 	
 	public void updateData() throws BLLException {
-		animaux = new AnimalManager().getAnimaux(this.clientController.getCurrentClient().getCodeClient());
+		animaux = this.animalController.getAnimaux(true);
 		System.out.println(animaux);
 		fireTableDataChanged();
 	}

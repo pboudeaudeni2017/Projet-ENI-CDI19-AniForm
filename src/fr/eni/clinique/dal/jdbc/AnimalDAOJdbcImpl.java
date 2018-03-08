@@ -20,14 +20,14 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 
 	private static final String SELECT_ALL = "SELECT CodeAnimal, NomAnimal, Sexe, Couleur, ani.Race, ani.Espece, c.CodeClient, Tatouage, Antecedents, ani.Archive, c.NomClient, c.PrenomClient, c.Adresse1, c.Adresse2, c.CodePostal, c.Ville, c.NumTel, c.Assurance, c.Email, c.Remarque, c.Archive FROM Animaux ani INNER JOIN Clients c ON ani.CodeClient = c.CodeClient INNER JOIN Races r ON ani.race = r.race AND ani.espece = r.espece";
 	
-	private static final String SELECT_BY_ID = SELECT_ALL + "WHERE CodeAnimal=?";
+	private static final String SELECT_BY_ID = SELECT_ALL + " WHERE CodeAnimal=?";
 	
-	private static final String SELECT_BY_NAME = SELECT_ALL + "WHERE NomAnimal=?";
+	private static final String SELECT_BY_NAME = SELECT_ALL + " WHERE NomAnimal=?";
 
 	private static final String SELECT_ALL_BY_CLIENT = SELECT_ALL + " WHERE c.CodeClient=?";
 	
 	private static final String UPDATE = "UPDATE Animaux SET NomAnimal=?, Sexe=?, Couleur=?, Race=?, Espece=?, CodeClient=?, Tatouage=?, Antecedents=?, Archive=? WHERE CodeAnimal=?";
-	
+
 	private static final String DELETE = "UPDATE Animaux SET Archive = 1";
 
 	private static final String DELETE_ONCE = DELETE + " WHERE CodeAnimal=?";
@@ -96,7 +96,8 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 		List<Animal> animaux = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()) {
 
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
+			System.out.println(SELECT_ALL + " WHERE ani.Archive = 0");
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL + " WHERE ani.Archive = 0");
 			ResultSet rs = pStmt.executeQuery();
 			while(rs.next()) {
 				animaux.add(map(rs));
@@ -110,8 +111,8 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	public List<Animal> selectAllClient(int codeClient) throws DALException {
 		List<Animal> animaux = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()) {
-
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL_BY_CLIENT);
+			System.out.println(SELECT_ALL_BY_CLIENT + " AND ani.Archive = 0");
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL_BY_CLIENT + " AND ani.Archive = 0");
 			pStmt.setInt(1, codeClient);
 			ResultSet rs = pStmt.executeQuery();
 			while(rs.next()) {

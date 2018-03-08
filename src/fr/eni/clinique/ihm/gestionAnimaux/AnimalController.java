@@ -37,6 +37,21 @@ public class AnimalController {
 		
 		return instance;
 	}
+
+	public void updateList() throws BLLException{
+		this.listeAnimaux = this.manager.getAnimaux(this.clientController.getCurrentClient().getCodeClient());
+	}
+
+	public List<Animal> getAnimaux() throws BLLException{
+		return getAnimaux(false);
+	}
+
+	public List<Animal> getAnimaux(boolean updateList) throws BLLException{
+		if(updateList){
+			this.updateList();
+		}
+		return this.listeAnimaux;
+	}
 	
 	public void first() throws AnimalNotFoundException {
 		setAnimal(0);
