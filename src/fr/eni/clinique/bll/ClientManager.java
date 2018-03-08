@@ -2,6 +2,7 @@ package fr.eni.clinique.bll;
 
 import java.util.List;
 
+import fr.eni.clinique.bo.Animal;
 import fr.eni.clinique.bo.Client;
 import fr.eni.clinique.dal.DALException;
 import fr.eni.clinique.dal.DAO;
@@ -11,9 +12,11 @@ import fr.eni.clinique.dal.jdbc.ClientDAOJdbcImpl;
 public class ClientManager {
 	
 	private DAO<Client> clientDAO;
+	private AnimalManager animalManager;
 	
 	public ClientManager() {
 		this.clientDAO = DAOFactory.getClientDAO();
+		this.animalManager = new AnimalManager();
 	}
 	
 	
@@ -65,6 +68,7 @@ public class ClientManager {
 	
 	public void deleteClient(Client client) throws BLLException {
 		try {
+			this.animalManager.deleteAllAnimalsClient(client);
 			this.clientDAO.delete(client);
 		} catch (DALException e) {
 			throw new BLLException("Suppression impossible");
@@ -108,13 +112,6 @@ public class ClientManager {
 		if (exceptions.size() > 0) {
 			throw exceptions;
 		}
-			
-		
-		
-			
 	}
-	
-	
-	
-	
+		
 }

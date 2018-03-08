@@ -21,7 +21,6 @@ public class DetailClientPanel extends JPanel {
     private JLabel labelAssurance;
     private JLabel labelEmail;
     private JLabel labelRemarque;
-    private JLabel labelArchive;
 
     private JTextField textNom;
     private JTextField textPrenom;
@@ -33,7 +32,6 @@ public class DetailClientPanel extends JPanel {
     private JTextField textAssurance;
     private JTextField textEmail;
     private JTextField textRemarque;
-    private JCheckBox checkBoxArchive;
 
     private Client initClient;
     private Client currentClient;
@@ -87,11 +85,7 @@ public class DetailClientPanel extends JPanel {
         addComponentTo(this.getTextEmail(), this, 1, 8, 1, 1, 0.9);
         addComponentTo(this.getLabelRemarque(), this, 0, 9, 1, 1, 0.1);
         addComponentTo(this.getTextRemarque(), this, 1, 9, 1, 1, 0.9);
-        addComponentTo(this.getLabelArchive(), this, 0, 10, 1, 1, 0.1);
-        addComponentTo(this.getCheckBoxArchive(), this, 1, 10, 1, 1, 0.9);
-
-        addComponentTo(this.getLabelArchive(), this, 0, 13, 1, 1, 0.1);
-        addComponentTo(this.getCheckBoxArchive(), this, 1, 13, 1, 1, 0.9);
+        
         addComponentTo(this.getButtonSave(), this, 0, 16, 2, 1, 1);
     }
 
@@ -139,7 +133,6 @@ public class DetailClientPanel extends JPanel {
         this.getTextAssurance().setText(this.currentClient.getAssurance());
         this.getTextEmail().setText(this.currentClient.getEmail());
         this.getTextRemarque().setText(this.currentClient.getRemarque());
-        this.getCheckBoxArchive().setSelected(this.currentClient.isArchive());
         this.inputToPerso();
         this.initClient = this.currentClient.copy();
     }
@@ -214,13 +207,6 @@ public class DetailClientPanel extends JPanel {
         return labelRemarque;
     }
 
-    public JLabel getLabelArchive() {
-        if(this.labelArchive == null){
-            this.labelArchive = new JLabel("Archive : ");
-        }
-        return labelArchive;
-    }
-
     public JTextField getTextNom() {
         if(this.textNom == null){
             this.textNom = new JTextField();
@@ -291,12 +277,6 @@ public class DetailClientPanel extends JPanel {
         return textRemarque;
     }
 
-    public JCheckBox getCheckBoxArchive() {
-        if(this.checkBoxArchive == null){
-            this.checkBoxArchive = new JCheckBox();
-        }
-        return checkBoxArchive;
-    }
 
     public void inputToPerso(){
         this.currentClient.setNomClient(this.getTextNom().getText());
@@ -308,7 +288,6 @@ public class DetailClientPanel extends JPanel {
         this.currentClient.setAssurance(this.getTextAssurance().getText());
         this.currentClient.setEmail(this.getTextEmail().getText());
         this.currentClient.setRemarque(this.getTextRemarque().getText());
-        this.currentClient.setArchive(this.getCheckBoxArchive().isSelected());
     }
 
     private void quitter(){
@@ -319,10 +298,6 @@ public class DetailClientPanel extends JPanel {
 
     public boolean isSaved(){
         this.inputToPerso();
-        System.out.println(this.currentClient);
-        System.out.println(this.initClient);
-        System.out.println(this.currentClient.equals(this.initClient));
-        System.out.println((this.initClient.getCodeClient() == 0 && this.currentClient.getCodeClient() > 0));
         return this.currentClient.equals(this.initClient) || (this.initClient.getCodeClient() == 0 && this.currentClient.getCodeClient() > 0) ;
     }
 
@@ -345,8 +320,8 @@ public class DetailClientPanel extends JPanel {
                             clientController.setClient(currentClient);
                             clientController.updateClient();
                             ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
-                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Modifications enregistrées");
                             initClient = currentClient.copy();
+                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Modifications enregistrées");
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur mise à jour", "Erreur de mise à jour:\n" + e1.getMessage());
@@ -359,7 +334,8 @@ public class DetailClientPanel extends JPanel {
                         try {
                             clientController.addClient(currentClient);
                             ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).reloadView();
-                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentClient.toString() + " réussite");
+                            initClient = currentClient.copy();
+                            JOptionPane.showMessageDialog(AppliTestIHM.dialog, "Ajout du personnel\n" + currentClient.toString() + " réussie");
                         } catch (BLLException e1) {
                             e1.printStackTrace();
                             AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());

@@ -80,13 +80,19 @@ public class LoginController {
             System.out.println(resultat);
 
 			if(!erreurs.equals("")){
-			    AppliTestIHM.showError("Erreur", erreurs);
+			    throw new BLLException(erreurs);
             }
 			if(resultat.getCodePers() > 0){
                 AppliTestIHM.loginFrame.setVisible(false);
                 AppliTestIHM.mainFrame.setVisible(true);
                 this.setCurrentPersonnel(resultat);
-                AppliTestIHM.mainFrame.changeTheView(AppliTestIHM.mainFrame.VIEW_GEST_PERSO);
+                AppliTestIHM.mainFrame.displayScreenRole();
+                if(resultat.getRole().equals(Personnel.ADMINISTRATEUR)){
+					AppliTestIHM.mainFrame.changeTheView(AppliTestIHM.mainFrame.VIEW_GEST_PERSO);
+				}else{
+                	AppliTestIHM.mainFrame.changeTheView(AppliTestIHM.mainFrame.VIEW_GEST_CLIENT);
+				}
+
             }
 		} catch (BLLException e) {
 		    e.printStackTrace();

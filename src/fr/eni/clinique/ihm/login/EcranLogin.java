@@ -137,7 +137,14 @@ public class EcranLogin extends JFrame {
 
 	public JTextField getTxtMotPasse() {
 		if(txtMotPasse == null) {
-			txtMotPasse = new JTextField();
+			txtMotPasse = new JPasswordField();
+			txtMotPasse.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					LoginController logCon = LoginController.getInstance();
+					logCon.connexion(getTxtLogin().getText(), getTxtMotPasse().getText());
+				}
+			});
 		}
 		return txtMotPasse;
 	}
@@ -151,7 +158,7 @@ public class EcranLogin extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					//notifyObservers(connexion_on);
 					LoginController logCon = LoginController.getInstance();
-					logCon.connexion(getTxtLogin().getText(), getTxtMotPasse().getText()); 
+					logCon.connexion(getTxtLogin().getText(), getTxtMotPasse().getText());
 					}
 			});
 		}

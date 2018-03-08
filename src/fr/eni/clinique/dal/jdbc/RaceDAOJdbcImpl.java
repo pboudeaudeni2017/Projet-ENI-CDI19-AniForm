@@ -16,13 +16,17 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 	
 	private static final String INSERT = "INSERT into Races(race, espece) VALUES (?, ?)";
 	
-	private static final String SELECT_ALL = "SELECT * FROM Races";
+	private static final String SELECT_ALL = "SELECT Espece, Race FROM Races";
+
+	private static final String SELECT_ESPECES_RACES = "SELECT DISTINCT Race FROM Races WHERE Espece=?";
 	
 	private static final String UPDATE = "UPDATE Races SET Race=?, Espece=? WHERE Race=? AND Espece=?";
 	
 	private static final String DELETE = "DELETE FROM Races Where Race=? AND Espece=?";
 	
 	private static final String SELECT_BY_ID = SELECT_ALL + "WHERE Race=? AND Espece=?";
+
+	private static final String SELECT_ESPECES = "SELECT DISTINCT Espece FROM RACES";
 
 	
 	
@@ -59,7 +63,20 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 		return raceObject;
 	}
 
-	
+	public List<String> selectByEspece(String espece) throws DALException {
+		List<String> races = new ArrayList<>();
+		try (Connection cnx = DBConnection.getConnexion()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ESPECES_RACES);
+			pStmt.setString(1, espece);
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {
+				races.add(rs.getString("Race"));
+			}
+		} catch (SQLException e) {
+			throw new DALException("Races", e);
+		}
+		return races;
+	}
 	
 	@Override
 	public List<Race> selectAll() throws DALException {
@@ -74,6 +91,20 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 			throw new DALException("Races", e);
 		}
 		return races;
+	}
+
+	public List<String> selectAllEspeces() throws DALException {
+		List<String> especes = new ArrayList<String>();
+		try (Connection cnx = DBConnection.getConnexion()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {
+				especes.add(rs.getString("espece"));
+			}
+		} catch (SQLException e) {
+			throw new DALException("Races", e);
+		}
+		return especes;
 	}
 	
 	

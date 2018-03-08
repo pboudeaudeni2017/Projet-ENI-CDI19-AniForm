@@ -16,17 +16,23 @@ import fr.eni.clinique.dal.DAO;
 
 public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	
-	private static final String INSERT = "INSERT INTO Animaux(CodeAnimal, NomAnimal, Sexe, Couleur, Race, Espece, CodeClient, Tatouage, Antecedents, Archive) VALUES (?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT = "INSERT INTO Animaux(NomAnimal, Sexe, Couleur, Race, Espece, CodeClient, Tatouage, Antecedents, Archive) VALUES (?,?,?,?,?,?,?,?,?)";
 
-	private static final String SELECT_ALL = "SELECT CodeAnimal, NomAnimal, Sexe, Couleur, Race, Espece, CodeClient, Tatouage, Antecedents, Archive, c.NomClient, c.PrenomClient, c.Adresse1, c.Adresse2, c.CodePostal, c.Ville, c.NumTel, c.Assurance, c.Email, c.Remarque, c.Archive FROM Animaux ani INNER JOIN Clients c ON ani.CodeClient = c.CodeClient INNER JOIN Race r ON ani.race = r.race AND ani.espece = r.espece";
+	private static final String SELECT_ALL = "SELECT CodeAnimal, NomAnimal, Sexe, Couleur, ani.Race, ani.Espece, c.CodeClient, Tatouage, Antecedents, ani.Archive, c.NomClient, c.PrenomClient, c.Adresse1, c.Adresse2, c.CodePostal, c.Ville, c.NumTel, c.Assurance, c.Email, c.Remarque, c.Archive FROM Animaux ani INNER JOIN Clients c ON ani.CodeClient = c.CodeClient INNER JOIN Races r ON ani.race = r.race AND ani.espece = r.espece";
 	
-	private static final String SELECT_BY_ID = SELECT_ALL + "WHERE CodeAnimal=?";
+	private static final String SELECT_BY_ID = SELECT_ALL + " WHERE CodeAnimal=?";
 	
-	private static final String SELECT_BY_NAME = SELECT_ALL + "WHERE NomAnimal=?";
-	
-	private static final String UPDATE = "UPDATE Animaux SET CodeAnimal=?, NomAnimal=?, Sexe=?, Couleur=?, Race=?, Espece=?, CodeClient=?, Tatouage=?, Antecedents=?, Archive=?";
+	private static final String SELECT_BY_NAME = SELECT_ALL + " WHERE NomAnimal=?";
 
-	private static final String DELETE = "DELETE FROM Animaux WHERE CodeAnimal=?";
+	private static final String SELECT_ALL_BY_CLIENT = SELECT_ALL + " WHERE c.CodeClient=?";
+	
+	private static final String UPDATE = "UPDATE Animaux SET NomAnimal=?, Sexe=?, Couleur=?, Race=?, Espece=?, CodeClient=?, Tatouage=?, Antecedents=?, Archive=? WHERE CodeAnimal=?";
+
+	private static final String DELETE = "UPDATE Animaux SET Archive = 1";
+
+	private static final String DELETE_ONCE = DELETE + " WHERE CodeAnimal=?";
+
+	private static final String DELETE_ANIMALS_CLIENT = DELETE + " WHERE CodeClient=?";
 	
 	
 	@Override
@@ -66,13 +72,12 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	}
 	
 	
-	public Animal selectByName(String name) throws DALException {
+	public Animal selectByName(Animal _animal) throws DALException {
 		Animal animal = null;
-		
 		try (Connection cnx = DBConnection.getConnexion()) {
 			
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_NAME);
-			pStmt.setString(1, name);
+			pStmt.setString(1, _animal.getNomAnimal());
 			
 			ResultSet rs = pStmt.executeQuery();
 			if(rs.next()) {
@@ -91,7 +96,23 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 		List<Animal> animaux = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()) {
 
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
+			System.out.println(SELECT_ALL + " WHERE ani.Archive = 0");
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL + " WHERE ani.Archive = 0");
+			ResultSet rs = pStmt.executeQuery();
+			while(rs.next()) {
+				animaux.add(map(rs));
+			}
+		} catch (SQLException e) {
+			throw new DALException("Animaux", e);
+		}
+		return animaux;
+	}
+
+	public List<Animal> selectAllClient(int codeClient) throws DALException {
+		List<Animal> animaux = new ArrayList<>();
+		try (Connection cnx = DBConnection.getConnexion()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL_BY_CLIENT + " AND ani.Archive = 0");
+			pStmt.setInt(1, codeClient);
 			ResultSet rs = pStmt.executeQuery();
 			while(rs.next()) {
 				animaux.add(map(rs));
@@ -109,7 +130,7 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 			
 			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
 			objectToStatement(pStmt, animal);
-			pStmt.setInt(11, animal.getCodeAnimal());
+			pStmt.setInt(10, animal.getCodeAnimal());
 			
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
@@ -122,7 +143,7 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	public void delete(Animal animal) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()) {
 			
-			PreparedStatement pStmt = cnx.prepareStatement(DELETE);
+			PreparedStatement pStmt = cnx.prepareStatement(DELETE_ONCE);
 			pStmt.setInt(1, animal.getCodeAnimal());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
@@ -130,7 +151,18 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 		}
 		
 	}
-	
+
+	public void deleteAllAnimalsClient(Client client) throws DALException {
+		try (Connection cnx = DBConnection.getConnexion()) {
+
+			PreparedStatement pStmt = cnx.prepareStatement(DELETE_ANIMALS_CLIENT);
+			pStmt.setInt(1, client.getCodeClient());
+			pStmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Animaux", e);
+		}
+
+	}
 	
 	public static Animal map (ResultSet rs) throws SQLException {
 		Animal animal = null;
@@ -142,7 +174,7 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 		Race race_espece = RaceDAOJdbcImpl.map(rs);
 		Client codeClient = ClientDAOJdbcImpl.map(rs);
 		String tatouage = rs.getString("Tatouage");
-		String antecedent = rs.getString("Antecedent");		
+		String antecedent = rs.getString("Antecedents");
 		boolean archive = rs.getBoolean("Archive");
 						
 		animal = new Animal(codeAnimal, nomAnimal, sexe, couleur, race_espece, codeClient, tatouage, antecedent, archive);
@@ -152,16 +184,16 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	
 	
 	private void objectToStatement(PreparedStatement pStmt, Animal animal) throws SQLException {
-		pStmt.setInt(1, animal.getCodeAnimal());
-		pStmt.setString(2, animal.getNomAnimal());
-		pStmt.setString(3, animal.getSexe());
-		pStmt.setString(4, animal.getCouleur());
-		pStmt.setString(5, animal.getRace_espece().getRace());
-		pStmt.setString(6, animal.getRace_espece().getEspece());
-		pStmt.setInt(7, animal.getClient().getCodeClient());
-		pStmt.setString(8, animal.getTatouage());
-		pStmt.setString(9, animal.getAntecedent());
-		pStmt.setBoolean(10, animal.isArchive());
+		System.out.println(animal);
+		pStmt.setString(1, animal.getNomAnimal());
+		pStmt.setString(2, animal.getSexe());
+		pStmt.setString(3, animal.getCouleur());
+		pStmt.setString(4, animal.getRace_espece().getRace());
+		pStmt.setString(5, animal.getRace_espece().getEspece());
+		pStmt.setInt(6, animal.getClient().getCodeClient());
+		pStmt.setString(7, animal.getTatouage());
+		pStmt.setString(8, animal.getAntecedent());
+		pStmt.setBoolean(9, animal.isArchive());
 	}
 
 	

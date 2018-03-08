@@ -31,7 +31,6 @@ public class AppliTestIHM {
                     loginFrame.setVisible(false);
                 }
             }
-            
         });
     }
 
