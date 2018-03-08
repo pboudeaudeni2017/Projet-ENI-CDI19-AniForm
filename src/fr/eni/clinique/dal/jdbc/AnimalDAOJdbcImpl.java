@@ -152,11 +152,11 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 		
 	}
 
-	public void deleteAllAnimalsClient(Animal animal) throws DALException {
+	public void deleteAllAnimalsClient(Client client) throws DALException {
 		try (Connection cnx = DBConnection.getConnexion()) {
 
 			PreparedStatement pStmt = cnx.prepareStatement(DELETE_ANIMALS_CLIENT);
-			pStmt.setInt(1, animal.getClient().getCodeClient());
+			pStmt.setInt(1, client.getCodeClient());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Animaux", e);
