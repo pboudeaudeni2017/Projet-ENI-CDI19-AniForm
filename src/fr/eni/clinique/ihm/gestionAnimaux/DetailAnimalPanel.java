@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import fr.eni.clinique.bll.BLLException;
@@ -96,18 +97,19 @@ public class DetailAnimalPanel extends JPanel {
 		addComponentTo(this.getLblCode(), this, 0, 1, 1, 1, 0.1);
 		addComponentTo(this.getTxtCode(), this, 1, 1, 1, 1, 0.9);
 		addComponentTo(this.getLblNom(), this, 0, 2, 1, 1, 0.1);
-		addComponentTo(this.getTxtNom(), this, 1, 2, 1, 1, 0.5);
-		addComponentTo(this.getComboBoxSexe(), this, 2, 2, 1, 1, 0.5);
+		addComponentTo(this.getTxtNom(), this, 1, 2, 3, 1, 0.5);
+		addComponentTo(this.getComboBoxSexe(), this, 4, 2, 1, 1, 0.5);
 		addComponentTo(this.getLblCouleur(), this, 0, 4, 1, 1, 0.1);
-		addComponentTo(this.getTxtCouleur(), this, 1, 4, 1, 1, 0.9);
-		addComponentTo(this.getLblEspece(), this, 0, 5, 1, 1, 0.5);
-		addComponentTo(this.getTxtEspece(), this, 1, 5, 1, 1, 0.5);
-		addComponentTo(this.getLblRace(), this, 2, 5, 1, 1, 0.5);
-		addComponentTo(this.getTxtRace(), this, 3, 5, 1, 1, 0.5);
+		addComponentTo(this.getTxtCouleur(), this, 1, 4, 4, 1, 0.9);
+		addComponentTo(this.getLblEspece(), this, 0, 5, 1, 1, 0.1);
+		addComponentTo(this.getTxtEspece(), this, 1, 5, 1, 1, 0.4);
+		addComponentTo(new JLabel(), this, 2, 5, 1, 1, 0);
+		addComponentTo(this.getLblRace(), this, 3, 5, 1, 1, 0.1);
+		addComponentTo(this.getTxtRace(), this, 4, 5, 1, 1, 0.4);
 		addComponentTo(this.getLblTatouage(), this, 0, 7, 1, 1, 0.1);
-		addComponentTo(this.getTxtTatouage(), this, 1, 7, 1, 1, 0.9);
+		addComponentTo(this.getTxtTatouage(), this, 1, 7, 4, 1, 0.9);
 
-		addComponentTo(this.getButtonSave(), this, 3, 13, 1, 2, 1);
+		addComponentTo(this.getButtonSave(), this, 2, 13, 2, 2, 1);
 
 	}
 
@@ -319,7 +321,7 @@ public class DetailAnimalPanel extends JPanel {
 
 	public JLabel getLblRace() {
 		if (lblRace == null) {
-			lblRace = new JLabel("Race");
+			lblRace = new JLabel("Race", SwingConstants.RIGHT);
 		}
 		return lblRace;
 	}
@@ -347,11 +349,12 @@ public class DetailAnimalPanel extends JPanel {
 
 	public JTextField getTxtNom() {
 		if (txtNom == null) {
-			txtNom = new JTextField();
+			txtNom = new JTextField(SwingConstants.RIGHT);
 		}
 		return txtNom;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public JComboBox getComboBoxSexe() {
 		if (this.comboBoxSexe == null) {
 			comboBoxSexe = new JComboBox(Sexe);

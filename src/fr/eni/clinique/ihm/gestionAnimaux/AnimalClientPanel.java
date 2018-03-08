@@ -24,7 +24,7 @@ public class AnimalClientPanel extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private DetailClientPanel detailClientPanel;
 	private JPanel panelScrollTable;
 	private JTable tableAnimal;
@@ -41,9 +41,6 @@ public class AnimalClientPanel extends JPanel{
 		super(new GridBagLayout());
 		addComponentTo(this.getDetailClientPanel(), this, 0, 0, 1, 1, 0.8);
 		addComponentTo(this.getPanelScrollTable(), this, 1, 0, 1, 1, 0.2);
-		//addComponentTo(this.getPanelButtons(), this, 1, 1, 1, 1, 1);
-		/*add(this.getDetailClientPanel(), BorderLayout.NORTH);
-        add(this.getPanelScrollTable(), BorderLayout.SOUTH);*/
 	}
 
 	public DetailClientPanel getDetailClientPanel() {
@@ -60,8 +57,6 @@ public class AnimalClientPanel extends JPanel{
 
 			this.panelScrollTable.add(this.getScrollPane(), BorderLayout.NORTH);
 			this.panelScrollTable.add(this.getPanelButtons(), BorderLayout.SOUTH);
-			//this.panelScrollTable.add(this.getEcranGestionAnimal());
-			//this.setPreferredSize(new Dimension(600, 200));
 		}
 		return this.panelScrollTable;
 	}
@@ -197,16 +192,16 @@ public class AnimalClientPanel extends JPanel{
 
 		this.creationView.setContentPane(this.getCreationAnimalPanel());
 		this.creationView.setVisible(true);
-		this.creationView.setSize(400, 300);
+		this.creationView.setSize(500, 300);
 		this.creationView.setLocation(600, 250);
 
-		
+
 		URL iconURL;
-	    ImageIcon icon;
-	    
+		ImageIcon icon;
+
 		iconURL = MainFrame.class.getResource("ressources/ico_veto.png");
-        icon = new ImageIcon(iconURL);
-        
+		icon = new ImageIcon(iconURL);
+
 		this.creationView.setIconImage(icon.getImage());
 		this.creationView.setResizable(false);
 		this.creationView.setTitle("Création animal");
