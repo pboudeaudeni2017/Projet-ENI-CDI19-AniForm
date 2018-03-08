@@ -27,7 +27,7 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	private static final String SELECT_ALL_BY_CLIENT = SELECT_ALL + " WHERE c.CodeClient=?";
 	
 	private static final String UPDATE = "UPDATE Animaux SET NomAnimal=?, Sexe=?, Couleur=?, Race=?, Espece=?, CodeClient=?, Tatouage=?, Antecedents=?, Archive=? WHERE CodeAnimal=?";
-
+	
 	private static final String DELETE = "UPDATE Animaux SET Archive = 1";
 
 	private static final String DELETE_ONCE = DELETE + " WHERE CodeAnimal=?";

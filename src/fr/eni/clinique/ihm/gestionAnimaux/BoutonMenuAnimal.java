@@ -54,10 +54,10 @@ public class BoutonMenuAnimal extends JPanel {
 	private JButton getBttDelete() {
 		if (bttDelete == null) {
 			bttDelete = new JButton("Supprimer");
-			/* bttDelete.addActionListener((ActionEvent e) -> {
+			bttDelete.addActionListener((ActionEvent e) -> {
 				int selectedRow = this.animalClientPanel.getTableAnimal().getSelectedRow();
 
-				Animal animal = this.gestionAnimal.getAnimalFromJTable(selectedRow);
+				Animal animal = this.animalClientPanel.getAnimalFromJTable(selectedRow);
 				this.animalClientPanel.getTableAnimal().clearSelection();
 
 				int reply = JOptionPane.showConfirmDialog(bttDelete, "Voulez-vous vraiment supprimer" + animal.getNomAnimal() + " ?\nCette action est définitive", "Suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -71,7 +71,7 @@ public class BoutonMenuAnimal extends JPanel {
 						AppliTestIHM.showError("Erreur de suppression", "Erreur de suppression:\n" + e1.getMessage());
 					}
 				}
-			}); */
+			});
 		}
 
 		return bttDelete;
