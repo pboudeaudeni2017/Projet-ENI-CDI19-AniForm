@@ -192,7 +192,7 @@ public class AnimalClientPanel extends JPanel{
 
 		this.creationView.setContentPane(this.getCreationAnimalPanel());
 		this.creationView.setVisible(true);
-		this.creationView.setSize(400, 300);
+		this.creationView.setSize(500, 300);
 		this.creationView.setLocation(600, 250);
 
 
@@ -203,7 +203,7 @@ public class AnimalClientPanel extends JPanel{
 		icon = new ImageIcon(iconURL);
 
 		this.creationView.setIconImage(icon.getImage());
-		this.creationView.setResizable(true);
+		this.creationView.setResizable(false);
 		this.creationView.setTitle("Création animal");
 		this.getCreationAnimalPanel().resetDialog();
 

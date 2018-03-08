@@ -102,13 +102,14 @@ public class DetailAnimalPanel extends JPanel {
 		addComponentTo(this.getLblCouleur(), this, 0, 4, 1, 1, 0.1);
 		addComponentTo(this.getTxtCouleur(), this, 1, 4, 4, 1, 0.9);
 		addComponentTo(this.getLblEspece(), this, 0, 5, 1, 1, 0.1);
-		addComponentTo(this.getTxtEspece(), this, 1, 5, 3, 1, 0.9);
+		addComponentTo(this.getTxtEspece(), this, 1, 5, 1, 1, 0.4);
+		addComponentTo(new JLabel(), this, 2, 5, 1, 1, 0);
 		addComponentTo(this.getLblRace(), this, 3, 5, 1, 1, 0.1);
-		addComponentTo(this.getTxtRace(), this, 4, 5, 1, 1, 0.9);
+		addComponentTo(this.getTxtRace(), this, 4, 5, 1, 1, 0.4);
 		addComponentTo(this.getLblTatouage(), this, 0, 7, 1, 1, 0.1);
 		addComponentTo(this.getTxtTatouage(), this, 1, 7, 4, 1, 0.9);
 
-		addComponentTo(this.getButtonSave(), this, 3, 13, 1, 2, 1);
+		addComponentTo(this.getButtonSave(), this, 2, 13, 2, 2, 1);
 
 	}
 
