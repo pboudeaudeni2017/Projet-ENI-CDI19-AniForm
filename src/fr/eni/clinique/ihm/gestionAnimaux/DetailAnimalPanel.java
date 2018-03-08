@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,7 +32,7 @@ public class DetailAnimalPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private JLabel lblClient;
 	private JLabel lblCode;
 	private JLabel lblNom;
@@ -50,11 +51,14 @@ public class DetailAnimalPanel extends JPanel {
 	private JTextField txtRace;
 	private JTextField txtTatouage;
 
+	private JComboBox comboBoxSexe;
+	private static final String[] Sexe = {"Male", "Femelle"}; 
+
 	private Animal initAnimal;
 	private Animal currentAnimal;
 	private AnimalController animalController;
 	private ClientController clientController;
-	
+
 	private JButton buttonSave;
 
 	public DetailAnimalPanel() {
@@ -71,7 +75,7 @@ public class DetailAnimalPanel extends JPanel {
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (id == 0) {
 			this.writeInputs();
 		} else {
@@ -84,12 +88,12 @@ public class DetailAnimalPanel extends JPanel {
 
 		setLayout(new GridBagLayout());
 		addComponentTo(this.getLblClient(), this, 0, 0, 1, 1, 0.1);
-		addComponentTo(this.getTxtClient(), this, 1, 0, 1, 1, 0.9);
+		addComponentTo(this.getTxtClient(), this, 1, 0, 3, 1, 0.9);
 		addComponentTo(this.getLblCode(), this, 0, 1, 1, 1, 0.1);
 		addComponentTo(this.getTxtCode(), this, 1, 1, 1, 1, 0.9);
 		addComponentTo(this.getLblNom(), this, 0, 2, 1, 1, 0.1);
 		addComponentTo(this.getTxtNom(), this, 1, 2, 1, 1, 0.5);
-		addComponentTo(this.getTxtSexe(), this, 2, 2, 1, 1, 0.5);
+		addComponentTo(this.getComboBoxSexe(), this, 2, 2, 1, 1, 0.5);
 		addComponentTo(this.getLblCouleur(), this, 0, 4, 1, 1, 0.1);
 		addComponentTo(this.getTxtCouleur(), this, 1, 4, 1, 1, 0.9);
 		addComponentTo(this.getLblEspece(), this, 0, 5, 1, 1, 0.5);
@@ -98,11 +102,11 @@ public class DetailAnimalPanel extends JPanel {
 		addComponentTo(this.getTxtRace(), this, 3, 5, 1, 1, 0.5);
 		addComponentTo(this.getLblTatouage(), this, 0, 7, 1, 1, 0.1);
 		addComponentTo(this.getTxtTatouage(), this, 1, 7, 1, 1, 0.9);
-		
+
 		addComponentTo(this.getButtonSave(), this, 3, 13, 1, 2, 1);
 
 	}
-	
+
 	public void writeInputs(int id) throws AnimalNotFoundException {
 		this.currentAnimal.setCodeAnimal(id);
 		this.animalController.setAnimal(this.currentAnimal, false);
@@ -111,15 +115,41 @@ public class DetailAnimalPanel extends JPanel {
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
-		
+
 		this.writeInputs();
 	}
-		
+
 	public void writeInputs() {
-		this.getTxtClient().setText(this.currentAnimal.getClient().getNomClient() + " " + this.currentAnimal.getClient().getPrenomClient());
+		if(this.currentAnimal.getCodeAnimal() < 1) {
+			this.getTxtCode().setVisible(false);
+			this.getLblCode().setVisible(false);
+		}
+		else {
+			this.getTxtCode().setVisible(true);
+			this.getLblCode().setVisible(true);
+		}
+		
+		try {
+			Client currentClient = this.clientController.getCurrentClient();
+			this.getTxtClient().setText(currentClient.getNomClient() + " " + currentClient.getPrenomClient());
+		} catch(BLLException e) {
+			e.printStackTrace();
+			this.getTxtClient().setText("");
+		}
+		
+		
 		this.getTxtCode().setText(String.valueOf(this.currentAnimal.getCodeAnimal()));
 		this.getTxtNom().setText(this.currentAnimal.getNomAnimal());
-		this.getTxtSexe().setText(this.currentAnimal.getSexe());
+		int selectedSexe = 0;
+		switch (this.currentAnimal.getSexe()) {
+		case "M":
+			selectedSexe = 0;
+			break;
+		case "F":
+			selectedSexe = 1;
+			break;
+		}
+		this.getComboBoxSexe().setSelectedIndex(selectedSexe);
 		this.getTxtCouleur().setText(this.currentAnimal.getCouleur());
 		this.getTxtEspece().setText(this.currentAnimal.getRace_espece().getEspece());
 		this.getTxtRace().setText(this.currentAnimal.getRace_espece().getRace());
@@ -127,10 +157,19 @@ public class DetailAnimalPanel extends JPanel {
 		this.inputToAnimal();
 		this.initAnimal = this.currentAnimal.copy();	
 	}
-	
+
 	public void inputToAnimal() {
 		this.currentAnimal.setNomAnimal(this.getTxtNom().getText());
-		this.currentAnimal.setSexe(this.getTxtSexe().getText());
+		
+		switch (Sexe[this.getComboBoxSexe().getSelectedIndex()]) {
+		case "Male":
+			this.currentAnimal.setSexe("M");
+			break;
+		case "Femelle":
+			this.currentAnimal.setSexe("F");
+			break;
+		}
+		
 		this.currentAnimal.setCouleur(this.getTxtCouleur().getText());
 		try {
 			Client client = this.clientController.getCurrentClient();
@@ -145,39 +184,39 @@ public class DetailAnimalPanel extends JPanel {
 		this.currentAnimal.setRace_espece(race);
 		this.currentAnimal.setTatouage(this.getTxtTatouage().getText());	
 	}
-	
+
 	private void quitter() {
 		AnimalClientPanel animalClientPanel = ((EcranGestionClient)AppliTestIHM.mainFrame.getCurrentPanel()).getAnimalClientPanel();
 		animalClientPanel.reloadView();
 		animalClientPanel.getCreationView().setVisible(false);
 	}
-	
+
 	public boolean isSaved() {
 		this.inputToAnimal();
 		System.out.println(this.currentAnimal);
 		System.out.println(this.initAnimal);
 		System.out.println(this.currentAnimal.equals(this.initAnimal));
 		System.out.println((this.initAnimal.getCodeAnimal() == 0 && this.currentAnimal.getCodeAnimal() > 0));
-		
+
 		return this.currentAnimal.equals(this.initAnimal) || (this.initAnimal.getCodeAnimal() == 0 && this.currentAnimal.getCodeAnimal() > 0);
 	}
-	
+
 	public void resetDialog() {
 		this.currentAnimal = new Animal();
 		this.initAnimal = this.currentAnimal.copy();
 		this.writeInputs();
 	}
-	
+
 	public JButton getButtonSave() {
 		if (this.buttonSave == null) {
 			this.buttonSave = new JButton("Enregistrer");
 			this.buttonSave.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					System.out.println(currentAnimal);
 					inputToAnimal();
-					
+
 					if (currentAnimal.getCodeAnimal() > 0) {
 						try {
 							animalController.setAnimal(currentAnimal);
@@ -205,14 +244,14 @@ public class DetailAnimalPanel extends JPanel {
 							AppliTestIHM.showError("Erreur de création", "Erreur de création:\n" + e1.getMessage());
 						}
 					}
-					
+
 					System.out.println(currentAnimal);
 				}
 			});
 		}
 		return buttonSave;
 	}
-	
+
 
 	public JLabel getLblClient() {
 		if (lblClient == null) {
@@ -291,11 +330,12 @@ public class DetailAnimalPanel extends JPanel {
 		return txtNom;
 	}
 
-	public JTextField getTxtSexe() {
-		if (txtSexe == null) {
-			txtSexe = new JTextField();
+	public JComboBox getComboBoxSexe() {
+		if (this.comboBoxSexe == null) {
+			comboBoxSexe = new JComboBox(Sexe);
 		}
-		return txtSexe;
+
+		return comboBoxSexe;
 	}
 
 	public JTextField getTxtCouleur() {
@@ -325,8 +365,8 @@ public class DetailAnimalPanel extends JPanel {
 		}
 		return txtTatouage;
 	}
-	
-	
+
+
 	private void addComponentTo(JComponent component, JPanel panel,
 			int x, int y, int width, int height,
 			double weightX) {
