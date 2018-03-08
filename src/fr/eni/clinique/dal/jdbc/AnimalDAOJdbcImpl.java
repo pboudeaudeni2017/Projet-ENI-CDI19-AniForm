@@ -28,7 +28,7 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	
 	private static final String UPDATE = "UPDATE Animaux SET NomAnimal=?, Sexe=?, Couleur=?, Race=?, Espece=?, CodeClient=?, Tatouage=?, Antecedents=?, Archive=? WHERE CodeAnimal=?";
 
-	private static final String DELETE = "DELETE FROM Animaux WHERE CodeAnimal=?";
+	private static final String DELETE = "UPDATE Animaux SET Archive=? WHERE CodeAnimal=?";
 	
 	
 	@Override
