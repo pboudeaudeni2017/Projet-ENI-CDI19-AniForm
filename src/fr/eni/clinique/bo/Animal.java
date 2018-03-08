@@ -1,5 +1,7 @@
 package fr.eni.clinique.bo;
 
+import java.util.Objects;
+
 public class Animal {
 	
 	private int codeAnimal;
@@ -108,10 +110,28 @@ public class Animal {
 	public Animal copy() {
 		return new Animal(this.codeAnimal, this.nomAnimal, this.sexe, this.couleur, this.race_espece, this.client, this.tatouage, this.antecedent, this.archive);
 	}
-	
-	
-	
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Animal animal = (Animal) o;
+		return isArchive() == animal.isArchive() &&
+				Objects.equals(getNomAnimal(), animal.getNomAnimal()) &&
+				Objects.equals(getSexe(), animal.getSexe()) &&
+				Objects.equals(getCouleur(), animal.getCouleur()) &&
+				Objects.equals(getRace_espece(), animal.getRace_espece()) &&
+				Objects.equals(getClient(), animal.getClient()) &&
+				Objects.equals(getTatouage(), animal.getTatouage()) &&
+				Objects.equals(getAntecedent(), animal.getAntecedent());
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(getNomAnimal(), getSexe(), getCouleur(), getRace_espece(), getClient(), getTatouage(), getAntecedent(), isArchive());
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

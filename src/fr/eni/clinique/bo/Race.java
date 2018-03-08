@@ -1,5 +1,7 @@
 package fr.eni.clinique.bo;
 
+import java.util.Objects;
+
 public class Race {
 
 	private String race;
@@ -18,10 +20,6 @@ public class Race {
 	public void setEspece(String espece) {
 		this.espece = espece;
 	}
-	
-	
-	
-	
 
 	public Race() {
 		super();
@@ -48,8 +46,18 @@ public class Race {
 		return builder.toString();
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Race race1 = (Race) o;
+		return Objects.equals(getRace(), race1.getRace()) &&
+				Objects.equals(getEspece(), race1.getEspece());
+	}
 
+	@Override
+	public int hashCode() {
 
-
-
+		return Objects.hash(getRace(), getEspece());
+	}
 }
