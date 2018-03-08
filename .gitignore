@@ -1,2 +1,8 @@
+bin/
+lib/
+out/
 AniForme.iml
 .idea
+.classpath
+.dbeaver-data-sources.xml
+.project
