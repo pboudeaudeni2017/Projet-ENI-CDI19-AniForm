@@ -3,6 +3,7 @@ package fr.eni.clinique.bll;
 import java.util.List;
 
 import fr.eni.clinique.bo.Animal;
+import fr.eni.clinique.bo.Client;
 import fr.eni.clinique.dal.DALException;
 import fr.eni.clinique.dal.DAO;
 import fr.eni.clinique.dal.DAOFactory;
@@ -68,9 +69,9 @@ public class AnimalManager {
 		}
 	}
 
-	public void deleteAllAnimalsClient(Animal animal) throws BLLException {
+	public void deleteAllAnimalsClient(Client client) throws BLLException {
 		try {
-			((AnimalDAOJdbcImpl)this.animalDAO).deleteAllAnimalsClient(animal);
+			((AnimalDAOJdbcImpl)this.animalDAO).deleteAllAnimalsClient(client);
 		} catch (DALException e) {
 			throw new BLLException("Suppression impossible", e);
 		}
