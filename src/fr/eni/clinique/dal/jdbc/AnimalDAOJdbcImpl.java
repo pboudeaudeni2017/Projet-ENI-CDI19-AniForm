@@ -111,7 +111,6 @@ public class AnimalDAOJdbcImpl implements DAO<Animal> {
 	public List<Animal> selectAllClient(int codeClient) throws DALException {
 		List<Animal> animaux = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()) {
-			System.out.println(SELECT_ALL_BY_CLIENT + " AND ani.Archive = 0");
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL_BY_CLIENT + " AND ani.Archive = 0");
 			pStmt.setInt(1, codeClient);
 			ResultSet rs = pStmt.executeQuery();

@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.swing.BorderFactory;
@@ -47,7 +48,7 @@ public class DetailAnimalPanel extends JPanel {
 	private JTextField txtNom;
 	private JTextField txtSexe;
 	private JTextField txtCouleur;
-	private JTextField txtEspece;
+	private JComboBox txtEspece;
 	private JTextField txtRace;
 	private JTextField txtTatouage;
 
@@ -58,6 +59,7 @@ public class DetailAnimalPanel extends JPanel {
 	private Animal currentAnimal;
 	private AnimalController animalController;
 	private ClientController clientController;
+	private List<String> listeEspece;
 
 	private JButton buttonSave;
 
@@ -72,6 +74,8 @@ public class DetailAnimalPanel extends JPanel {
 		try {
 			this.clientController = ClientController.getInstance();
 			this.animalController = AnimalController.getInstance();
+			this.listeEspece = this.animalController.getEspeces();
+			System.out.println(this.listeEspece);
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
@@ -151,12 +155,29 @@ public class DetailAnimalPanel extends JPanel {
 		}
 		this.getComboBoxSexe().setSelectedIndex(selectedSexe);
 		this.getTxtCouleur().setText(this.currentAnimal.getCouleur());
-		this.getTxtEspece().setText(this.currentAnimal.getRace_espece().getEspece());
+		int indexEspece = this.indexOfEspeceInListe(this.currentAnimal.getRace_espece().getEspece());
+		System.out.println("indexEspece: " + indexEspece + " : " + this.currentAnimal.getRace_espece().getEspece());
+		if(indexEspece < this.listeEspece.toArray().length){
+		    this.getTxtEspece().setSelectedIndex(indexEspece);
+        }
+
 		this.getTxtRace().setText(this.currentAnimal.getRace_espece().getRace());
 		this.getTxtTatouage().setText(this.currentAnimal.getTatouage());
 		this.inputToAnimal();
 		this.initAnimal = this.currentAnimal.copy();	
 	}
+
+	private int indexOfEspeceInListe(String _espece){
+	    int i = 0;
+	    for(String espece: this.listeEspece){
+            if(_espece.equals(espece)){
+                break;
+            }
+            i++;
+        }
+
+        return i;
+    }
 
 	public void inputToAnimal() {
 		this.currentAnimal.setNomAnimal(this.getTxtNom().getText());
@@ -175,11 +196,15 @@ public class DetailAnimalPanel extends JPanel {
 			Client client = this.clientController.getCurrentClient();
 			this.currentAnimal.setClient(client);
 		} catch (BLLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Race race = new Race();
-		race.setEspece((this.getTxtEspece().getText()));
+		if(this.getTxtEspece().getSelectedIndex() >= 0){
+            race.setEspece((this.listeEspece.get(this.getTxtEspece().getSelectedIndex())));
+        }
+        else{
+		    race.setEspece("");
+        }
 		race.setRace(this.getTxtRace().getText());
 		this.currentAnimal.setRace_espece(race);
 		this.currentAnimal.setTatouage(this.getTxtTatouage().getText());	
@@ -193,10 +218,6 @@ public class DetailAnimalPanel extends JPanel {
 
 	public boolean isSaved() {
 		this.inputToAnimal();
-		System.out.println(this.currentAnimal);
-		System.out.println(this.initAnimal);
-		System.out.println(this.currentAnimal.equals(this.initAnimal));
-		System.out.println((this.initAnimal.getCodeAnimal() == 0 && this.currentAnimal.getCodeAnimal() > 0));
 
 		return this.currentAnimal.equals(this.initAnimal) || (this.initAnimal.getCodeAnimal() == 0 && this.currentAnimal.getCodeAnimal() > 0);
 	}
@@ -346,9 +367,9 @@ public class DetailAnimalPanel extends JPanel {
 		return txtCouleur;
 	}
 
-	public JTextField getTxtEspece() {
+	public JComboBox getTxtEspece() {
 		if (txtEspece == null) {
-			txtEspece = new JTextField();
+			txtEspece = new JComboBox(this.listeEspece.toArray());
 		}
 		return txtEspece;
 	}

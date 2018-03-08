@@ -18,13 +18,15 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 	
 	private static final String SELECT_ALL = "SELECT Espece, Race FROM Races";
 
-	private static final String SELECT_ESPECES_RACE = SELECT_ALL + "WHERE Espece=?";
+	private static final String SELECT_ESPECES_RACES = SELECT_ALL + "WHERE Espece=?";
 	
 	private static final String UPDATE = "UPDATE Races SET Race=?, Espece=? WHERE Race=? AND Espece=?";
 	
 	private static final String DELETE = "DELETE FROM Races Where Race=? AND Espece=?";
 	
 	private static final String SELECT_BY_ID = SELECT_ALL + "WHERE Race=? AND Espece=?";
+
+	private static final String SELECT_ESPECES = "SELECT DISTINCT Espece FROM RACES";
 
 	
 	
@@ -61,21 +63,19 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 		return raceObject;
 	}
 
-	public Race selectByEspece(Race raceObject) throws DALException {
+	public List<Race> selectByEspece(Race raceObject) throws DALException {
+		List<Race> races = new ArrayList<>();
 		try (Connection cnx = DBConnection.getConnexion()) {
-
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ESPECES_RACE);
-			pStmt.setString(1, raceObject.getRace());
-			pStmt.setString(2, raceObject.getEspece());
-
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ESPECES_RACES);
+			pStmt.setString(1, raceObject.getEspece());
 			ResultSet rs = pStmt.executeQuery();
-			if(rs.next()) {
-				raceObject = map(rs);
+			while (rs.next()) {
+				races.add(map(rs));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Races", e);
 		}
-		return raceObject;
+		return races;
 	}
 	
 	@Override
@@ -91,6 +91,20 @@ public class RaceDAOJdbcImpl implements DAO<Race> {
 			throw new DALException("Races", e);
 		}
 		return races;
+	}
+
+	public List<String> selectAllEspeces() throws DALException {
+		List<String> especes = new ArrayList<String>();
+		try (Connection cnx = DBConnection.getConnexion()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_ALL);
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {
+				especes.add(rs.getString("espece"));
+			}
+		} catch (SQLException e) {
+			throw new DALException("Races", e);
+		}
+		return especes;
 	}
 	
 	
