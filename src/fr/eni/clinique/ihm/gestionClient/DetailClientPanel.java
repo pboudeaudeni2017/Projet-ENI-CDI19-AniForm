@@ -286,6 +286,7 @@ public class DetailClientPanel extends JPanel {
         this.currentClient.setCodePostal(this.getTextCodePostal().getText());
         this.currentClient.setNumTel(this.getTextNumTel().getText());
         this.currentClient.setAssurance(this.getTextAssurance().getText());
+        this.currentClient.setVille(this.getTextVille().getText());
         this.currentClient.setEmail(this.getTextEmail().getText());
         this.currentClient.setRemarque(this.getTextRemarque().getText());
     }
